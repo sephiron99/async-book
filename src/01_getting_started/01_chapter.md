@@ -1,25 +1,22 @@
-# Getting Started
+# 시작하며
 
-Welcome to Asynchronous Programming in Rust! If you're looking to start writing
-asynchronous Rust code, you've come to the right place. Whether you're building
-a web server, a database, or an operating system, this book will show you
-how to use Rust's asynchronous programming tools to get the most out of your
-hardware.
+러스트로 비동기 프로그래밍하기에 오신 것을 환영합니다. 만약 비동기 러스트 코드를
+배우려고 하셨다면, 제대로 찾아오셨습니다. 웹서버나 데이터베이스, 또는 운영체제를
+만든다면, 이 책이 대부분의 하드웨어 성능을 뽑아낼 수 있는 러스트의 비동기
+프로그래밍 도구를 알려드릴 것입니다.
 
-## What This Book Covers
+## 이 책이 다루는 것들
 
-This book aims to be a comprehensive, up-to-date guide to using Rust's async
-language features and libraries, appropriate for beginners and old hands alike.
+이 책은 러스트의 비동기 기능과 라이브러리를 사용하기 위한 종합적이고 최신의
+가이드를 초심자와 숙련자 모두에게 제공하고자 합니다. 
 
-- The early chapters provide an introduction to async programming in general,
-and to Rust's particular take on it.
+- 이 책의 초반에서는 일반적인 비동기 프로그래밍과 러스트만의 비동기 프로그래밍에 대해 소개합니다.
 
-- The middle chapters discuss key utilities and control-flow tools you can use
-when writing async code, and describe best-practices for structuring libraries
-and applications to maximize performance and reusability.
+- 중반부에서는 비동기 코드를 작성할 때 사용되는 핵심 기능과 흐름제어 도구들에
+  대해 논의합니다. 그리고 라이브러리와 어플리케이션에 최고의 성능과 재사용성을
+  부여하기 위해 필요한 모범답안을 설명합니다.
 
-- The last section of the book covers the broader async ecosystem, and provides
-a number of examples of how to accomplish common tasks.
+- 종반부에서는 보다 넓은 비동기 생태계에 대해 설명하고, 업무에 보편적으로
+  사용되는 다양한 방법에 대한 예제를 제공합니다.
 
-With that out of the way, let's explore the exciting world of Asynchronous
-Programming in Rust!
+자, 이제 흥미진진한 러스트의 비동기 프로그래밍 세계로 모험을 떠납니다!
