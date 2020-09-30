@@ -1,6 +1,6 @@
 [book]
-title = "Asynchronous Programming in Rust"
-authors = ["Taylor Cramer"]
+title = "비동기 러스트 프로그래밍"
+authors = ["Taylor Cramer / sephiron"]
 
 [build]
 create-missing = false
