@@ -1,29 +1,27 @@
-# Task Wakeups with `Waker`
+# `Waker`로 Task 깨우기
 
-It's common that futures aren't able to complete the first time they are
-`poll`ed. When this happens, the future needs to ensure that it is polled
-again once it is ready to make more progress. This is done with the `Waker`
-type.
+future들이 첫 번째 `poll`에서는 완성되지 못하는 것이 일반적입니다. 완성되지
+못했을 경우, 더 진행이 가능할 준비가 되었을 때, future가 poll될 수 있게 확실히
+조치해둘 필요가 있습니다. `Waker` 타입으로 이 조치를 취할 수 있습니다.
 
-Each time a future is polled, it is polled as part of a "task". Tasks are
-the top-level futures that have been submitted to an executor.
+future가 poll될 때마다 한 "task"의 일부분으로서 poll됩니다. task들이란 한 executor에게
+제공된 최상위 future들입니다.
 
-`Waker` provides a `wake()` method that can be used to tell the executor that
-the associated task should be awoken. When `wake()` is called, the executor
-knows that the task associated with the `Waker` is ready to make progress, and
-its future should be polled again.
+`Waker`는 executor에게 연관된 task가 깨워져야 한다고 알리는데 사용되는 `wake()`
+메소드를 제공합니다. `wake()`가 호출되었을 때, executor는 `Waker`와 연관된
+task가 진행될 준비가 되었으며, task의 future가 다시 poll되어야 한다는 것을 알 수 있습니다.
 
-`Waker` also implements `clone()` so that it can be copied around and stored.
+`Waker`는 `clone()`도 구현하기 때문에, 필요한 곳에 복사되고 저장될 수 있습니다.
 
-Let's try implementing a simple timer future using `Waker`.
+`Waker`를 사용하여 간단한 타이머를 구현해 봅시다.
 
-## Applied: Build a Timer
+## 응용: 타이머 만들기
 
-For the sake of the example, we'll just spin up a new thread when the timer
-is created, sleep for the required time, and then signal the timer future
-when the time window has elapsed.
+이 예제의 목적에 따라, 우리는 타이머가 만들어졌을 때 그냥 새 스레드를 하나
+생성할 것이고, 필요한 만큼 sleep할 것입니다. 그리고 time window가 지나면,
+타이머 future에 시그널을 보낼 것입니다.
 
-Here are the imports we'll need to get started:
+시작하려면 다음처럼 import해야할 것들이 있습니다.
 
 ```rust
 {{#include ../../examples/02_03_timer/src/lib.rs:imports}}
