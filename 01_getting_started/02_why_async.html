@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Why Async? - 비동기 러스트 프로그래밍</title>
+        <title>Async가 필요한 이유 - 러스트 비동기 프로그래밍</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html" class="active"><strong aria-hidden="true">1.1.</strong> Why Async?</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> The State of Asynchronous Rust</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await Primer</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> Under the Hood: Executing Futures and Tasks</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> The Future Trait</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Task Wakeups with Waker</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html"><strong aria-hidden="true">2.3.</strong> Applied: Build an Executor</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html"><strong aria-hidden="true">2.4.</strong> Executors and System IO</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> Pinning</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> Streams</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> Iteration and Concurrency</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> Executing Multiple Futures at a Time</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> Workarounds to Know and Love</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_return_type.html"><strong aria-hidden="true">7.1.</strong> Return Type Errors</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_err_in_async_blocks.html"><strong aria-hidden="true">7.2.</strong> ? in async Blocks</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_send_approximation.html"><strong aria-hidden="true">7.3.</strong> Send Approximation</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_recursion.html"><strong aria-hidden="true">7.4.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../07_workarounds/06_async_in_traits.html"><strong aria-hidden="true">7.5.</strong> async in Traits</a></li></ol></li><li class="chapter-item expanded "><a href="../08_example/00_intro.html"><strong aria-hidden="true">8.</strong> Final Project: HTTP Server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../08_example/01_running_async_code.html"><strong aria-hidden="true">8.1.</strong> Running Asynchronous Code</a></li><li class="chapter-item expanded "><a href="../08_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">8.2.</strong> Handling Connections Concurrently</a></li><li class="chapter-item expanded "><a href="../08_example/03_multithreading.html"><strong aria-hidden="true">8.3.</strong> Serving Requests in Parallel</a></li><li class="chapter-item expanded "><a href="../08_example/04_tests.html"><strong aria-hidden="true">8.4.</strong> Testing the Server</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.2.</strong> TODO: Managing Shared State</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: The Ecosystem: Tokio and More</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Lots, lots more?...</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> 시작하며</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html" class="active"><strong aria-hidden="true">1.1.</strong> Async가 필요한 이유</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> 비동기적 러스트 현황</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await 기초</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> Under the Hood: Executing Futures and Tasks</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> The Future Trait</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Task Wakeups with Waker</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html"><strong aria-hidden="true">2.3.</strong> Applied: Build an Executor</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html"><strong aria-hidden="true">2.4.</strong> Executors and System IO</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> Pinning</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> Streams</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> Iteration and Concurrency</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> Executing Multiple Futures at a Time</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> Workarounds to Know and Love</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_return_type.html"><strong aria-hidden="true">7.1.</strong> Return Type Errors</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_err_in_async_blocks.html"><strong aria-hidden="true">7.2.</strong> ? in async Blocks</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_send_approximation.html"><strong aria-hidden="true">7.3.</strong> Send Approximation</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_recursion.html"><strong aria-hidden="true">7.4.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../07_workarounds/06_async_in_traits.html"><strong aria-hidden="true">7.5.</strong> async in Traits</a></li></ol></li><li class="chapter-item expanded "><a href="../08_example/00_intro.html"><strong aria-hidden="true">8.</strong> Final Project: HTTP Server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../08_example/01_running_async_code.html"><strong aria-hidden="true">8.1.</strong> Running Asynchronous Code</a></li><li class="chapter-item expanded "><a href="../08_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">8.2.</strong> Handling Connections Concurrently</a></li><li class="chapter-item expanded "><a href="../08_example/03_multithreading.html"><strong aria-hidden="true">8.3.</strong> Serving Requests in Parallel</a></li><li class="chapter-item expanded "><a href="../08_example/04_tests.html"><strong aria-hidden="true">8.4.</strong> Testing the Server</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.2.</strong> TODO: Managing Shared State</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: The Ecosystem: Tokio and More</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Lots, lots more?...</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -125,14 +125,14 @@
                         
                     </div>
 
-                    <h1 class="menu-title">비동기 러스트 프로그래밍</h1>
+                    <h1 class="menu-title">러스트 비동기 프로그래밍</h1>
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         
-                        <a href="https://github.com/rust-lang/async-book" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/sephiron99/async-book/tree/ko_KR/ko" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
                         
@@ -163,58 +163,50 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#why-async" id="why-async">Why Async?</a></h1>
-<p>We all love how Rust allows us to write fast, safe software. But why write
-asynchronous code?</p>
-<p>Asynchronous code allows us to run multiple tasks concurrently on the same OS
-thread. In a typical threaded application, if you wanted to download two
-different webpages at the same time, you would spread the work across two
-different threads, like this:</p>
+                        <h1><a class="header" href="#비동기화가-필요한-이유" id="비동기화가-필요한-이유">비동기화가 필요한 이유</a></h1>
+<p>우리모두는 빠르고 안전한 소프트웨어를 작성할 수 있는 러스트를 좋아합니다. 하지만
+왜 비동기 코드를 작성해야 할까요?</p>
+<p>비동기 코드는 우리가 같은 운영체제 스레드 위에서 여러 task을 동시에 돌릴 수 있게 
+해줍니다. 당신이 전형적인 스레드 앱에서 동시에 웹 페이지 두 장을 다운로드하고 
+싶으면, 스레드 두 개를 통해 task을 넓힐 수 있습니다. 이렇게요.</p>
 <pre><code class="language-rust ignore">fn get_two_sites() {
-    // Spawn two threads to do work.
+    // task에 사용될 두 개의 스레드 생성
     let thread_one = thread::spawn(|| download(&quot;https://www.foo.com&quot;));
     let thread_two = thread::spawn(|| download(&quot;https://www.bar.com&quot;));
 
-    // Wait for both threads to complete.
+    // 두 개의 스레드가 완료될 때까지 기다림
     thread_one.join().expect(&quot;thread one panicked&quot;);
     thread_two.join().expect(&quot;thread two panicked&quot;);
 }
 </code></pre>
-<p>This works fine for many applications—after all, threads were designed
-to do just this: run multiple different tasks at once. However, they also
-come with some limitations. There's a lot of overhead involved in the
-process of switching between different threads and sharing data between
-threads. Even a thread which just sits and does nothing uses up valuable
-system resources. These are the costs that asynchronous code is designed
-to eliminate. We can rewrite the function above using Rust's
-<code>async</code>/<code>.await</code> notation, which will allow us to run multiple tasks at
-once without creating multiple threads:</p>
+<p>이 동작은 많은 앱에 잘 돌아갑니다. 결국 스레드는 한 번에 여러 task을 수행하기 
+위해 만들어졌습니다. 하지만 이런 행위에는 한계가 있습니다. 서로 다른 스레드를 
+바꾸거나 스레드끼리 데이터를 공유하는 과정에서 다소의 오버헤드가 발생하기 때문입니다. 
+존재하지만 아무 것도 하지 않는 스레드가 귀중한 시스템 자원을 고갈시킬 수도 있습니다.
+이러한 문제를 없애기 위해 비동기 코드가 만들어졌습니다. 우리는 러스트의 <code>async</code>/
+<code>.await</code> 표기를 함으로써 함수를 다시 작성할 수 있고, 그 코드는 다수의 스레드를 만들지 
+않고 한 번에 여러 task을 수행할 수 있게 만듭니다.</p>
 <pre><code class="language-rust ignore">async fn get_two_sites_async() {
-    // Create two different &quot;futures&quot; which, when run to completion,
-    // will asynchronously download the webpages.
+    // 완성될때까지 실행된다면, 웹페이지를 비동기적으로 다운로드 할 두 개의 다른
+    // &quot;future&quot;를 만들기
     let future_one = download_async(&quot;https://www.foo.com&quot;);
     let future_two = download_async(&quot;https://www.bar.com&quot;);
 
-    // Run both futures to completion at the same time.
+    // 두 개의 future를 완성될때까지 동시에 실행하기
     join!(future_one, future_two);
 }
 </code></pre>
-<p>Overall, asynchronous applications have the potential to be much faster and
-use fewer resources than a corresponding threaded implementation. However,
-there is a cost. Threads are natively supported by the operating system,
-and using them doesn't require any special programming model—any function
-can create a thread, and calling a function that uses threads is usually
-just as easy as calling any normal function. However, asynchronous functions
-require special support from the language or libraries.
-In Rust, <code>async fn</code> creates an asynchronous function which returns a <code>Future</code>.
-To execute the body of the function, the returned <code>Future</code> must be run to
-completion.</p>
-<p>It's important to remember that traditional threaded applications can be quite
-effective, and that Rust's small memory footprint and predictability mean that
-you can get far without ever using <code>async</code>. The increased complexity of the
-asynchronous programming model isn't always worth it, and it's important to
-consider whether your application would be better served by using a simpler
-threaded model.</p>
+<p>요컨데, 비동기적인 앱은 똑같이 스레드로 구현된 방식보다 더 빠르고 더 자원을 덜 쓰는 
+잠재력이 있습니다. 그러나 한계도 있습니다. 스레드는 본디 운영체제에서 지원하고, 
+어떤 특별한 프로그래밍 모델도 필요하지 않습니다. 어떤 함수라도 스레드를 만들 수 
+있으며, 스레드를 사용하는 함수를 부르는 것은 그렇지 않은 평범한 함수를 부르는 것처럼 
+쉽습니다. 하지만 비동기 함수는 언어나 라이브러리로부터 특별한 지원을 받아야 합니다. 
+러스트에서는 <code>async fn</code> 표기가 <code>Future</code>를 반환하는 비동기 함수를 만들 수 있습니다. 
+함수를 실행하기 위해 반환된 <code>Future</code>는 완벽히 수행되어야 합니다.</p>
+<p>전형적인 스레드 앱이 매우 효과적일 수도 있고 러스트가 차지하는 작은 메모리 공간과 예측 
+가능성이 <code>async</code>를 멀리 할 수 있다는 것을 의미한다는 것을 기억하시기 바랍니다. 비동기 
+프로그래밍 모델의 복잡성이 항상 옳은 것은 아니고 당신의 앱이 더 간단한 스레드 모델을 
+사용하는 게 더 좋은 것인지 생각해야 합니다.</p>
 
                     </main>
 
