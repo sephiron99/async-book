@@ -1,23 +1,22 @@
-# Applied: Build an Executor
+# 응용: executor 구현하기
 
-Rust's `Future`s are lazy: they won't do anything unless actively driven to
-completion. One way to drive a future to completion is to `.await` it inside
-an `async` function, but that just pushes the problem one level up: who will
-run the futures returned from the top-level `async` functions? The answer is
-that we need a `Future` executor.
+러스트 `Future`는 지연계산됩니다. 실제로 완성시키기 위해 운전(TODO: 실행?)하기
+전까지 future는 아무것도 하지 않을 것입니다. future를 완성시키기 위해 운전하는
+한 가지 방법은 `async` 함수 안에서 future를 `.await`하는 것입니다. 다만, 그렇게
+하면 문제가 하나 생깁니다: 누가 최상위 `async` 함수로부터 반환된 future를 실행할
+것인가라는 문제입니다. 그리고 그 해답은 `Future` executor입니다.
 
-`Future` executors take a set of top-level `Future`s and run them to completion
-by calling `poll` whenever the `Future` can make progress. Typically, an
-executor will `poll` a future once to start off. When `Future`s indicate that
-they are ready to make progress by calling `wake()`, they are placed back
-onto a queue and `poll` is called again, repeating until the `Future` has
-completed.
+`Future` executor는 최상위 `Future`의 집합을 받아 `Future`가 진행할 수 있을
+때마다 `poll`을 호출해서 완성될 때까지 실행합니다. 일반적으로, executor는
+시작하면서 future를 한 번 `poll`합니다. `Future`가 `wake()`를 호출하여 진행할
+준비가 되었음을 알릴 때, future는 큐 뒤에 넣어지고, `poll`이 다시 호출됩니다.
+이는 `Future`가 완성될 때까지 반복됩니다.
 
-In this section, we'll write our own simple executor capable of running a large
-number of top-level futures to completion concurrently.
+이 장에서 우리는 수많은 최상위 future를 완성될 때까지 동시에 실행할 수 있는
+간단한 executor를 만들 것입니다.
 
-For this example, we depend on the `futures` crate for the `ArcWake` trait,
-which provides an easy way to construct a `Waker`.
+이 예제에서 `Waker`를 쉽게 만들 수 있게 도와주는 `ArcWake` 트레잇 때문에
+`futures` 크레잇 의존성이 필요합니다.
 
 ```toml
 [package]
@@ -30,60 +29,59 @@ edition = "2018"
 futures = "0.3"
 ```
 
-Next, we need the following imports at the top of `src/main.rs`:
+다음은, `src/main.rs`의 맨 위에 아래와 같이 import합니다.
 
 ```rust,ignore
 {{#include ../../examples/02_04_executor/src/lib.rs:imports}}
 ```
 
-Our executor will work by sending tasks to run over a channel. The executor
-will pull events off of the channel and run them. When a task is ready to
-do more work (is awoken), it can schedule itself to be polled again by
-putting itself back onto the channel.
+실행할 task를 채널을 통해 보내면 우리의 executor가 작동할 겁니다. executor는
+채널에서 이벤트를 당겨와서 실행합니다. 만약, 어떤 task가 조금 더 일 할 준비가
+됐다면(즉, 깨워진다면), 그 task는 자기가 다시 poll될 수 있게 채널에 자기
+스스로를 넣습니다.
 
-In this design, the executor itself just needs the receiving end of the task
-channel. The user will get a sending end so that they can spawn new futures.
-Tasks themselves are just futures that can reschedule themselves, so we'll
-store them as a future paired with a sender that the task can use to requeue
-itself.
+이러한 설계 덕분에, executor는 그저 task 채널의 수신 단말만 있으면 됩니다.
+유저에게는 송신 단말이 주어지므로, 새로은 future를 만들 수 있습니다. Task라는
+것은 결국 스스로를 다시 스케쥴링할 수 있는 future일 뿐입니다. 따라서, 우리는
+task들을 송신자(sender)와 짝지운 future의 형태로 저장할 것입니다. 송신자는
+task가 자기자신을 큐에 넣는데 사용됩니다.
 
 ```rust,ignore
 {{#include ../../examples/02_04_executor/src/lib.rs:executor_decl}}
 ```
 
-Let's also add a method to spawner to make it easy to spawn new futures.
-This method will take a future type, box it, and create a new `Arc<Task>` with
-it inside which can be enqueued onto the executor.
+새 future를 만들기 쉽게 메소드 한 개를 더 spawner에 추가합시다. 이 메소드는
+future 타입을 받아서, box로 감싸고, 새 `Arc<Task>`로 만들 것입니다.
+새로 만든 `Arch<Task>`는 excutor에게 enqueue될 것입니다.
 
 ```rust,ignore
 {{#include ../../examples/02_04_executor/src/lib.rs:spawn_fn}}
 ```
 
-To poll futures, we'll need to create a `Waker`.
-As discussed in the [task wakeups section], `Waker`s are responsible
-for scheduling a task to be polled again once `wake` is called. Remember that
-`Waker`s tell the executor exactly which task has become ready, allowing
-them to poll just the futures that are ready to make progress. The easiest way
-to create a new `Waker` is by implementing the `ArcWake` trait and then using
-the `waker_ref` or `.into_waker()` functions to turn an `Arc<impl ArcWake>`
-into a `Waker`. Let's implement `ArcWake` for our tasks to allow them to be
-turned into `Waker`s and awoken:
+future를 poll하기 위해서는, `Waker`를 생성해야 합니다. [task 깨우기 section]에서
+설명했듯이, `Waker`는 `wake`가 호출되면 task가 다시 poll될 수 있도록
+스케쥴링합니다. `Waker`들은 executor에게 정확히 어떤 task가 준비되었는지
+알려주기 때문에, executor는 진행할 준비가 된 future들만 poll한다는 점을
+기억하십시오. 새로운 `Waker`를 만드는 가장 쉬운 방법은 `ArcWake` 트레잇을
+구현하고, `waker_ref`나 `.into_waker()` 함수를 이용하여 `Arc<impl ArcWake>`를
+`Waker`로 변경하는 것입니다. 우리의 task를 위한 `ArcWake`를 구현하여 `Waker`로
+변경하고 깨워봅시다.
 
 ```rust,ignore
 {{#include ../../examples/02_04_executor/src/lib.rs:arcwake_for_task}}
 ```
 
-When a `Waker` is created from an `Arc<Task>`, calling `wake()` on it will
-cause a copy of the `Arc` to be sent onto the task channel. Our executor then
-needs to pick up the task and poll it. Let's implement that:
+`Arc<Task>`로부터 만들어진 `Waker`의 `wake()`를 호출하면 `Arc`의 복사본이 task
+채널로 송신될 것이다. 그러면 우리의 executor는 그 task를 집어 poll해야 한다.
+구현해 봅시다.
 
 ```rust,ignore
 {{#include ../../examples/02_04_executor/src/lib.rs:executor_run}}
 ```
 
-Congratulations! We now have a working futures executor. We can even use it
-to run `async/.await` code and custom futures, such as the `TimerFuture` we
-wrote earlier:
+축하합니다! future executor를 완성하였습니다. 여러분이 만든 executor를
+`asycn/.await` 코드나 우리가 아까 만든 `TimeFuture`같은 커스텀 future를
+실행하는데도 사용할 수 있습니다.
 
 ```rust,edition2018,ignore
 {{#include ../../examples/02_04_executor/src/lib.rs:main}}
