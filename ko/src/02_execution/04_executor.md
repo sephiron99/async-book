@@ -87,4 +87,4 @@ future를 poll하기 위해서는, `Waker`를 생성해야 합니다. [task 깨�
 {{#include ../../examples/02_04_executor/src/lib.rs:main}}
 ```
 
-[task wakeups section]: ./03_wakeups.md
+[task 깨우기 section]: ./03_wakeups.md

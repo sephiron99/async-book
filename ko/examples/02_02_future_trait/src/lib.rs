@@ -17,7 +17,7 @@ impl Socket {
         true
     }
     fn read_buf(&self) -> Vec<u8> {
-        // Read data in from the socket
+        // 소켓에서 데이터를 읽어 들인다.
         vec![]
     }
     fn set_readable_callback(&self, _wake: fn()) {
