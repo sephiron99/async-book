@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Executors and System IO - 러스트 비동기 프로그래밍</title>
+        <title>Executor와 시스템 입출력 - 러스트 비동기 프로그래밍</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> 시작하며</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html"><strong aria-hidden="true">1.1.</strong> Async가 필요한 이유</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> 비동기적 러스트 현황</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await 기초</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> Under the Hood: Executing Futures and Tasks</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> The Future Trait</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Task Wakeups with Waker</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html"><strong aria-hidden="true">2.3.</strong> Applied: Build an Executor</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html" class="active"><strong aria-hidden="true">2.4.</strong> Executors and System IO</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> Pinning</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> Streams</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> Iteration and Concurrency</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> Executing Multiple Futures at a Time</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> Workarounds to Know and Love</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_return_type.html"><strong aria-hidden="true">7.1.</strong> Return Type Errors</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_err_in_async_blocks.html"><strong aria-hidden="true">7.2.</strong> ? in async Blocks</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_send_approximation.html"><strong aria-hidden="true">7.3.</strong> Send Approximation</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_recursion.html"><strong aria-hidden="true">7.4.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../07_workarounds/06_async_in_traits.html"><strong aria-hidden="true">7.5.</strong> async in Traits</a></li></ol></li><li class="chapter-item expanded "><a href="../08_example/00_intro.html"><strong aria-hidden="true">8.</strong> Final Project: HTTP Server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../08_example/01_running_async_code.html"><strong aria-hidden="true">8.1.</strong> Running Asynchronous Code</a></li><li class="chapter-item expanded "><a href="../08_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">8.2.</strong> Handling Connections Concurrently</a></li><li class="chapter-item expanded "><a href="../08_example/03_multithreading.html"><strong aria-hidden="true">8.3.</strong> Serving Requests in Parallel</a></li><li class="chapter-item expanded "><a href="../08_example/04_tests.html"><strong aria-hidden="true">8.4.</strong> Testing the Server</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.2.</strong> TODO: Managing Shared State</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: The Ecosystem: Tokio and More</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Lots, lots more?...</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> 시작하며</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html"><strong aria-hidden="true">1.1.</strong> Async가 필요한 이유</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> 비동기적 러스트 현황</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await 기초</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> 내부 구조: Future와 task 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> Future 트레잇</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Waker로 Task 깨우기</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html"><strong aria-hidden="true">2.3.</strong> 응용: executor 구현하기</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html" class="active"><strong aria-hidden="true">2.4.</strong> Executor와 시스템 입출력</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> Pinning</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> Streams</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> Iteration and Concurrency</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> Executing Multiple Futures at a Time</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> Workarounds to Know and Love</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_return_type.html"><strong aria-hidden="true">7.1.</strong> Return Type Errors</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_err_in_async_blocks.html"><strong aria-hidden="true">7.2.</strong> ? in async Blocks</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_send_approximation.html"><strong aria-hidden="true">7.3.</strong> Send Approximation</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_recursion.html"><strong aria-hidden="true">7.4.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../07_workarounds/06_async_in_traits.html"><strong aria-hidden="true">7.5.</strong> async in Traits</a></li></ol></li><li class="chapter-item expanded "><a href="../08_example/00_intro.html"><strong aria-hidden="true">8.</strong> Final Project: HTTP Server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../08_example/01_running_async_code.html"><strong aria-hidden="true">8.1.</strong> Running Asynchronous Code</a></li><li class="chapter-item expanded "><a href="../08_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">8.2.</strong> Handling Connections Concurrently</a></li><li class="chapter-item expanded "><a href="../08_example/03_multithreading.html"><strong aria-hidden="true">8.3.</strong> Serving Requests in Parallel</a></li><li class="chapter-item expanded "><a href="../08_example/04_tests.html"><strong aria-hidden="true">8.4.</strong> Testing the Server</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.2.</strong> TODO: Managing Shared State</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: The Ecosystem: Tokio and More</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Lots, lots more?...</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -163,9 +163,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#executors-and-system-io" id="executors-and-system-io">Executors and System IO</a></h1>
-<p>In the previous section on <a href="./02_future.html">The <code>Future</code> Trait</a>, we discussed this example of
-a future that performed an asynchronous read on a socket:</p>
+                        <h1><a class="header" href="#executor와-시스템-입출력" id="executor와-시스템-입출력">Executor와 시스템 입출력</a></h1>
+<p>우리는 이전 <a href="./02_future.html"><code>Future</code> 트레잇</a> 장에서 소켓을 비동기적으로 읽는 아래의 future
+예제에 대해 살펴보았습니다..</p>
 <pre><code class="language-rust ignore">pub struct SocketRead&lt;'a&gt; {
     socket: &amp;'a Socket,
 }
@@ -190,53 +190,53 @@ impl SimpleFuture for SocketRead&lt;'_&gt; {
     }
 }
 </code></pre>
-<p>This future will read available data on a socket, and if no data is available,
-it will yield to the executor, requesting that its task be awoken when the
-socket becomes readable again. However, it's not clear from this example how
-the <code>Socket</code> type is implemented, and in particular it isn't obvious how the
-<code>set_readable_callback</code> function works. How can we arrange for <code>wake()</code>
-to be called once the socket becomes readable? One option would be to have
-a thread that continually checks whether <code>socket</code> is readable, calling
-<code>wake()</code> when appropriate. However, this would be quite inefficient, requiring
-a separate thread for each blocked IO future. This would greatly reduce the
-efficiency of our async code.</p>
-<p>In practice, this problem is solved through integration with an IO-aware
-system blocking primitive, such as <code>epoll</code> on Linux, <code>kqueue</code> on FreeBSD and
-Mac OS, IOCP on Windows, and <code>port</code>s on Fuchsia (all of which are exposed
-through the cross-platform Rust crate <a href="https://github.com/tokio-rs/mio"><code>mio</code></a>). These primitives all allow
-a thread to block on multiple asynchronous IO events, returning once one of
-the events completes. In practice, these APIs usually look something like
-this:</p>
+<p>이 future는 소켓에 준비된 데이터를 읽어들이지만, 준비된 데이터가 없다면
+executor에게 &quot;소켓에 데이터가 준비되면 future의 task를 다시 깨워주세요&quot;라고
+요청하면서 콘텍스트를 양보할 것입니다. 하지만, 이 예제에서는 <code>Socket</code> 타입이
+어떻게 구현되는지 확실하지 않고, 특별히 <code>set_readable_callback</code> 함수가
+작동하는지가 분명하지 않습니다. 어떻게 하면 소켓에 데이터가 준비되었을 때,
+<code>wake()</code>가 호출될 수 있게 할까요? 끊임없이 <code>socket</code>이 준비되었는지 확인하여
+맞으면 <code>wake()</code>를 호출하는 스레드를 하나 만드는 것도 선택지가 될 것입니다.
+그러나 이 방법은 블록된 입출력 future 각각마다 별개의 스레드가 필요하기 때문에
+매우 비효율적이어서 우리의 비동기 코드의 효율을 크게 저하시킬 것입니다.</p>
+<p>사실 이 문제는 입출력과 연계된 시스템 블로킹 기본기능과 통합으로 해결합니다.
+예를 들면 리눅스의 <code>epoll</code>, FreeBSD와 Mac OS의 <code>kqueue</code>, 윈도우즈의 IOCP,
+퓨시아의 <code>port</code>같은 것들이 있습니다(그리고 이것들 모두는 크로스 플랫폼 려스트
+크레잇인 <a href="https://github.com/tokio-rs/mio"><code>mio</code></a>를 이용하여 사용할 수 있습니다). 이러한 기본기능들은 모두 한
+스레드가 여러개의 비동기 입출력 이벤트에 따라 블록하였다가 이벤트가 완성되면
+반환할 수 있는 기능을 제공합니다. 이러한 API들은 실제로 보통 아래와 같은
+형태입니다.</p>
 <pre><code class="language-rust ignore">struct IoBlocker {
     /* ... */
 }
 
 struct Event {
-    // An ID uniquely identifying the event that occurred and was listened for.
+    // 생성되어 전파되는 이벤트를 고유하게 식별하는 ID_
     id: usize,
 
-    // A set of signals to wait for, or which occurred.
+    // 기다리고 있거나, 발생된 시그널 집합
     signals: Signals,
 }
 
 impl IoBlocker {
-    /// Create a new collection of asynchronous IO events to block on.
+    /// 블록할 비동기 입출력 이벤트의 새로운 컬렉션을 만든다.
     fn new() -&gt; Self { /* ... */ }
 
-    /// Express an interest in a particular IO event.
+    /// 특별한 입출력 이벤트에 interest를 삽입한다.
     fn add_io_event_interest(
         &amp;self,
 
-        /// The object on which the event will occur
+        /// 이벤트가 발생할 오브젝트
         io_object: &amp;IoObject,
 
-        /// A set of signals that may appear on the `io_object` for
-        /// which an event should be triggered, paired with
-        /// an ID to give to events that result from this interest.
+        /// TODO: 검토 필요
+        /// `io_object`에서 나타날 시그널들의 집합이다. `io_object`에 대하여 
+        /// 이벤트가 발동되어야 하는데, `io_object`는 ID와 짝지워져서 
+        /// 이 interest에서 비롯된 이벤트들에게 주어진다. 
         event: Event,
     ) { /* ... */ }
 
-    /// Block until one of the events occurs.
+    /// 이벤트 중에 하나가 발생할 때까지 블록한다.
     fn block(&amp;self) -&gt; Event { /* ... */ }
 }
 
@@ -251,26 +251,27 @@ io_blocker.add_io_event_interest(
 );
 let event = io_blocker.block();
 
-// prints e.g. &quot;Socket 1 is now READABLE&quot; if socket one became readable.
+// 소켓에 데이터가 준비되면 &quot;Socket 1 is now READABLE&quot; 같은 걸 출력한다.
 println!(&quot;Socket {:?} is now {:?}&quot;, event.id, event.signals);
 </code></pre>
-<p>Futures executors can use these primitives to provide asynchronous IO objects
-such as sockets that can configure callbacks to be run when a particular IO
-event occurs. In the case of our <code>SocketRead</code> example above, the
-<code>Socket::set_readable_callback</code> function might look like the following pseudocode:</p>
+<p>future의 executor들은 아래의 기본기능들을 비동기 입출력 객체를 제공하기 위해
+사용할 수 있습니다. 예를 들어, 소켓은 특별한 입출력 이벤트가 발생하였을 때, 콜백이
+실행되도록 설정할 수 있습니다. 위의 <code>SocketRead</code> 예제의 경우에
+<code>Socket::set_readable_callback</code> 함수는 아래와 같은 의사코드와 비슷한 형태일
+것입니다.</p>
 <pre><code class="language-rust ignore">impl Socket {
     fn set_readable_callback(&amp;self, waker: Waker) {
-        // `local_executor` is a reference to the local executor.
-        // this could be provided at creation of the socket, but in practice
-        // many executor implementations pass it down through thread local
-        // storage for convenience.
+        // `local_executor`는 지역 executor에 대한 레퍼런스이다.
+        // `local_executor`는 소켓 생성시에 제공될 수도 있었겠지만, 실제로는 
+        // 많은 executor 구현들이 편의상 스레드의 로컬 스토리지(TODO: 스레드 스택으로 
+        // 의역?)를 통해서 아래로 전달한다. 
         let local_executor = self.local_executor;
 
-        // Unique ID for this IO object.
+        // 이 입출력 객체의 고유 ID
         let id = self.id;
 
-        // Store the local waker in the executor's map so that it can be called
-        // once the IO event arrives.
+        // executor의 맵에 지역 waker를 저장한다. 이를 통해 지역 waker는 입출력 이벤트가
+        // 도착하면 호출될 수 있다.
         local_executor.event_map.insert(id, waker);
         local_executor.add_io_event_interest(
             &amp;self.socket_file_descriptor,
@@ -279,10 +280,10 @@ event occurs. In the case of our <code>SocketRead</code> example above, the
     }
 }
 </code></pre>
-<p>We can now have just one executor thread which can receive and dispatch any
-IO event to the appropriate <code>Waker</code>, which will wake up the corresponding
-task, allowing the executor to drive more tasks to completion before returning
-to check for more IO events (and the cycle continues...).</p>
+<p>이로써 우리는 어떤 입출력 이벤트라도 받아서 딱맞는 <code>Waker</code>에게 보내줄 수 있는
+executor 스레드를 만들었습니다. 그리고 <code>Waker</code>는 이벤트에 대응하는 task를 깨울
+것입니다. 또, executor는 입출력 이벤트를 더 확인하기 전에 보다 많은 task들을
+완성까지 운전할 수 있을 것입니다(그리고 사이클은 반복됩니다...).</p>
 
                     </main>
 

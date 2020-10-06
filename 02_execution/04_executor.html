@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Applied: Build an Executor - 러스트 비동기 프로그래밍</title>
+        <title>응용: executor 구현하기 - 러스트 비동기 프로그래밍</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> 시작하며</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html"><strong aria-hidden="true">1.1.</strong> Async가 필요한 이유</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> 비동기적 러스트 현황</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await 기초</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> Under the Hood: Executing Futures and Tasks</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> The Future Trait</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Task Wakeups with Waker</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html" class="active"><strong aria-hidden="true">2.3.</strong> Applied: Build an Executor</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html"><strong aria-hidden="true">2.4.</strong> Executors and System IO</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> Pinning</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> Streams</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> Iteration and Concurrency</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> Executing Multiple Futures at a Time</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> Workarounds to Know and Love</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_return_type.html"><strong aria-hidden="true">7.1.</strong> Return Type Errors</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_err_in_async_blocks.html"><strong aria-hidden="true">7.2.</strong> ? in async Blocks</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_send_approximation.html"><strong aria-hidden="true">7.3.</strong> Send Approximation</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_recursion.html"><strong aria-hidden="true">7.4.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../07_workarounds/06_async_in_traits.html"><strong aria-hidden="true">7.5.</strong> async in Traits</a></li></ol></li><li class="chapter-item expanded "><a href="../08_example/00_intro.html"><strong aria-hidden="true">8.</strong> Final Project: HTTP Server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../08_example/01_running_async_code.html"><strong aria-hidden="true">8.1.</strong> Running Asynchronous Code</a></li><li class="chapter-item expanded "><a href="../08_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">8.2.</strong> Handling Connections Concurrently</a></li><li class="chapter-item expanded "><a href="../08_example/03_multithreading.html"><strong aria-hidden="true">8.3.</strong> Serving Requests in Parallel</a></li><li class="chapter-item expanded "><a href="../08_example/04_tests.html"><strong aria-hidden="true">8.4.</strong> Testing the Server</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.2.</strong> TODO: Managing Shared State</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: The Ecosystem: Tokio and More</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Lots, lots more?...</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> 시작하며</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html"><strong aria-hidden="true">1.1.</strong> Async가 필요한 이유</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> 비동기적 러스트 현황</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await 기초</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> 내부 구조: Future와 task 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> Future 트레잇</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Waker로 Task 깨우기</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html" class="active"><strong aria-hidden="true">2.3.</strong> 응용: executor 구현하기</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html"><strong aria-hidden="true">2.4.</strong> Executor와 시스템 입출력</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> Pinning</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> Streams</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> Iteration and Concurrency</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> Executing Multiple Futures at a Time</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> Workarounds to Know and Love</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_return_type.html"><strong aria-hidden="true">7.1.</strong> Return Type Errors</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_err_in_async_blocks.html"><strong aria-hidden="true">7.2.</strong> ? in async Blocks</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_send_approximation.html"><strong aria-hidden="true">7.3.</strong> Send Approximation</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_recursion.html"><strong aria-hidden="true">7.4.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../07_workarounds/06_async_in_traits.html"><strong aria-hidden="true">7.5.</strong> async in Traits</a></li></ol></li><li class="chapter-item expanded "><a href="../08_example/00_intro.html"><strong aria-hidden="true">8.</strong> Final Project: HTTP Server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../08_example/01_running_async_code.html"><strong aria-hidden="true">8.1.</strong> Running Asynchronous Code</a></li><li class="chapter-item expanded "><a href="../08_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">8.2.</strong> Handling Connections Concurrently</a></li><li class="chapter-item expanded "><a href="../08_example/03_multithreading.html"><strong aria-hidden="true">8.3.</strong> Serving Requests in Parallel</a></li><li class="chapter-item expanded "><a href="../08_example/04_tests.html"><strong aria-hidden="true">8.4.</strong> Testing the Server</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.2.</strong> TODO: Managing Shared State</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: The Ecosystem: Tokio and More</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Lots, lots more?...</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -163,22 +163,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#applied-build-an-executor" id="applied-build-an-executor">Applied: Build an Executor</a></h1>
-<p>Rust's <code>Future</code>s are lazy: they won't do anything unless actively driven to
-completion. One way to drive a future to completion is to <code>.await</code> it inside
-an <code>async</code> function, but that just pushes the problem one level up: who will
-run the futures returned from the top-level <code>async</code> functions? The answer is
-that we need a <code>Future</code> executor.</p>
-<p><code>Future</code> executors take a set of top-level <code>Future</code>s and run them to completion
-by calling <code>poll</code> whenever the <code>Future</code> can make progress. Typically, an
-executor will <code>poll</code> a future once to start off. When <code>Future</code>s indicate that
-they are ready to make progress by calling <code>wake()</code>, they are placed back
-onto a queue and <code>poll</code> is called again, repeating until the <code>Future</code> has
-completed.</p>
-<p>In this section, we'll write our own simple executor capable of running a large
-number of top-level futures to completion concurrently.</p>
-<p>For this example, we depend on the <code>futures</code> crate for the <code>ArcWake</code> trait,
-which provides an easy way to construct a <code>Waker</code>.</p>
+                        <h1><a class="header" href="#응용-executor-구현하기" id="응용-executor-구현하기">응용: executor 구현하기</a></h1>
+<p>러스트 <code>Future</code>는 지연계산됩니다. 실제로 완성시키기 위해 운전(TODO: 실행?)하기
+전까지 future는 아무것도 하지 않을 것입니다. future를 완성시키기 위해 운전하는
+한 가지 방법은 <code>async</code> 함수 안에서 future를 <code>.await</code>하는 것입니다. 다만, 그렇게
+하면 문제가 하나 생깁니다: 누가 최상위 <code>async</code> 함수로부터 반환된 future를 실행할
+것인가라는 문제입니다. 그리고 그 해답은 <code>Future</code> executor입니다.</p>
+<p><code>Future</code> executor는 최상위 <code>Future</code>의 집합을 받아 <code>Future</code>가 진행할 수 있을
+때마다 <code>poll</code>을 호출해서 완성될 때까지 실행합니다. 일반적으로, executor는
+시작하면서 future를 한 번 <code>poll</code>합니다. <code>Future</code>가 <code>wake()</code>를 호출하여 진행할
+준비가 되었음을 알릴 때, future는 큐 뒤에 넣어지고, <code>poll</code>이 다시 호출됩니다.
+이는 <code>Future</code>가 완성될 때까지 반복됩니다.</p>
+<p>이 장에서 우리는 수많은 최상위 future를 완성될 때까지 동시에 실행할 수 있는
+간단한 executor를 만들 것입니다.</p>
+<p>이 예제에서 <code>Waker</code>를 쉽게 만들 수 있게 도와주는 <code>ArcWake</code> 트레잇 때문에
+<code>futures</code> 크레잇 의존성이 필요합니다.</p>
 <pre><code class="language-toml">[package]
 name = &quot;xyz&quot;
 version = &quot;0.1.0&quot;
@@ -188,7 +187,7 @@ edition = &quot;2018&quot;
 [dependencies]
 futures = &quot;0.3&quot;
 </code></pre>
-<p>Next, we need the following imports at the top of <code>src/main.rs</code>:</p>
+<p>다음은, <code>src/main.rs</code>의 맨 위에 아래와 같이 import합니다.</p>
 <pre><code class="language-rust ignore">use {
     futures::{
         future::{BoxFuture, FutureExt},
@@ -201,57 +200,57 @@ futures = &quot;0.3&quot;
         task::{Context, Poll},
         time::Duration,
     },
-    // The timer we wrote in the previous section:
+    // 이전 장에서 작성한 타이머
     timer_future::TimerFuture,
 };
 </code></pre>
-<p>Our executor will work by sending tasks to run over a channel. The executor
-will pull events off of the channel and run them. When a task is ready to
-do more work (is awoken), it can schedule itself to be polled again by
-putting itself back onto the channel.</p>
-<p>In this design, the executor itself just needs the receiving end of the task
-channel. The user will get a sending end so that they can spawn new futures.
-Tasks themselves are just futures that can reschedule themselves, so we'll
-store them as a future paired with a sender that the task can use to requeue
-itself.</p>
-<pre><code class="language-rust ignore">/// Task executor that receives tasks off of a channel and runs them.
+<p>실행할 task를 채널을 통해 보내면 우리의 executor가 작동할 겁니다. executor는
+채널에서 이벤트를 당겨와서 실행합니다. 만약, 어떤 task가 조금 더 일 할 준비가
+됐다면(즉, 깨워진다면), 그 task는 자기가 다시 poll될 수 있게 채널에 자기
+스스로를 넣습니다.</p>
+<p>이러한 설계 덕분에, executor는 그저 task 채널의 수신 단말만 있으면 됩니다.
+유저에게는 송신 단말이 주어지므로, 새로은 future를 만들 수 있습니다. Task라는
+것은 결국 스스로를 다시 스케쥴링할 수 있는 future일 뿐입니다. 따라서, 우리는
+task들을 송신자(sender)와 짝지운 future의 형태로 저장할 것입니다. 송신자는
+task가 자기자신을 큐에 넣는데 사용됩니다.</p>
+<pre><code class="language-rust ignore">/// 채널에서 task를 받아서 실행하는 task executor
 struct Executor {
     ready_queue: Receiver&lt;Arc&lt;Task&gt;&gt;,
 }
 
-/// `Spawner` spawns new futures onto the task channel.
+/// 새 future를 task 채널에 생성해 넣는 `Spawner`
 #[derive(Clone)]
 struct Spawner {
     task_sender: SyncSender&lt;Arc&lt;Task&gt;&gt;,
 }
 
-/// A future that can reschedule itself to be polled by an `Executor`.
+/// `Executor`에게 poll될 수 있게 스스로를 재스케줄링하는 future
 struct Task {
-    /// In-progress future that should be pushed to completion.
+    /// 완성되기 위해서 큐에 넣어져야 하는, 진행중인 future
     ///
-    /// The `Mutex` is not necessary for correctness, since we only have
-    /// one thread executing tasks at once. However, Rust isn't smart
-    /// enough to know that `future` is only mutated from one thread,
-    /// so we need to use the `Mutex` to prove thread-safety. A production
-    /// executor would not need this, and could use `UnsafeCell` instead.
+    /// 정확히 하자면, `Mutex`가 꼭 필요한 것은 아니다. 우리는 한 시점에
+    /// (future들을 실행하는) 오직 하나의 스레드만 가지고 있기 때문이다. 하지만,
+    /// 러스트는 우리의 `future`가 한 개의 스레드 안에서만 변경된다는 사실을 알
+    /// 수 없기 때문에, 우리는 스레드 안전성을 위해 `Mutex`를 사용해야만 한다.
+    /// 현업에서는 `Mutex` 대신 `UnsafeCell`을 사용할 수도 있다.
     future: Mutex&lt;Option&lt;BoxFuture&lt;'static, ()&gt;&gt;&gt;,
 
-    /// Handle to place the task itself back onto the task queue.
+    /// task가 자기자신을 task 큐의 마지막에 넣는데 사용되는 핸들
     task_sender: SyncSender&lt;Arc&lt;Task&gt;&gt;,
 }
 
 fn new_executor_and_spawner() -&gt; (Executor, Spawner) {
-    // Maximum number of tasks to allow queueing in the channel at once.
-    // This is just to make `sync_channel` happy, and wouldn't be present in
-    // a real executor.
+    // 채널(큐)이 일시점에 가질 수 있는 task의 최대 갯수.
+    // 그냥 `sync_channel`을 만드는데 필요한 것이고, 실제 executor에 적용될 일은
+    // 없을 것이다.
     const MAX_QUEUED_TASKS: usize = 10_000;
     let (task_sender, ready_queue) = sync_channel(MAX_QUEUED_TASKS);
     (Executor { ready_queue }, Spawner { task_sender })
 }
 </code></pre>
-<p>Let's also add a method to spawner to make it easy to spawn new futures.
-This method will take a future type, box it, and create a new <code>Arc&lt;Task&gt;</code> with
-it inside which can be enqueued onto the executor.</p>
+<p>새 future를 만들기 쉽게 메소드 한 개를 더 spawner에 추가합시다. 이 메소드는
+future 타입을 받아서, box로 감싸고, 새 <code>Arc&lt;Task&gt;</code>로 만들 것입니다.
+새로 만든 <code>Arch&lt;Task&gt;</code>는 excutor에게 enqueue될 것입니다.</p>
 <pre><code class="language-rust ignore">impl Spawner {
     fn spawn(&amp;self, future: impl Future&lt;Output = ()&gt; + 'static + Send) {
         let future = future.boxed();
@@ -263,19 +262,18 @@ it inside which can be enqueued onto the executor.</p>
     }
 }
 </code></pre>
-<p>To poll futures, we'll need to create a <code>Waker</code>.
-As discussed in the <a href="./03_wakeups.html">task wakeups section</a>, <code>Waker</code>s are responsible
-for scheduling a task to be polled again once <code>wake</code> is called. Remember that
-<code>Waker</code>s tell the executor exactly which task has become ready, allowing
-them to poll just the futures that are ready to make progress. The easiest way
-to create a new <code>Waker</code> is by implementing the <code>ArcWake</code> trait and then using
-the <code>waker_ref</code> or <code>.into_waker()</code> functions to turn an <code>Arc&lt;impl ArcWake&gt;</code>
-into a <code>Waker</code>. Let's implement <code>ArcWake</code> for our tasks to allow them to be
-turned into <code>Waker</code>s and awoken:</p>
+<p>future를 poll하기 위해서는, <code>Waker</code>를 생성해야 합니다. <a href="./03_wakeups.html">task 깨우기 section</a>에서
+설명했듯이, <code>Waker</code>는 <code>wake</code>가 호출되면 task가 다시 poll될 수 있도록
+스케쥴링합니다. <code>Waker</code>들은 executor에게 정확히 어떤 task가 준비되었는지
+알려주기 때문에, executor는 진행할 준비가 된 future들만 poll한다는 점을
+기억하십시오. 새로운 <code>Waker</code>를 만드는 가장 쉬운 방법은 <code>ArcWake</code> 트레잇을
+구현하고, <code>waker_ref</code>나 <code>.into_waker()</code> 함수를 이용하여 <code>Arc&lt;impl ArcWake&gt;</code>를
+<code>Waker</code>로 변경하는 것입니다. 우리의 task를 위한 <code>ArcWake</code>를 구현하여 <code>Waker</code>로
+변경하고 깨워봅시다.</p>
 <pre><code class="language-rust ignore">impl ArcWake for Task {
     fn wake_by_ref(arc_self: &amp;Arc&lt;Self&gt;) {
-        // Implement `wake` by sending this task back onto the task channel
-        // so that it will be polled again by the executor.
+        // `wake`를 이 task를 다시 task 채널에 보내는 방식으로 구현한다. 그래서
+        // executor가 이 task를 다시 poll할 것이다.
         let cloned = arc_self.clone();
         arc_self
             .task_sender
@@ -284,26 +282,26 @@ turned into <code>Waker</code>s and awoken:</p>
     }
 }
 </code></pre>
-<p>When a <code>Waker</code> is created from an <code>Arc&lt;Task&gt;</code>, calling <code>wake()</code> on it will
-cause a copy of the <code>Arc</code> to be sent onto the task channel. Our executor then
-needs to pick up the task and poll it. Let's implement that:</p>
+<p><code>Arc&lt;Task&gt;</code>로부터 만들어진 <code>Waker</code>의 <code>wake()</code>를 호출하면 <code>Arc</code>의 복사본이 task
+채널로 송신될 것이다. 그러면 우리의 executor는 그 task를 집어 poll해야 한다.
+구현해 봅시다.</p>
 <pre><code class="language-rust ignore">impl Executor {
     fn run(&amp;self) {
         while let Ok(task) = self.ready_queue.recv() {
-            // Take the future, and if it has not yet completed (is still Some),
-            // poll it in an attempt to complete it.
+            // future를 취하고 나서, 아직 future가 완성되지 않았으면(아직 Some이면),
+            // future를 완성하기 위해 poll한다.
             let mut future_slot = task.future.lock().unwrap();
             if let Some(mut future) = future_slot.take() {
-                // Create a `LocalWaker` from the task itself
+                // task 자기자신으로부터 `LocalWaker`를 생성한다.
                 let waker = waker_ref(&amp;task);
                 let context = &amp;mut Context::from_waker(&amp;*waker);
-                // `BoxFuture&lt;T&gt;` is a type alias for
-                // `Pin&lt;Box&lt;dyn Future&lt;Output = T&gt; + Send + 'static&gt;&gt;`.
-                // We can get a `Pin&lt;&amp;mut dyn Future + Send + 'static&gt;`
-                // from it by calling the `Pin::as_mut` method.
+                // `BoxFuture&lt;T&gt;`는 `Pin&lt;Box&lt;dyn Future&lt;Output = T&gt; + Send +
+                // 'static&gt;&gt;`의 type alias이다.
+                // `Pin::as_mut` 메소드를 호출하여 `BoxFuture&lt;T&gt;`로부터
+                // `Pin&lt;&amp;mut dyn Future + Send + 'static&gt;`을 얻을 수 있다.
                 if let Poll::Pending = future.as_mut().poll(context) {
-                    // We're not done processing the future, so put it
-                    // back in its task to be run again in the future.
+                    // future의 처리가 끝나지 않았으므로, 그것의 task에 도로
+                    // 넣어서 미래에 다시 실행될 수 있게 한다.
                     *future_slot = Some(future);
                 }
             }
@@ -311,26 +309,26 @@ needs to pick up the task and poll it. Let's implement that:</p>
     }
 }
 </code></pre>
-<p>Congratulations! We now have a working futures executor. We can even use it
-to run <code>async/.await</code> code and custom futures, such as the <code>TimerFuture</code> we
-wrote earlier:</p>
+<p>축하합니다! future executor를 완성하였습니다. 여러분이 만든 executor를
+<code>asycn/.await</code> 코드나 우리가 아까 만든 <code>TimeFuture</code>같은 커스텀 future를
+실행하는데도 사용할 수 있습니다.</p>
 <pre><code class="language-rust edition2018 ignore">fn main() {
     let (executor, spawner) = new_executor_and_spawner();
 
-    // Spawn a task to print before and after waiting on a timer.
+    // 타이머 전후로 문자열을 출력할 태스크를 생성한다.
     spawner.spawn(async {
         println!(&quot;howdy!&quot;);
-        // Wait for our timer future to complete after two seconds.
+        // 우리의 타이머 future가 2초 후에 완성될 때까지 기다린다.
         TimerFuture::new(Duration::new(2, 0)).await;
         println!(&quot;done!&quot;);
     });
 
-    // Drop the spawner so that our executor knows it is finished and won't
-    // receive more incoming tasks to run.
+    // 여러분의 executor가 spawner가 끝났음을 확인하고 더 이상 실행할 task를
+    // 받지 않도록 spawner를 drop한다.
     drop(spawner);
 
-    // Run the executor until the task queue is empty.
-    // This will print &quot;howdy!&quot;, pause, and then print &quot;done!&quot;.
+    // excutor를 task 큐가 빌 때까지 실행한다. &quot;howdy!&quot; 출력, 일시중지,
+    // &quot;done!&quot;출력 순으로 동작할 것이다.
     executor.run();
 }
 </code></pre>
