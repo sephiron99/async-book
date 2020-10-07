@@ -6,17 +6,17 @@
 `async`/`.await`은 하나의 작업을 마칠 때 까지 기다리는 동안 다른 코드가 실행되는 것을 
 막거나 허용하는 대신 현재 스레드의 제어를 양보해주는 러스트 문법의 특별한 도구입니다.
 
-`async`를 다루는 주 방법 두 가지, `async fn`과 `async` 블록이 있습니다.
-각각 `Future` 트레잇을 구현한 값을 반환합니다.
+`async`를 다루는 주 방법 두 가지, `async fn`과 `async` 블록이 있습니다. 각각 `Future` 
+트레잇을 구현한 값을 반환합니다.
 
 ```rust,edition2018,ignore
 {{#include ../../examples/03_01_async_await/src/lib.rs:async_fn_and_block_examples}}
 ```
 
-첫 장에서 봤듯이, `async` 안쪽과 그 밖의 future 구현체는 게으릅니다. 즉 실행될 때까지 아무
-일도 안 합니다. `Future`를 실행하기 위해서는 `.await`을 써야 합니다. `Future` 상에서
-`.await`이 나오면 그 코드는 마칠 때까지 실행하려 할 것입니다. `Future`는 자신이 중지되면
-현재 스레드의 제어를 넘겨줍니다. 더 많은 흐름이 나올 시, `Future`는 `.await`을 풀고 실행자에게
+첫 장에서 봤듯이, `async` 안쪽과 그 밖의 future 구현체는 게으릅니다. 즉 실행될 때까지 아무 
+일도 안 합니다. `Future`를 실행하기 위해서는 `.await`을 써야 합니다. `Future` 상에서 
+`.await`이 나오면 그 코드는 마칠 때까지 실행하려 할 것입니다. `Future`는 자신이 중지되면 
+현재 스레드의 제어를 넘겨줍니다. 더 많은 흐름이 나올 시, `Future`는 `.await`을 풀고 실행자에게 
 선택돼 실행을 재개할 것입니다.
 
 ## `async`한 수명
@@ -62,13 +62,9 @@
 
 (알림: `.await`으로 호출하는 동안 구역 안에 있으면 이 타입들을 사용할 수 있습니다.)
 
-Similarly, it isn't a good idea to hold a traditional non-futures-aware lock
-across an `.await`, as it can cause the threadpool to lock up: one task could
-take out a lock, `.await` and yield to the executor, allowing another task to
-attempt to take the lock and cause a deadlock. To avoid this, use the `Mutex`
-in `futures::lock` rather than the one from `std::sync`.
-
-요컨데 좋은 생각이 아닙니다. 이런 문제를 피하기 위해 `std::sync`에 있는 것 대신 
-`futures::lock`의 `Mutex`를 사용하시기 바랍니다.
+요컨데 `.await`을 넘어서 future가 인식할 수 없는 전형적인 락을 다루는 것은 좋은 생각이 
+아닙니다. 하나가 락을 차지하고, `.await`하면서 실행자에게 양보하면 또다른 작업이 락을 차지하려 
+해 데드락이 발생하기 때문입니다. 이런 문제를 피하기 위해 `std::sync` 대신 `futures::lock`에 
+있는 `Mutex`를 사용하시기 바랍니다.
 
 [the first chapter]: ../01_getting_started/04_async_await_primer.md
