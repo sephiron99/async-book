@@ -1,84 +1,74 @@
 # `async`/`.await`
 
-In [the first chapter], we took a brief look at `async`/`.await`.
-This chapter will discuss `async`/`.await` in
-greater detail, explaining how it works and how `async` code differs from
-traditional Rust programs.
+첫 장에서 우리는 `async`/`.await`을 짧게 다뤘습니다. 이제 `async` 코드가
+어떻게 동작하고, 어떻게 전형적인 러스트 프로그램과 다른지 더 자세히 들여다봅시다.
 
-`async`/`.await` are special pieces of Rust syntax that make it possible to
-yield control of the current thread rather than blocking, allowing other
-code to make progress while waiting on an operation to complete.
+`async`/`.await`은 하나의 작업을 마칠 때 까지 기다리는 동안 다른 코드가 실행되는 것을 
+막거나 허용하는 대신 현재 스레드의 제어를 양보해주는 러스트 문법의 특별한 도구입니다.
 
-There are two main ways to use `async`: `async fn` and `async` blocks.
-Each returns a value that implements the `Future` trait:
+`async`를 다루는 주 방법 두 가지, `async fn`과 `async` 블록이 있습니다.
+각각 `Future` 트레잇을 구현한 값을 반환합니다.
 
 ```rust,edition2018,ignore
 {{#include ../../examples/03_01_async_await/src/lib.rs:async_fn_and_block_examples}}
 ```
 
-As we saw in the first chapter, `async` bodies and other futures are lazy:
-they do nothing until they are run. The most common way to run a `Future`
-is to `.await` it. When `.await` is called on a `Future`, it will attempt
-to run it to completion. If the `Future` is blocked, it will yield control
-of the current thread. When more progress can be made, the `Future` will be picked
-up by the executor and will resume running, allowing the `.await` to resolve.
+첫 장에서 봤듯이, `async` 안쪽과 그 밖의 future 구현체는 게으릅니다. 즉 실행될 때까지 아무
+일도 안 합니다. `Future`를 실행하기 위해서는 `.await`을 써야 합니다. `Future` 상에서
+`.await`이 나오면 그 코드는 마칠 때까지 실행하려 할 것입니다. `Future`는 자신이 중지되면
+현재 스레드의 제어를 넘겨줍니다. 더 많은 흐름이 나올 시, `Future`는 `.await`을 풀고 실행자에게
+선택돼 실행을 재개할 것입니다.
 
-## `async` Lifetimes
+## `async`한 수명
 
-Unlike traditional functions, `async fn`s which take references or other
-non-`'static` arguments return a `Future` which is bounded by the lifetime of
-the arguments:
+참조나 기타 `'static`하지 않은 인자를 다루는 `async fn`은 전형적인 함수와 달리 인자의 수명으로 
+정해지는 `Future`를 반환합니다.
 
 ```rust,edition2018,ignore
 {{#include ../../examples/03_01_async_await/src/lib.rs:lifetimes_expanded}}
 ```
 
-This means that the future returned from an `async fn` must be `.await`ed
-while its non-`'static` arguments are still valid. In the common
-case of `.await`ing the future immediately after calling the function
-(as in `foo(&x).await`) this is not an issue. However, if storing the future
-or sending it over to another task or thread, this may be an issue.
+즉 `'static`하지 않은 인자가 여전히 유효하는 한 `async fn`에서 나온 future는 `.await`해야 
+합니다. 보통 `foo(&x).await`와 같이 함수를 호출하고 바로 future를 `.await`할 때는 문제가 
+없습니다. 허나 future를 또다른 작업이나 스레드로 저장하거나 보내면 문제가 생길 수 있습니다.
 
-One common workaround for turning an `async fn` with references-as-arguments
-into a `'static` future is to bundle the arguments with the call to the
-`async fn` inside an `async` block:
+참조를 인자로 가진 `async fn`을 `'static`한 future로 바꾸는 방법 한 가지는 `async fn` 호출과 
+인자값을 하나의 `async` 블록으로 묶는 것입니다.
 
 ```rust,edition2018,ignore
 {{#include ../../examples/03_01_async_await/src/lib.rs:static_future_with_borrow}}
 ```
 
-By moving the argument into the `async` block, we extend its lifetime to match
-that of the `Future` returned from the call to `good`.
+우리는 인자를 `async` 블록으로 옮김으로써 `good` 함수에서 나오는 `Future`의 것과 맞춰 인자의 
+수명을 늘릴 수 있습니다.
 
 ## `async move`
 
-`async` blocks and closures allow the `move` keyword, much like normal
-closures. An `async move` block will take ownership of the variables it
-references, allowing it to outlive the current scope, but giving up the ability
-to share those variables with other code:
+`async` 블록과 클로저는 보통 클로저처럼 `move` 키워드를 허용합니다. `async move` 블록은
+자신이 참조하는 변수의 소유권을 현재 구역보다 더 오래 살리면서 다른 코드가 공유할 수 없도록 합니다.
 
 ```rust,edition2018,ignore
 {{#include ../../examples/03_01_async_await/src/lib.rs:async_move_examples}}
 ```
 
-## `.await`ing on a Multithreaded Executor
+## 멀티스레드 실행자 상에서 `.await`하기
 
-Note that, when using a multithreaded `Future` executor, a `Future` may move
-between threads, so any variables used in `async` bodies must be able to travel
-between threads, as any `.await` can potentially result in a switch to a new
-thread.
+`Future`는 멀티스레드 상에서 `Future` 실행자를 사용할 때, `async` 안쪽에 쓰인 어떤 
+변수라도 스레드 사이를 넘나들 수 있어야 하기 위해 어떤 `.await`이라도 잠재적으로 새로운 
+스레드로 갈아탈 수 있듯이 스레드 사이를 건널 수도 있습니다.
 
-This means that it is not safe to use `Rc`, `&RefCell` or any other types
-that don't implement the `Send` trait, including references to types that don't
-implement the `Sync` trait.
+그 말인 즉슨 `Sync` 트레잇을 구현하지 않은 타입에 대한 참조를 비롯해 `Send` 트레잇을 
+구현하지 않은 `Rc`, `&RefCell` 등 어떠한 타입도 안전하지 않습니다.
 
-(Caveat: it is possible to use these types so long as they aren't in scope
-during a call to `.await`.)
+(알림: `.await`으로 호출하는 동안 구역 안에 있으면 이 타입들을 사용할 수 있습니다.)
 
 Similarly, it isn't a good idea to hold a traditional non-futures-aware lock
 across an `.await`, as it can cause the threadpool to lock up: one task could
 take out a lock, `.await` and yield to the executor, allowing another task to
 attempt to take the lock and cause a deadlock. To avoid this, use the `Mutex`
 in `futures::lock` rather than the one from `std::sync`.
+
+요컨데 좋은 생각이 아닙니다. 이런 문제를 피하기 위해 `std::sync`에 있는 것 대신 
+`futures::lock`의 `Mutex`를 사용하시기 바랍니다.
 
 [the first chapter]: ../01_getting_started/04_async_await_primer.md
