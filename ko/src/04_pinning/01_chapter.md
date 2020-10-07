@@ -1,10 +1,6 @@
 # Pinning
 
-To poll futures, they must be pinned using a special type called
-`Pin<T>`. If you read the explanation of [the `Future` trait] in the
-previous section ["Executing `Future`s and Tasks"], you'll recognize
-`Pin` from the `self: Pin<&mut Self>` in the `Future::poll` method's definition.
-But what does it mean, and why do we need it?
+future를 poll하기 위해서는, future가 `Pin<T>`라는 특별한 타입으로 고정되어 있어야 합니다. 이전 ["`Future`와 task 실행하기"] 장의 [`Future` 트레잇]을 읽었다면, `Future::poll` 메소드의 정의에서 `self Pin<&mut Self>`에 쓰였던 `Pin`을 보았을 것입니다. 그렇다면 `Pin`은 무슨 의미이고, 왜 필요할까요?
 
 ## Why Pinning
 
