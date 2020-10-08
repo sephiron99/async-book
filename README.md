@@ -2,7 +2,7 @@
 | 대상              | ID         | 상태   |
 |-------------------|------------|--------|
 | 04_Pinning | sephiron99 | 번역중 |
-| 03_async_await 장 | carnoxen   | 번역중 |
+| 05_streams 장 | carnoxen   | 번역중 |
 
 # async-book 한국어 번역
 러스트 비동기 프로그래밍 
