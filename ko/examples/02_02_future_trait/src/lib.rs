@@ -17,7 +17,7 @@ impl Socket {
         true
     }
     fn read_buf(&self) -> Vec<u8> {
-        // Read data in from the socket
+        // 소켓에서 데이터를 읽어 들인다.
         vec![]
     }
     fn set_readable_callback(&self, _wake: fn()) {
@@ -92,7 +92,7 @@ where
             Poll::Ready(())
         } else {
             // 하나 또는 두 개의 future가 `Poll::Pending`을 반환하므로, 아직
-            // 해야 할 작업이 남아 있습니다. future(들)은 진행이 가능 할 때
+            // 해야 할 task이 남아 있습니다. future(들)은 진행이 가능 할 때
             // `wake()`를 호출할 것입니다.
             Poll::Pending
         }
