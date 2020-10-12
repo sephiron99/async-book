@@ -164,15 +164,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#asyncawait" id="asyncawait"><code>async</code>/<code>.await</code></a></h1>
-<p>In <a href="../01_getting_started/04_async_await_primer.html">the first chapter</a>, we took a brief look at <code>async</code>/<code>.await</code>.
-This chapter will discuss <code>async</code>/<code>.await</code> in
-greater detail, explaining how it works and how <code>async</code> code differs from
-traditional Rust programs.</p>
-<p><code>async</code>/<code>.await</code> are special pieces of Rust syntax that make it possible to
-yield control of the current thread rather than blocking, allowing other
-code to make progress while waiting on an operation to complete.</p>
-<p>There are two main ways to use <code>async</code>: <code>async fn</code> and <code>async</code> blocks.
-Each returns a value that implements the <code>Future</code> trait:</p>
+<p>첫 장에서 우리는 <code>async</code>/<code>.await</code>을 짧게 다뤘습니다. 이제 <code>async</code> 코드가
+어떻게 동작하고, 어떻게 전형적인 러스트 프로그램과 다른지 더 자세히 들여다봅시다.</p>
+<p><code>async</code>/<code>.await</code>은 하나의 작업을 마칠 때 까지 기다리는 동안 다른 코드가 실행되는 것을 
+막거나 허용하는 대신 현재 스레드의 제어를 내놓는 러스트 문법의 특별한 도구입니다.</p>
+<p><code>async</code>를 다루는 주 방법 두 가지, <code>async fn</code>과 <code>async</code> 블록이 있습니다. 각각 <code>Future</code> 
+트레잇을 구현한 값을 반환합니다.</p>
 <pre><code class="language-rust edition2018 ignore">
 // `foo()`는 `Future&lt;Output = u8&gt;`을 구현한 타입을 반환합니다.
 // `foo().await`은 `u8` 타입의 값을 나타낼 것입니다.
@@ -187,16 +184,14 @@ fn bar() -&gt; impl Future&lt;Output = u8&gt; {
     }
 }
 </code></pre>
-<p>As we saw in the first chapter, <code>async</code> bodies and other futures are lazy:
-they do nothing until they are run. The most common way to run a <code>Future</code>
-is to <code>.await</code> it. When <code>.await</code> is called on a <code>Future</code>, it will attempt
-to run it to completion. If the <code>Future</code> is blocked, it will yield control
-of the current thread. When more progress can be made, the <code>Future</code> will be picked
-up by the executor and will resume running, allowing the <code>.await</code> to resolve.</p>
-<h2><a class="header" href="#async-lifetimes" id="async-lifetimes"><code>async</code> Lifetimes</a></h2>
-<p>Unlike traditional functions, <code>async fn</code>s which take references or other
-non-<code>'static</code> arguments return a <code>Future</code> which is bounded by the lifetime of
-the arguments:</p>
+<p>첫 장에서 봤듯이, <code>async</code> 안쪽과 그 밖의 future 구현체는 게으릅니다. 즉 실행될 때까지 아무 
+일도 안 합니다. <code>Future</code>를 실행하기 위해서는 <code>.await</code>을 써야 합니다. <code>Future</code> 상에서 
+<code>.await</code>이 나오면 그 코드는 마칠 때까지 실행하려 할 것입니다. <code>Future</code>는 자신이 중지되면 
+현재 스레드의 제어를 넘겨줍니다. 더 많은 흐름이 나올 시, <code>Future</code>는 <code>.await</code>을 풀고 실행자에게 
+선택돼 실행을 재개할 것입니다.</p>
+<h2><a class="header" href="#async한-수명" id="async한-수명"><code>async</code>한 수명</a></h2>
+<p>참조나 기타 <code>'static</code>하지 않은 인자를 다루는 <code>async fn</code>은 전형적인 함수와 달리 인자의 수명으로 
+정해지는 <code>Future</code>를 반환합니다.</p>
 <pre><code class="language-rust edition2018 ignore">// 이 함수는
 async fn foo(x: &amp;u8) -&gt; u8 { *x }
 
@@ -205,17 +200,14 @@ fn foo_expanded&lt;'a&gt;(x: &amp;'a u8) -&gt; impl Future&lt;Output = u8&gt; + 
     async move { *x }
 }
 </code></pre>
-<p>This means that the future returned from an <code>async fn</code> must be <code>.await</code>ed
-while its non-<code>'static</code> arguments are still valid. In the common
-case of <code>.await</code>ing the future immediately after calling the function
-(as in <code>foo(&amp;x).await</code>) this is not an issue. However, if storing the future
-or sending it over to another task or thread, this may be an issue.</p>
-<p>One common workaround for turning an <code>async fn</code> with references-as-arguments
-into a <code>'static</code> future is to bundle the arguments with the call to the
-<code>async fn</code> inside an <code>async</code> block:</p>
+<p>즉 <code>'static</code>하지 않은 인자가 여전히 유효하는 한 <code>async fn</code>에서 나온 future는 <code>.await</code>해야 
+합니다. 보통 <code>foo(&amp;x).await</code>와 같이 함수를 호출하고 바로 future를 <code>.await</code>할 때는 문제가 
+없습니다. 허나 future를 또다른 작업이나 스레드로 저장하거나 보내면 문제가 생길 수 있습니다.</p>
+<p>참조를 인자로 가진 <code>async fn</code>을 <code>'static</code>한 future로 바꾸는 방법 한 가지는 <code>async fn</code> 호출과 
+인자값을 하나의 <code>async</code> 블록으로 묶는 것입니다.</p>
 <pre><code class="language-rust edition2018 ignore">fn bad() -&gt; impl Future&lt;Output = u8&gt; {
     let x = 5;
-    borrow_x(&amp;x) // ERROR: `x`가 더 이상 유효하지 않습니다.
+    borrow_x(&amp;x) // ERROR: `x`가 더 이상 쓸 수 없습니다.
 }
 
 fn good() -&gt; impl Future&lt;Output = u8&gt; {
@@ -225,13 +217,11 @@ fn good() -&gt; impl Future&lt;Output = u8&gt; {
     }
 }
 </code></pre>
-<p>By moving the argument into the <code>async</code> block, we extend its lifetime to match
-that of the <code>Future</code> returned from the call to <code>good</code>.</p>
+<p>우리는 인자를 <code>async</code> 블록으로 옮김으로써 <code>good</code> 함수에서 나오는 <code>Future</code>의 것과 맞춰 인자의 
+수명을 늘릴 수 있습니다.</p>
 <h2><a class="header" href="#async-move" id="async-move"><code>async move</code></a></h2>
-<p><code>async</code> blocks and closures allow the <code>move</code> keyword, much like normal
-closures. An <code>async move</code> block will take ownership of the variables it
-references, allowing it to outlive the current scope, but giving up the ability
-to share those variables with other code:</p>
+<p><code>async</code> 블록과 클로저는 보통 클로저처럼 <code>move</code> 키워드를 허용합니다. <code>async move</code> 블록은
+자신이 참조하는 변수의 소유권을 현재 구역보다 더 오래 살리면서 다른 코드가 공유할 수 없도록 합니다.</p>
 <pre><code class="language-rust edition2018 ignore">/// `async` 블록:
 ///
 /// 여러 `async` 블록은 같은 지역 변수에 접근할 수 있고
@@ -255,10 +245,9 @@ async fn blocks() {
 
 /// `async move` 블록:
 ///
-/// Only one `async move` block can access the same captured variable, since
-/// captures are moved into the `Future` generated by the `async move` block.
-/// However, this allows the `Future` to outlive the original scope of the
-/// variable:
+/// `async move` 블록으로부터 나온 `Future`가 캡처를 옮긴 이후로는 `async move` 
+/// 블록 하나만 같은 캡처된 변수에 접근할 수 있습니다. 허나 이러면 `Future`를 원래 
+/// 그 변수의 구역에서보다 오래 살게 합니다.
 fn move_block() -&gt; impl Future&lt;Output = ()&gt; {
     let my_string = &quot;foo&quot;.to_string();
     async move {
@@ -267,21 +256,17 @@ fn move_block() -&gt; impl Future&lt;Output = ()&gt; {
     }
 }
 </code></pre>
-<h2><a class="header" href="#awaiting-on-a-multithreaded-executor" id="awaiting-on-a-multithreaded-executor"><code>.await</code>ing on a Multithreaded Executor</a></h2>
-<p>Note that, when using a multithreaded <code>Future</code> executor, a <code>Future</code> may move
-between threads, so any variables used in <code>async</code> bodies must be able to travel
-between threads, as any <code>.await</code> can potentially result in a switch to a new
-thread.</p>
-<p>This means that it is not safe to use <code>Rc</code>, <code>&amp;RefCell</code> or any other types
-that don't implement the <code>Send</code> trait, including references to types that don't
-implement the <code>Sync</code> trait.</p>
-<p>(Caveat: it is possible to use these types so long as they aren't in scope
-during a call to <code>.await</code>.)</p>
-<p>Similarly, it isn't a good idea to hold a traditional non-futures-aware lock
-across an <code>.await</code>, as it can cause the threadpool to lock up: one task could
-take out a lock, <code>.await</code> and yield to the executor, allowing another task to
-attempt to take the lock and cause a deadlock. To avoid this, use the <code>Mutex</code>
-in <code>futures::lock</code> rather than the one from <code>std::sync</code>.</p>
+<h2><a class="header" href="#멀티스레드-실행자-상에서-await하기" id="멀티스레드-실행자-상에서-await하기">멀티스레드 실행자 상에서 <code>.await</code>하기</a></h2>
+<p><code>Future</code>는 멀티스레드 상에서 <code>Future</code> 실행자를 사용할 때, <code>async</code> 안쪽에 쓰인 어떤 
+변수라도 스레드 사이를 넘나들 수 있어야 하기 위해 어떤 <code>.await</code>이라도 잠재적으로 새로운 
+스레드로 갈아탈 수 있듯이 스레드 사이를 건널 수도 있습니다.</p>
+<p>그 말인 즉슨 <code>Sync</code> 트레잇을 구현하지 않은 타입에 대한 참조를 비롯해 <code>Send</code> 트레잇을 
+구현하지 않은 <code>Rc</code>, <code>&amp;RefCell</code> 등 어떠한 타입도 안전하지 않습니다.</p>
+<p>(알림: <code>.await</code>으로 호출하는 동안 구역 안에 있으면 이 타입들을 사용할 수 있습니다.)</p>
+<p>요컨데 <code>.await</code>을 넘어서 future가 인식할 수 없는 전형적인 락을 다루는 것은 좋은 생각이 
+아닙니다. 하나가 락을 차지하고, <code>.await</code>하면서 실행자에게 내놓는다면 또다른 작업이 락을 차지하려 
+해 데드락이 발생하기 때문입니다. 이런 문제를 피하기 위해 <code>std::sync</code> 대신 <code>futures::lock</code>에 
+있는 <code>Mutex</code>를 사용하시기 바랍니다.</p>
 
                     </main>
 

@@ -163,24 +163,23 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#the-stream-trait" id="the-stream-trait">The <code>Stream</code> Trait</a></h1>
-<p>The <code>Stream</code> trait is similar to <code>Future</code> but can yield multiple values before
-completing, similar to the <code>Iterator</code> trait from the standard library:</p>
+                        <h1><a class="header" href="#stream-트레잇" id="stream-트레잇"><code>Stream</code> 트레잇</a></h1>
+<p><code>Stream</code> 트레잇은 <code>Future</code>와 비슷하지만 작업을 끝내기 전 여러 값을 양보할 수 있다는 점에서
+표준 라이브러리의 <code>Iterator</code> 트레잇과 비슷합니다.</p>
 <pre><code class="language-rust ignore">trait Stream {
-    /// The type of the value yielded by the stream.
+    /// 스트림이 양보하는 값의 타입
     type Item;
 
-    /// Attempt to resolve the next item in the stream.
-    /// Returns `Poll::Pending` if not ready, `Poll::Ready(Some(x))` if a value
-    /// is ready, and `Poll::Ready(None)` if the stream has completed.
+    /// 스트림에 있는 다음 아이템을 해결하려 한다.
+    /// 아직 준비가 안 됐으면 `Poll::Pending`, 준비가 되었으면 `Poll::Ready(Some(x))`
+    /// , 끝났으면 `Poll::Ready(None)`을 반환한다.
     fn poll_next(self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;'_&gt;)
         -&gt; Poll&lt;Option&lt;Self::Item&gt;&gt;;
 }
 </code></pre>
-<p>One common example of a <code>Stream</code> is the <code>Receiver</code> for the channel type from
-the <code>futures</code> crate. It will yield <code>Some(val)</code> every time a value is sent
-from the <code>Sender</code> end, and will yield <code>None</code> once the <code>Sender</code> has been
-dropped and all pending messages have been received:</p>
+<p><code>Stream</code>의 한 가지 예시로 <code>futures</code> 크레이트에 있고 채널 타입에 쓰이는 <code>Receiver</code>가 있습니다. 
+<code>Sender</code>가 값을 보낼 때마다 <code>Some(val)</code>을 내놓고, <code>Sender</code>의 실행을 거부해 끝내지 않은 모든 메시지를 
+받을 때 <code>None</code>을 반환합니다.</p>
 <pre><code class="language-rust edition2018 ignore">async fn send_recv() {
     const BUFFER_SIZE: usize = 10;
     let (mut tx, mut rx) = mpsc::channel::&lt;i32&gt;(BUFFER_SIZE);
@@ -189,8 +188,8 @@ dropped and all pending messages have been received:</p>
     tx.send(2).await.unwrap();
     drop(tx);
 
-    // `StreamExt::next` is similar to `Iterator::next`, but returns a
-    // type that implements `Future&lt;Output = Option&lt;T&gt;&gt;`.
+    // `StreamExt::next` 는 `Iterator::next`와 같지만, 
+    // `Future&lt;Output = Option&lt;T&gt;&gt;`을 구현한 타입을 반환합니다.
     assert_eq!(Some(1), rx.next().await);
     assert_eq!(Some(2), rx.next().await);
     assert_eq!(None, rx.next().await);

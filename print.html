@@ -221,7 +221,7 @@
     join!(future_one, future_two);
 }
 </code></pre>
-<p>요컨데, 비동기적인 앱은 똑같이 스레드로 구현된 방식보다 더 빠르고 더 자원을 덜 쓰는 
+<p>대체로 비동기적인 앱은 똑같이 스레드로 구현된 방식보다 더 빠르고 더 자원을 덜 쓰는 
 잠재력이 있습니다. 그러나 한계도 있습니다. 스레드는 본디 운영체제에서 지원하고, 
 어떤 특별한 프로그래밍 모델도 필요하지 않습니다. 어떤 함수라도 스레드를 만들 수 
 있으며, 스레드를 사용하는 함수를 부르는 것은 그렇지 않은 평범한 함수를 부르는 것처럼 
@@ -580,20 +580,14 @@ struct SharedState {
             // 깨울 수 있게 한다. 이렇게 함으로써 future가 다시 poll되어
             // `completed = true`가 맞는지 확인 할 수 있다.
             //
-            // It's tempting to do this once rather than repeatedly cloning
-            // the waker each time. However, the `TimerFuture` can move between
-            // tasks on the executor, which could cause a stale waker pointing
-            // to the wrong task, preventing `TimerFuture` from waking up
-            // correctly.
-            //
-            // waker를 매번 반복적으로 클론하지 않고 한 번만 실행하고 싶을 수도
+            // waker를 매번 반복적으로 클론하지 않고 한 번만 클론하고 싶을 수도
             // 있다. 하지만, `TimerFuture`는 executor의 여러 task들로 이동할 수
-            // 있기 때문에, 한 번만 실행하면 잘못된 task를 가리키는 정체된
+            // 있기 때문에, 한 번만 클론하면 잘못된 task를 가리키는 정체된
             // waker가 만들어져 `TimerFuture`가 제대로 못 깨워질 것이다.
             //
-            //
-            // 주의: `Waker::will_wake` 함수를 이용하여 이 문제를 확인할 수
-            // 있으나, 예제를 간단하게 하기 위해 생략하였다.
+            // 주의: `Waker::will_wake` 함수를 이용하여 `TimerFuture`가
+            // 제대로 못 깨워지는 문제를 체크할 수 있으나, 예제를 간단하게 
+            // 하기 위해 생략하였다.
             shared_state.waker = Some(cx.waker().clone());
             Poll::Pending
         }
@@ -926,15 +920,12 @@ executor 스레드를 만들었습니다. 그리고 <code>Waker</code>는 이벤
 것입니다. 또, executor는 입출력 이벤트를 더 확인하기 전에 보다 많은 task들을
 완성까지 운전할 수 있을 것입니다(그리고 사이클은 반복됩니다...).</p>
 <h1><a class="header" href="#asyncawait" id="asyncawait"><code>async</code>/<code>.await</code></a></h1>
-<p>In <a href="03_async_await/../01_getting_started/04_async_await_primer.html">the first chapter</a>, we took a brief look at <code>async</code>/<code>.await</code>.
-This chapter will discuss <code>async</code>/<code>.await</code> in
-greater detail, explaining how it works and how <code>async</code> code differs from
-traditional Rust programs.</p>
-<p><code>async</code>/<code>.await</code> are special pieces of Rust syntax that make it possible to
-yield control of the current thread rather than blocking, allowing other
-code to make progress while waiting on an operation to complete.</p>
-<p>There are two main ways to use <code>async</code>: <code>async fn</code> and <code>async</code> blocks.
-Each returns a value that implements the <code>Future</code> trait:</p>
+<p>첫 장에서 우리는 <code>async</code>/<code>.await</code>을 짧게 다뤘습니다. 이제 <code>async</code> 코드가
+어떻게 동작하고, 어떻게 전형적인 러스트 프로그램과 다른지 더 자세히 들여다봅시다.</p>
+<p><code>async</code>/<code>.await</code>은 하나의 작업을 마칠 때 까지 기다리는 동안 다른 코드가 실행되는 것을 
+막거나 허용하는 대신 현재 스레드의 제어를 내놓는 러스트 문법의 특별한 도구입니다.</p>
+<p><code>async</code>를 다루는 주 방법 두 가지, <code>async fn</code>과 <code>async</code> 블록이 있습니다. 각각 <code>Future</code> 
+트레잇을 구현한 값을 반환합니다.</p>
 <pre><code class="language-rust edition2018 ignore">
 // `foo()`는 `Future&lt;Output = u8&gt;`을 구현한 타입을 반환합니다.
 // `foo().await`은 `u8` 타입의 값을 나타낼 것입니다.
@@ -949,16 +940,14 @@ fn bar() -&gt; impl Future&lt;Output = u8&gt; {
     }
 }
 </code></pre>
-<p>As we saw in the first chapter, <code>async</code> bodies and other futures are lazy:
-they do nothing until they are run. The most common way to run a <code>Future</code>
-is to <code>.await</code> it. When <code>.await</code> is called on a <code>Future</code>, it will attempt
-to run it to completion. If the <code>Future</code> is blocked, it will yield control
-of the current thread. When more progress can be made, the <code>Future</code> will be picked
-up by the executor and will resume running, allowing the <code>.await</code> to resolve.</p>
-<h2><a class="header" href="#async-lifetimes" id="async-lifetimes"><code>async</code> Lifetimes</a></h2>
-<p>Unlike traditional functions, <code>async fn</code>s which take references or other
-non-<code>'static</code> arguments return a <code>Future</code> which is bounded by the lifetime of
-the arguments:</p>
+<p>첫 장에서 봤듯이, <code>async</code> 안쪽과 그 밖의 future 구현체는 게으릅니다. 즉 실행될 때까지 아무 
+일도 안 합니다. <code>Future</code>를 실행하기 위해서는 <code>.await</code>을 써야 합니다. <code>Future</code> 상에서 
+<code>.await</code>이 나오면 그 코드는 마칠 때까지 실행하려 할 것입니다. <code>Future</code>는 자신이 중지되면 
+현재 스레드의 제어를 넘겨줍니다. 더 많은 흐름이 나올 시, <code>Future</code>는 <code>.await</code>을 풀고 실행자에게 
+선택돼 실행을 재개할 것입니다.</p>
+<h2><a class="header" href="#async한-수명" id="async한-수명"><code>async</code>한 수명</a></h2>
+<p>참조나 기타 <code>'static</code>하지 않은 인자를 다루는 <code>async fn</code>은 전형적인 함수와 달리 인자의 수명으로 
+정해지는 <code>Future</code>를 반환합니다.</p>
 <pre><code class="language-rust edition2018 ignore">// 이 함수는
 async fn foo(x: &amp;u8) -&gt; u8 { *x }
 
@@ -967,17 +956,14 @@ fn foo_expanded&lt;'a&gt;(x: &amp;'a u8) -&gt; impl Future&lt;Output = u8&gt; + 
     async move { *x }
 }
 </code></pre>
-<p>This means that the future returned from an <code>async fn</code> must be <code>.await</code>ed
-while its non-<code>'static</code> arguments are still valid. In the common
-case of <code>.await</code>ing the future immediately after calling the function
-(as in <code>foo(&amp;x).await</code>) this is not an issue. However, if storing the future
-or sending it over to another task or thread, this may be an issue.</p>
-<p>One common workaround for turning an <code>async fn</code> with references-as-arguments
-into a <code>'static</code> future is to bundle the arguments with the call to the
-<code>async fn</code> inside an <code>async</code> block:</p>
+<p>즉 <code>'static</code>하지 않은 인자가 여전히 유효하는 한 <code>async fn</code>에서 나온 future는 <code>.await</code>해야 
+합니다. 보통 <code>foo(&amp;x).await</code>와 같이 함수를 호출하고 바로 future를 <code>.await</code>할 때는 문제가 
+없습니다. 허나 future를 또다른 작업이나 스레드로 저장하거나 보내면 문제가 생길 수 있습니다.</p>
+<p>참조를 인자로 가진 <code>async fn</code>을 <code>'static</code>한 future로 바꾸는 방법 한 가지는 <code>async fn</code> 호출과 
+인자값을 하나의 <code>async</code> 블록으로 묶는 것입니다.</p>
 <pre><code class="language-rust edition2018 ignore">fn bad() -&gt; impl Future&lt;Output = u8&gt; {
     let x = 5;
-    borrow_x(&amp;x) // ERROR: `x`가 더 이상 유효하지 않습니다.
+    borrow_x(&amp;x) // ERROR: `x`가 더 이상 쓸 수 없습니다.
 }
 
 fn good() -&gt; impl Future&lt;Output = u8&gt; {
@@ -987,13 +973,11 @@ fn good() -&gt; impl Future&lt;Output = u8&gt; {
     }
 }
 </code></pre>
-<p>By moving the argument into the <code>async</code> block, we extend its lifetime to match
-that of the <code>Future</code> returned from the call to <code>good</code>.</p>
+<p>우리는 인자를 <code>async</code> 블록으로 옮김으로써 <code>good</code> 함수에서 나오는 <code>Future</code>의 것과 맞춰 인자의 
+수명을 늘릴 수 있습니다.</p>
 <h2><a class="header" href="#async-move" id="async-move"><code>async move</code></a></h2>
-<p><code>async</code> blocks and closures allow the <code>move</code> keyword, much like normal
-closures. An <code>async move</code> block will take ownership of the variables it
-references, allowing it to outlive the current scope, but giving up the ability
-to share those variables with other code:</p>
+<p><code>async</code> 블록과 클로저는 보통 클로저처럼 <code>move</code> 키워드를 허용합니다. <code>async move</code> 블록은
+자신이 참조하는 변수의 소유권을 현재 구역보다 더 오래 살리면서 다른 코드가 공유할 수 없도록 합니다.</p>
 <pre><code class="language-rust edition2018 ignore">/// `async` 블록:
 ///
 /// 여러 `async` 블록은 같은 지역 변수에 접근할 수 있고
@@ -1017,10 +1001,9 @@ async fn blocks() {
 
 /// `async move` 블록:
 ///
-/// Only one `async move` block can access the same captured variable, since
-/// captures are moved into the `Future` generated by the `async move` block.
-/// However, this allows the `Future` to outlive the original scope of the
-/// variable:
+/// `async move` 블록으로부터 나온 `Future`가 캡처를 옮긴 이후로는 `async move` 
+/// 블록 하나만 같은 캡처된 변수에 접근할 수 있습니다. 허나 이러면 `Future`를 원래 
+/// 그 변수의 구역에서보다 오래 살게 합니다.
 fn move_block() -&gt; impl Future&lt;Output = ()&gt; {
     let my_string = &quot;foo&quot;.to_string();
     async move {
@@ -1029,32 +1012,26 @@ fn move_block() -&gt; impl Future&lt;Output = ()&gt; {
     }
 }
 </code></pre>
-<h2><a class="header" href="#awaiting-on-a-multithreaded-executor" id="awaiting-on-a-multithreaded-executor"><code>.await</code>ing on a Multithreaded Executor</a></h2>
-<p>Note that, when using a multithreaded <code>Future</code> executor, a <code>Future</code> may move
-between threads, so any variables used in <code>async</code> bodies must be able to travel
-between threads, as any <code>.await</code> can potentially result in a switch to a new
-thread.</p>
-<p>This means that it is not safe to use <code>Rc</code>, <code>&amp;RefCell</code> or any other types
-that don't implement the <code>Send</code> trait, including references to types that don't
-implement the <code>Sync</code> trait.</p>
-<p>(Caveat: it is possible to use these types so long as they aren't in scope
-during a call to <code>.await</code>.)</p>
-<p>Similarly, it isn't a good idea to hold a traditional non-futures-aware lock
-across an <code>.await</code>, as it can cause the threadpool to lock up: one task could
-take out a lock, <code>.await</code> and yield to the executor, allowing another task to
-attempt to take the lock and cause a deadlock. To avoid this, use the <code>Mutex</code>
-in <code>futures::lock</code> rather than the one from <code>std::sync</code>.</p>
-<h1><a class="header" href="#pinning" id="pinning">Pinning</a></h1>
-<p>To poll futures, they must be pinned using a special type called
-<code>Pin&lt;T&gt;</code>. If you read the explanation of <a href="04_pinning/../02_execution/02_future.html">the <code>Future</code> trait</a> in the
-previous section <a href="04_pinning/../02_execution/01_chapter.html">&quot;Executing <code>Future</code>s and Tasks&quot;</a>, you'll recognize
-<code>Pin</code> from the <code>self: Pin&lt;&amp;mut Self&gt;</code> in the <code>Future::poll</code> method's definition.
-But what does it mean, and why do we need it?</p>
-<h2><a class="header" href="#why-pinning" id="why-pinning">Why Pinning</a></h2>
-<p><code>Pin</code> works in tandem with the <code>Unpin</code> marker. Pinning makes it possible
-to guarantee that an object implementing <code>!Unpin</code> won't ever be moved. To understand
-why this is necessary, we need to remember how <code>async</code>/<code>.await</code> works. Consider
-the following code:</p>
+<h2><a class="header" href="#멀티스레드-실행자-상에서-await하기" id="멀티스레드-실행자-상에서-await하기">멀티스레드 실행자 상에서 <code>.await</code>하기</a></h2>
+<p><code>Future</code>는 멀티스레드 상에서 <code>Future</code> 실행자를 사용할 때, <code>async</code> 안쪽에 쓰인 어떤 
+변수라도 스레드 사이를 넘나들 수 있어야 하기 위해 어떤 <code>.await</code>이라도 잠재적으로 새로운 
+스레드로 갈아탈 수 있듯이 스레드 사이를 건널 수도 있습니다.</p>
+<p>그 말인 즉슨 <code>Sync</code> 트레잇을 구현하지 않은 타입에 대한 참조를 비롯해 <code>Send</code> 트레잇을 
+구현하지 않은 <code>Rc</code>, <code>&amp;RefCell</code> 등 어떠한 타입도 안전하지 않습니다.</p>
+<p>(알림: <code>.await</code>으로 호출하는 동안 구역 안에 있으면 이 타입들을 사용할 수 있습니다.)</p>
+<p>요컨데 <code>.await</code>을 넘어서 future가 인식할 수 없는 전형적인 락을 다루는 것은 좋은 생각이 
+아닙니다. 하나가 락을 차지하고, <code>.await</code>하면서 실행자에게 내놓는다면 또다른 작업이 락을 차지하려 
+해 데드락이 발생하기 때문입니다. 이런 문제를 피하기 위해 <code>std::sync</code> 대신 <code>futures::lock</code>에 
+있는 <code>Mutex</code>를 사용하시기 바랍니다.</p>
+<h1><a class="header" href="#고정하기pinning" id="고정하기pinning">고정하기(Pinning)</a></h1>
+<p>future를 poll하기 위해서는, future가 <code>Pin&lt;T&gt;</code>라는 특별한 타입으로 고정되어
+있어야 합니다. 이전 <a href="04_pinning/../02_execution/01_chapter.html">&quot;<code>Future</code>와 task 실행하기&quot;</a> 장의 <a href="04_pinning/../02_execution/02_future.html"><code>Future</code> 트레잇</a>을
+읽었다면, <code>Future::poll</code> 메소드의 정의에서 <code>self Pin&lt;&amp;mut Self&gt;</code>에 쓰였던
+<code>Pin</code>을 보았을 것입니다. 그렇다면 <code>Pin</code>은 무슨 의미이고, 왜 필요할까요?</p>
+<h2><a class="header" href="#왜-고정해야-하나요" id="왜-고정해야-하나요">왜 고정해야 하나요</a></h2>
+<p><code>Pin</code>은 <code>Unpin</code> 마커와 쌍으로 작동합니다. 고정하기는 <code>!Unpin</code>을 구현하는 객체는
+절대 움직이지 않음을 보장하여 줍니다. 이게 왜 필요한지 이해하려면, <code>async</code> /
+<code>.await</code>가 작동하는 방식을 떠올려 보세요. 아래 코드를 살펴봅시다.</p>
 <pre><code class="language-rust edition2018 ignore">let fut_one = /* ... */;
 let fut_two = /* ... */;
 async move {
@@ -1062,16 +1039,16 @@ async move {
     fut_two.await;
 }
 </code></pre>
-<p>Under the hood, this creates an anonymous type that implements <code>Future</code>,
-providing a <code>poll</code> method that looks something like this:</p>
-<pre><code class="language-rust ignore">// The `Future` type generated by our `async { ... }` block
+<p>보이지는 않지만, 위 코드는 <code>Future</code>를 구현하는 익명 타입을 만들어, 아래와 같은
+<code>poll</code> 메소드를 제공합니다.</p>
+<pre><code class="language-rust ignore">// 위 `async { ... }` 블록이 생성한 `Future` 타입
 struct AsyncFuture {
     fut_one: FutOne,
     fut_two: FutTwo,
     state: State,
 }
 
-// List of states our `async` block can be in
+// 위 `async`블록이 될 수 있는 상태의 종류
 enum State {
     AwaitingFutOne,
     AwaitingFutTwo,
@@ -1098,12 +1075,12 @@ impl Future for AsyncFuture {
     }
 }
 </code></pre>
-<p>When <code>poll</code> is first called, it will poll <code>fut_one</code>. If <code>fut_one</code> can't
-complete, <code>AsyncFuture::poll</code> will return. Future calls to <code>poll</code> will pick
-up where the previous one left off. This process continues until the future
-is able to successfully complete.</p>
-<p>However, what happens if we have an <code>async</code> block that uses references?
-For example:</p>
+<p><code>poll</code>이 처음 호출되면 <code>poll</code>은 <code>fut_one</code>을 poll할 것입니다. 만약 <code>fut_one</code>이
+완성될 수 없다면, <code>AsyncFuture::poll</code>은 종료될 것입니다. <code>poll</code>에 대한 Future
+호출들은 이전 것이 중단된 지점부터 다시 시작할 것이다(TODO: 재번역 필요). 이
+과정은 future가 성공적으로 완성될 때까지 계속될 것이다.</p>
+<p>하지만, <code>async</code> 블록이 레퍼런스를 사용한다면 어떻게 될까요?</p>
+<p>예를 들어:</p>
 <pre><code class="language-rust edition2018 ignore">async {
     let mut x = [0; 128];
     let read_into_buf_fut = read_into_buf(&amp;mut x);
@@ -1111,9 +1088,9 @@ For example:</p>
     println!(&quot;{:?}&quot;, x);
 }
 </code></pre>
-<p>What struct does this compile down to?</p>
+<p>위 코드는 어떤 구조체로 컴파일될까요?</p>
 <pre><code class="language-rust ignore">struct ReadIntoBuf&lt;'a&gt; {
-    buf: &amp;'a mut [u8], // points to `x` below
+    buf: &amp;'a mut [u8], // 아래 `x`를 가리킴
 }
 
 struct AsyncFuture {
@@ -1121,6 +1098,9 @@ struct AsyncFuture {
     read_into_buf_fut: ReadIntoBuf&lt;'what_lifetime?&gt;,
 }
 </code></pre>
+<p>여기, <code>ReadIntoBuf</code> future는 우리 구조체의 다른 필드 <code>x</code>를 가리키는 레퍼런스를
+가지고 있습니다. 하지만, if <code>AsyncFuture</code>가 이동했다면, <code>x</code>의 위치도 같이 움직일
+것이고, <code>read_into_buf_fut.buf</code>에 저장된 포인터를 검증할 것입니다.</p>
 <p>Here, the <code>ReadIntoBuf</code> future holds a reference into the other field of our
 structure, <code>x</code>. However, if <code>AsyncFuture</code> is moved, the location of <code>x</code> will
 move as well, invalidating the pointer stored in <code>read_into_buf_fut.buf</code>.</p>
@@ -1618,24 +1598,23 @@ get invalidated or repurposed <em>from the moment it gets pinned until when drop
 an important part of the <em>pin contract</em>.</p>
 </li>
 </ol>
-<h1><a class="header" href="#the-stream-trait" id="the-stream-trait">The <code>Stream</code> Trait</a></h1>
-<p>The <code>Stream</code> trait is similar to <code>Future</code> but can yield multiple values before
-completing, similar to the <code>Iterator</code> trait from the standard library:</p>
+<h1><a class="header" href="#stream-트레잇" id="stream-트레잇"><code>Stream</code> 트레잇</a></h1>
+<p><code>Stream</code> 트레잇은 <code>Future</code>와 비슷하지만 작업을 끝내기 전 여러 값을 양보할 수 있다는 점에서
+표준 라이브러리의 <code>Iterator</code> 트레잇과 비슷합니다.</p>
 <pre><code class="language-rust ignore">trait Stream {
-    /// The type of the value yielded by the stream.
+    /// 스트림이 양보하는 값의 타입
     type Item;
 
-    /// Attempt to resolve the next item in the stream.
-    /// Returns `Poll::Pending` if not ready, `Poll::Ready(Some(x))` if a value
-    /// is ready, and `Poll::Ready(None)` if the stream has completed.
+    /// 스트림에 있는 다음 아이템을 해결하려 한다.
+    /// 아직 준비가 안 됐으면 `Poll::Pending`, 준비가 되었으면 `Poll::Ready(Some(x))`
+    /// , 끝났으면 `Poll::Ready(None)`을 반환한다.
     fn poll_next(self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;'_&gt;)
         -&gt; Poll&lt;Option&lt;Self::Item&gt;&gt;;
 }
 </code></pre>
-<p>One common example of a <code>Stream</code> is the <code>Receiver</code> for the channel type from
-the <code>futures</code> crate. It will yield <code>Some(val)</code> every time a value is sent
-from the <code>Sender</code> end, and will yield <code>None</code> once the <code>Sender</code> has been
-dropped and all pending messages have been received:</p>
+<p><code>Stream</code>의 한 가지 예시로 <code>futures</code> 크레이트에 있고 채널 타입에 쓰이는 <code>Receiver</code>가 있습니다. 
+<code>Sender</code>가 값을 보낼 때마다 <code>Some(val)</code>을 내놓고, <code>Sender</code>의 실행을 거부해 끝내지 않은 모든 메시지를 
+받을 때 <code>None</code>을 반환합니다.</p>
 <pre><code class="language-rust edition2018 ignore">async fn send_recv() {
     const BUFFER_SIZE: usize = 10;
     let (mut tx, mut rx) = mpsc::channel::&lt;i32&gt;(BUFFER_SIZE);
@@ -1644,23 +1623,21 @@ dropped and all pending messages have been received:</p>
     tx.send(2).await.unwrap();
     drop(tx);
 
-    // `StreamExt::next` is similar to `Iterator::next`, but returns a
-    // type that implements `Future&lt;Output = Option&lt;T&gt;&gt;`.
+    // `StreamExt::next` 는 `Iterator::next`와 같지만, 
+    // `Future&lt;Output = Option&lt;T&gt;&gt;`을 구현한 타입을 반환합니다.
     assert_eq!(Some(1), rx.next().await);
     assert_eq!(Some(2), rx.next().await);
     assert_eq!(None, rx.next().await);
 }
 </code></pre>
 <h1><a class="header" href="#iteration-and-concurrency" id="iteration-and-concurrency">Iteration and Concurrency</a></h1>
-<p>Similar to synchronous <code>Iterator</code>s, there are many different ways to iterate
-over and process the values in a <code>Stream</code>. There are combinator-style methods
-such as <code>map</code>, <code>filter</code>, and <code>fold</code>, and their early-exit-on-error cousins
-<code>try_map</code>, <code>try_filter</code>, and <code>try_fold</code>.</p>
-<p>Unfortunately, <code>for</code> loops are not usable with <code>Stream</code>s, but for
-imperative-style code, <code>while let</code> and the <code>next</code>/<code>try_next</code> functions can
-be used:</p>
+<p>동기적인 <code>Iterator</code>와 같이 <code>Stream</code>에서 값을 반복하고 처리하는 여러 가지 방법이 있습니다.
+<code>map</code>, <code>filter</code>, <code>fold</code>와 같은 콤비네이터 방식과 <code>try_map</code>, <code>try_filter</code>, <code>try_fold</code>와 
+같이 오류가 생기면 바로 종료하는 방식의 메소드가 있습니다.</p>
+<p>슬프게도 <code>for</code> 반복문은 <code>Stream</code>과 같이 사용할 수 없지만, 명령형 코드를 위해 
+<code>while let</code>과 <code>next</code>/<code>try_next</code> 함수를 쓸 수 있습니다.</p>
 <pre><code class="language-rust edition2018 ignore">async fn sum_with_next(mut stream: Pin&lt;&amp;mut dyn Stream&lt;Item = i32&gt;&gt;) -&gt; i32 {
-    use futures::stream::StreamExt; // for `next`
+    use futures::stream::StreamExt; // `next`를 쓰기 위함
     let mut sum = 0;
     while let Some(item) = stream.next().await {
         sum += item;
@@ -1671,7 +1648,7 @@ be used:</p>
 async fn sum_with_try_next(
     mut stream: Pin&lt;&amp;mut dyn Stream&lt;Item = Result&lt;i32, io::Error&gt;&gt;&gt;,
 ) -&gt; Result&lt;i32, io::Error&gt; {
-    use futures::stream::TryStreamExt; // for `try_next`
+    use futures::stream::TryStreamExt; // `try_next`를 쓰기 위함
     let mut sum = 0;
     while let Some(item) = stream.try_next().await? {
         sum += item;
@@ -1679,15 +1656,13 @@ async fn sum_with_try_next(
     Ok(sum)
 }
 </code></pre>
-<p>However, if we're just processing one element at a time, we're potentially
-leaving behind opportunity for concurrency, which is, after all, why we're
-writing async code in the first place. To process multiple items from a stream
-concurrently, use the <code>for_each_concurrent</code> and <code>try_for_each_concurrent</code>
-methods:</p>
+<p>하지만 우리가 단지 한 시간마다 한 요소만 처리하고 있다면 잠재적으로 동시성의 기회를 내다버린 것과 
+다를 바 없고, 이것이 결국 처음부터 비동기 코드를 써야 하는 이유로 변합니다. 한 스트림 안에서 여러 
+아이템을 동시에 다루기 위해 <code>for_each_concurrent</code>와 <code>try_for_each_concurrent</code>를 사용하시기 바랍니다.</p>
 <pre><code class="language-rust edition2018 ignore">async fn jump_around(
     mut stream: Pin&lt;&amp;mut dyn Stream&lt;Item = Result&lt;u8, io::Error&gt;&gt;&gt;,
 ) -&gt; Result&lt;(), io::Error&gt; {
-    use futures::stream::TryStreamExt; // for `try_for_each_concurrent`
+    use futures::stream::TryStreamExt; // `try_for_each_concurrent`를 쓰기 위함
     const MAX_CONCURRENT_JUMPERS: usize = 100;
 
     stream.try_for_each_concurrent(MAX_CONCURRENT_JUMPERS, |num| async move {
