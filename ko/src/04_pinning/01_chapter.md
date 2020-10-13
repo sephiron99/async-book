@@ -172,7 +172,7 @@ fn main() {
 #         }
 #     }
 #
-#     // We need an `init` method to actually set our self-reference
+#     // 자기-참조를 실제로 설정할 `init` 메소드
 #     fn init(&mut self) {
 #         let self_ref: *const String = &self.a;
 #         self.b = self_ref;
@@ -309,28 +309,28 @@ fn main() {
 **Fig 1: 스왑 전 후**
 ![swap_problem](../assets/swap_problem.jpg)
 
-It's easy to get this to show UB and fail in other spectacular ways as well.
+다른 특별한 방법도 있겠지만, 그림으로 정의되지 않은 동작과 실패를 표현하면
+이해하기 쉽습니다.
 
-## Pinning in Practice
+## 실전에서 고정하기
 
-Let's see how pinning and the `Pin` type can help us solve this problem.
+고정하기와 `Pin` 타입으로 이 문제를 해결하는지 알아봅시다.
 
-The `Pin` type wraps pointer types, guaranteeing that the values behind the
-pointer won't be moved. For example, `Pin<&mut T>`, `Pin<&T>`,
-`Pin<Box<T>>` all guarantee that `T` won't be moved if `T: !Unpin`.
+`Pin` 타입은 포인터를 감싸서 포인터 뒤에 있는 값이 움직이지 않음을 보장해줍니다.
+예를 들어, `Pin<&mut T>`, `Pin<&T>`, `Pin<Box<T>>`들은 모두 `T: !Unpin`이라면 `T`가 움직이지 않음을 보장합니다.
 
-Most types don't have a problem being moved. These types implement a trait
-called `Unpin`. Pointers to `Unpin` types can be freely placed into or taken
-out of `Pin`. For example, `u8` is `Unpin`, so `Pin<&mut u8>` behaves just like
-a normal `&mut u8`.
+대부분의 타입들에게는 움직여지는 문제점이 없습니다. 이러한 타입들은
+`Unpin`이라는 트레잇을 구현합니다. `Unpin` 타입에 대한 포인터들은 자유롭게 `Pin`
+안에 넣거나 꺼낼 수 있습니다. 예를 들어, `u8`은 `Unpin`이어서 `Pin<&mut u8>`은
+그냥 평범한 `&mut u8`처럼 작동합니다.
 
-However, types that can't be moved after they're pinned has a marker called
-`!Unpin`. Futures created by async/await is an example of this.
+하지만, 고정된 다음에는 움직일 수 없는 타입들은 `!Unpin`이라는 마커를 가지고
+있습니다. async/await에 의해 만들어진 future들이 그 예시입니다.
 
-### Pinning to the Stack
+### 스택에 고정하기
 
-Back to our example. We can solve our problem by using `Pin`. Let's take a look at what
-our example would look like we required a pinned pointer instead:
+다시 예제로 돌아가서, `Pin`을 이용하여 문제를 해결할 수 있습니다. 고정된
+포인터를 사용하면 우리의 예제가 어떻게 바뀌는지 살펴봅시다.(TODO: 검토)
 
 ```rust, ignore
 use std::pin::Pin;
@@ -368,17 +368,18 @@ impl Test {
 }
 ```
 
-Pinning an object to the stack will always be `unsafe` if our type implements
-`!Unpin`. You can use a crate like [`pin_utils`][pin_utils] to avoid writing
-our own `unsafe` code when pinning to the stack.
+우리의 타입이 `!Unpin`을 구현한다면 객체를 스택에 고정하는 것은 항상 `unsafe`할
+것입니다. 여러분은 스택에 고정할 때 `unsafe` 코드를 직접 사용하지 않으려면
+[`pin_utils`][pin_utils] 같은 크레잇을 사용할 수 있습니다.
 
 Below, we pin the objects `test1` and `test2` to the stack:
+아래는 객체 `test1`과 `test2`를 스택에 고정합니다.
 
 ```rust
 pub fn main() {
-    // test1 is safe to move before we initialize it
+    // test1은 초기화되기 전에 움직여도 안전합니다.
     let mut test1 = Test::new("test1");
-    // Notice how we shadow `test1` to prevent it from being accessed again
+    // `test1`이 다시 액세스되는 것을 막기 위해 어떻게 `test1`을 쉐도우하는지 확인해 두세요
     let mut test1 = unsafe { Pin::new_unchecked(&mut test1) };
     Test::init(test1.as_mut());
 
@@ -405,7 +406,7 @@ pub fn main() {
 #         Test {
 #             a: String::from(txt),
 #             b: std::ptr::null(),
-#             // This makes our type `!Unpin`
+#             // 우리의 타입을 `!Unpin`으로 만듭니다.
 #             _marker: PhantomPinned,
 #         }
 #     }
@@ -425,7 +426,7 @@ pub fn main() {
 # }
 ```
 
-Now, if we try to move our data now we get a compilation error:
+자, 만약 지금 우리가 데이터를 움직이려고 하면, 컴파일 에러가 발생합니다.
 
 ```rust, compile_fail
 pub fn main() {
@@ -457,7 +458,7 @@ pub fn main() {
 #         Test {
 #             a: String::from(txt),
 #             b: std::ptr::null(),
-#             _marker: PhantomPinned, // This makes our type `!Unpin`
+#             _marker: PhantomPinned, // 우리의 타입을 `!Unpin`으로 만듭니다.
 #         }
 #     }
 #     fn init<'a>(self: Pin<&'a mut Self>) {
@@ -476,7 +477,7 @@ pub fn main() {
 # }
 ```
 
-The type system prevents us from moving the data.
+타입 시스템은 우리가 데이터를 움직이지 못하게 막습니다.
 
 > It's important to note that stack pinning will always rely on guarantees
 > you give when writing `unsafe`. While we know that the _pointee_ of `&'a mut T`
@@ -638,6 +639,6 @@ by adding `std::marker::PhantomPinned` to your type on stable.
 get invalidated or repurposed _from the moment it gets pinned until when drop_ is called. This is
 an important part of the _pin contract_.
 
-["Executing `Future`s and Tasks"]: ../02_execution/01_chapter.md
-[the `Future` trait]: ../02_execution/02_future.md
+["`Future`와 task 실행하기"]: ../02_execution/01_chapter.md
+[`Future` 트레잇]: ../02_execution/02_future.md
 [pin_utils]: https://docs.rs/pin-utils/
