@@ -7,7 +7,7 @@ future를 poll하기 위해서는, future가 `Pin<T>`라는 특별한 타입으�
 
 ## 왜 고정해야 하나요
 
-`Pin`은 `Unpin` 마커와 쌍으로 작동합니다. 고정하기는 `!Unpin`을 구현하는 객체는
+`Pin`은 `Unpin` 마커와 쌍으로 작동합니다. 고정하기는 `!Unpin`을 구현하는 객체가
 절대 움직이지 않음을 보장하여 줍니다. 이게 왜 필요한지 이해하려면, `async` /
 `.await`가 작동하는 방식을 떠올려 보세요. 아래 코드를 살펴봅시다.
 
@@ -60,11 +60,12 @@ impl Future for AsyncFuture {
 ```
 
 `poll`이 처음 호출되면 `poll`은 `fut_one`을 poll할 것입니다. 만약 `fut_one`이
-완성될 수 없다면, `AsyncFuture::poll`은 종료될 것입니다. `poll`에 대한 Future
-호출들은 이전 것이 중단된 지점부터 다시 시작할 것이다(TODO: 재번역 필요). 이
-과정은 future가 성공적으로 완성될 때까지 계속될 것이다.
+완성될 수 없다면, `AsyncFuture::poll`은 `Poll::Pending`을 반환하며 종료될
+것입니다. future에 대한 `poll` 호출들은 이전에 중단된 지점(역주: `self.state`를
+`match`하여)부터 다시 시작할 것입니다(TODO: 재번역 필요). 이 과정은 future가
+성공적으로 완성될 때까지 반복될 것입니다.
 
-하지만, `async` 블록이 레퍼런스를 사용한다면 어떻게 될까요?
+하지만, `async` 블록이 참조를 사용한다면 어떻게 될까요?
 
 예를 들어:
 
@@ -77,7 +78,7 @@ async {
 }
 ```
 
-위 코드는 어떤 구조체로 컴파일될까요?
+위 코드는 어떤 구조체로 변환될까요?
 
 ```rust,ignore
 struct ReadIntoBuf<'a> {
@@ -90,24 +91,19 @@ struct AsyncFuture {
 }
 ```
 
-여기, `ReadIntoBuf` future는 우리 구조체의 다른 필드 `x`를 가리키는 레퍼런스를
-가지고 있습니다. 하지만, if `AsyncFuture`가 이동했다면, `x`의 위치도 같이 움직일
-것이고, `read_into_buf_fut.buf`에 저장된 포인터를 검증할 것입니다.
+여기 `ReadIntoBuf` future는 우리 구조체의 다른 필드인 `x`를 가리키는 참조를
+가지고 있습니다. 따라서, `AsyncFuture`가 옮겨진다면, `x`의 위치도 같이 움직이면서 
+`read_into_buf_fut.buf`에 저장된 포인터도 무효화 될 것입니다.
 
-Here, the `ReadIntoBuf` future holds a reference into the other field of our
-structure, `x`. However, if `AsyncFuture` is moved, the location of `x` will
-move as well, invalidating the pointer stored in `read_into_buf_fut.buf`.
+future를 특정된 메모리 위치에 고정함으로서 이 문제를 방지하고, `async` 블록 안에
+있는 값에 대한 참조를 안전하게 만들 수 있습니다.
 
-Pinning futures to a particular spot in memory prevents this problem, making
-it safe to create references to values inside an `async` block.
+## 고정하기에 대한 상세설명
 
-## Pinning in Detail
+조금 더 간단한 예제로 고정하기를 이해해 봅시다. 위의 문제의 핵심은 '러스트에서
+자기참조 타입의 참조를 어떻게 다루는가'입니다.
 
-Let's try to understand pinning by using an slightly simpler example. The problem we encounter
-above is a problem that ultimately boils down to how we handle references in self-referential
-types in Rust.
-
-For now our example will look like this:
+지금부터 우리의 예제는 다음과 같이 바뀔 겁니다.
 
 ```rust, ignore
 use std::pin::Pin;
@@ -141,12 +137,14 @@ impl Test {
 }
 ```
 
-`Test` provides methods to get a reference to the value of the fields `a` and `b`. Since `b` is a
-reference to `a` we store it as a pointer since the borrowing rules of Rust doesn't allow us to
-define this lifetime. We now have what we call a self-referential struct.
+`Test`는 `a`와 `b` 필드의 값에 대한 참조를 얻는 메소드를 제공합니다. `b`는 `a`에
+대한 참조이기 때문에 `b`에 포인터를 사용합니다. 왜냐하면, 러스트의 빌림규칙에
+따라 이 라이프타임을 정의할 수 없기 때문입니다. 이 구조체가 바로 자기-참조
+구조체라고 불리는 것입니다.
 
-Our example works fine if we don't move any of our data around as you can observe by running
-this example:
+아래 예제를 실행하면 알 수 있듯이, 어느 데이타도 여기저기 움직이지 않는다면 위
+예제는 잘 작동할 겁니다.
+
 
 ```rust
 fn main() {
@@ -189,14 +187,14 @@ fn main() {
 #     }
 # }
 ```
-We get what we'd expect:
+예상한 대로 출력됩니다.
 
 ```rust, ignore
 a: test1, b: test1
 a: test2, b: test2
 ```
 
-Let's see what happens if we swap `test1` with `test2` and thereby move the data:
+그럼 `test1`과 `test2`를 스왑하여 데이터를 움직여보고, 무슨 일이 생기는 지 봅시다.
 
 ```rust
 fn main() {
@@ -240,26 +238,28 @@ fn main() {
 # }
 ```
 
-Naively, we could think that what we should get a debug print of `test1` two times like this:
+단순하게 생각하면, 아래처럼 두 번 다 `test1`의 디버그 내용이 출력될 것이라
+생각하기 십상입니다:
 
 ```rust, ignore
 a: test1, b: test1
 a: test1, b: test1
 ```
 
-But instead we get:
+하지만 실제 출력은 다음과 같습니다:
 
 ```rust, ignore
 a: test1, b: test1
 a: test1, b: test2
 ```
 
-The pointer to `test2.b` still points to the old location which is inside `test1`
-now. The struct is not self-referential anymore, it holds a pointer to a field
-in a different object. That means we can't rely on the lifetime of `test2.b` to
-be tied to the lifetime of `test2` anymore.
+스왑 이후에도, `test2.b`에 대한 포인터는 여전히 지금 `test1` 내부에 있는 옛
+위치를 가리킵니다.(TODO: 의역으로 재번역) 이 구조체는 더 이상 자기-참조적이지
+않으며, 다른 객체 안에 있는 필드를 가리키는 포인터를 가지게 됩니다. 즉,
+`test2`의 라이프타임에 매여있는 `test2.b`의 라이프타임을 더이상 신뢰할 수 없다는
+뜻입니다.
 
-If you're still not convinced, this should at least convince you:
+만약 아직도 이해가 되지 않는다면, 아래 코드가 확실히 이해시켜 줄 것입니다.
 
 ```rust
 fn main() {
@@ -304,9 +304,9 @@ fn main() {
 # }
 ```
 
-The diagram below can help visualize what's going on:
+아래 그림은 이 내용들을 도식화합니다.
 
-**Fig 1: Before and after swap**
+**Fig 1: 스왑 전 후**
 ![swap_problem](../assets/swap_problem.jpg)
 
 It's easy to get this to show UB and fail in other spectacular ways as well.
