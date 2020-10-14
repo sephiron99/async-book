@@ -1029,7 +1029,7 @@ fn move_block() -&gt; impl Future&lt;Output = ()&gt; {
 읽었다면, <code>Future::poll</code> 메소드의 정의에서 <code>self Pin&lt;&amp;mut Self&gt;</code>에 쓰였던
 <code>Pin</code>을 보았을 것입니다. 그렇다면 <code>Pin</code>은 무슨 의미이고, 왜 필요할까요?</p>
 <h2><a class="header" href="#왜-고정해야-하나요" id="왜-고정해야-하나요">왜 고정해야 하나요</a></h2>
-<p><code>Pin</code>은 <code>Unpin</code> 마커와 쌍으로 작동합니다. 고정하기는 <code>!Unpin</code>을 구현하는 객체는
+<p><code>Pin</code>은 <code>Unpin</code> 마커와 쌍으로 작동합니다. 고정하기는 <code>!Unpin</code>을 구현하는 객체가
 절대 움직이지 않음을 보장하여 줍니다. 이게 왜 필요한지 이해하려면, <code>async</code> /
 <code>.await</code>가 작동하는 방식을 떠올려 보세요. 아래 코드를 살펴봅시다.</p>
 <pre><code class="language-rust edition2018 ignore">let fut_one = /* ... */;
@@ -1076,10 +1076,11 @@ impl Future for AsyncFuture {
 }
 </code></pre>
 <p><code>poll</code>이 처음 호출되면 <code>poll</code>은 <code>fut_one</code>을 poll할 것입니다. 만약 <code>fut_one</code>이
-완성될 수 없다면, <code>AsyncFuture::poll</code>은 종료될 것입니다. <code>poll</code>에 대한 Future
-호출들은 이전 것이 중단된 지점부터 다시 시작할 것이다(TODO: 재번역 필요). 이
-과정은 future가 성공적으로 완성될 때까지 계속될 것이다.</p>
-<p>하지만, <code>async</code> 블록이 레퍼런스를 사용한다면 어떻게 될까요?</p>
+완성될 수 없다면, <code>AsyncFuture::poll</code>은 <code>Poll::Pending</code>을 반환하며 종료될
+것입니다. future에 대한 <code>poll</code> 호출들은 이전에 중단된 지점(역주: <code>self.state</code>를
+<code>match</code>하여)부터 다시 시작할 것입니다(TODO: 재번역 필요). 이 과정은 future가
+성공적으로 완성될 때까지 반복될 것입니다.</p>
+<p>하지만, <code>async</code> 블록이 참조를 사용한다면 어떻게 될까요?</p>
 <p>예를 들어:</p>
 <pre><code class="language-rust edition2018 ignore">async {
     let mut x = [0; 128];
@@ -1088,7 +1089,7 @@ impl Future for AsyncFuture {
     println!(&quot;{:?}&quot;, x);
 }
 </code></pre>
-<p>위 코드는 어떤 구조체로 컴파일될까요?</p>
+<p>위 코드는 어떤 구조체로 변환될까요?</p>
 <pre><code class="language-rust ignore">struct ReadIntoBuf&lt;'a&gt; {
     buf: &amp;'a mut [u8], // 아래 `x`를 가리킴
 }
@@ -1098,19 +1099,15 @@ struct AsyncFuture {
     read_into_buf_fut: ReadIntoBuf&lt;'what_lifetime?&gt;,
 }
 </code></pre>
-<p>여기, <code>ReadIntoBuf</code> future는 우리 구조체의 다른 필드 <code>x</code>를 가리키는 레퍼런스를
-가지고 있습니다. 하지만, if <code>AsyncFuture</code>가 이동했다면, <code>x</code>의 위치도 같이 움직일
-것이고, <code>read_into_buf_fut.buf</code>에 저장된 포인터를 검증할 것입니다.</p>
-<p>Here, the <code>ReadIntoBuf</code> future holds a reference into the other field of our
-structure, <code>x</code>. However, if <code>AsyncFuture</code> is moved, the location of <code>x</code> will
-move as well, invalidating the pointer stored in <code>read_into_buf_fut.buf</code>.</p>
-<p>Pinning futures to a particular spot in memory prevents this problem, making
-it safe to create references to values inside an <code>async</code> block.</p>
-<h2><a class="header" href="#pinning-in-detail" id="pinning-in-detail">Pinning in Detail</a></h2>
-<p>Let's try to understand pinning by using an slightly simpler example. The problem we encounter
-above is a problem that ultimately boils down to how we handle references in self-referential
-types in Rust.</p>
-<p>For now our example will look like this:</p>
+<p>여기 <code>ReadIntoBuf</code> future는 우리 구조체의 다른 필드인 <code>x</code>를 가리키는 참조를
+가지고 있습니다. 따라서, <code>AsyncFuture</code>가 옮겨진다면, <code>x</code>의 위치도 같이 움직이면서 
+<code>read_into_buf_fut.buf</code>에 저장된 포인터도 무효화 될 것입니다.</p>
+<p>future를 특정된 메모리 위치에 고정함으로서 이 문제를 방지하고, <code>async</code> 블록 안에
+있는 값에 대한 참조를 안전하게 만들 수 있습니다.</p>
+<h2><a class="header" href="#고정하기에-대한-상세설명" id="고정하기에-대한-상세설명">고정하기에 대한 상세설명</a></h2>
+<p>조금 더 간단한 예제로 고정하기를 이해해 봅시다. 위의 문제의 핵심은 '러스트에서
+자기참조 타입의 참조를 어떻게 다루는가'입니다.</p>
+<p>지금부터 우리의 예제는 다음과 같이 바뀔 겁니다.</p>
 <pre><code class="language-rust ignore">use std::pin::Pin;
 
 #[derive(Debug)]
@@ -1141,11 +1138,12 @@ impl Test {
     }
 }
 </code></pre>
-<p><code>Test</code> provides methods to get a reference to the value of the fields <code>a</code> and <code>b</code>. Since <code>b</code> is a
-reference to <code>a</code> we store it as a pointer since the borrowing rules of Rust doesn't allow us to
-define this lifetime. We now have what we call a self-referential struct.</p>
-<p>Our example works fine if we don't move any of our data around as you can observe by running
-this example:</p>
+<p><code>Test</code>는 <code>a</code>와 <code>b</code> 필드의 값에 대한 참조를 얻는 메소드를 제공합니다. <code>b</code>는 <code>a</code>에
+대한 참조이기 때문에 <code>b</code>에 포인터를 사용합니다. 왜냐하면, 러스트의 빌림규칙에
+따라 이 라이프타임을 정의할 수 없기 때문입니다. 이 구조체가 바로 자기-참조
+구조체라고 불리는 것입니다.</p>
+<p>아래 예제를 실행하면 알 수 있듯이, 어느 데이타도 여기저기 움직이지 않는다면 위
+예제는 잘 작동할 겁니다.</p>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let mut test1 = Test::new(&quot;test1&quot;);
     test1.init();
@@ -1171,7 +1169,7 @@ this example:</p>
 </span><span class="boring">        }
 </span><span class="boring">    }
 </span><span class="boring">
-</span><span class="boring">    // We need an `init` method to actually set our self-reference
+</span><span class="boring">    // 자기-참조를 실제로 설정할 `init` 메소드
 </span><span class="boring">    fn init(&amp;mut self) {
 </span><span class="boring">        let self_ref: *const String = &amp;self.a;
 </span><span class="boring">        self.b = self_ref;
@@ -1186,11 +1184,11 @@ this example:</p>
 </span><span class="boring">    }
 </span><span class="boring">}
 </span></code></pre></pre>
-<p>We get what we'd expect:</p>
+<p>예상한 대로 출력됩니다.</p>
 <pre><code class="language-rust ignore">a: test1, b: test1
 a: test2, b: test2
 </code></pre>
-<p>Let's see what happens if we swap <code>test1</code> with <code>test2</code> and thereby move the data:</p>
+<p>그럼 <code>test1</code>과 <code>test2</code>를 스왑하여 데이터를 움직여보고, 무슨 일이 생기는 지 봅시다.</p>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let mut test1 = Test::new(&quot;test1&quot;);
     test1.init();
@@ -1231,19 +1229,21 @@ a: test2, b: test2
 </span><span class="boring">    }
 </span><span class="boring">}
 </span></code></pre></pre>
-<p>Naively, we could think that what we should get a debug print of <code>test1</code> two times like this:</p>
+<p>단순하게 생각하면, 아래처럼 두 번 다 <code>test1</code>의 디버그 내용이 출력될 것이라
+생각하기 십상입니다:</p>
 <pre><code class="language-rust ignore">a: test1, b: test1
 a: test1, b: test1
 </code></pre>
-<p>But instead we get:</p>
+<p>하지만 실제 출력은 다음과 같습니다:</p>
 <pre><code class="language-rust ignore">a: test1, b: test1
 a: test1, b: test2
 </code></pre>
-<p>The pointer to <code>test2.b</code> still points to the old location which is inside <code>test1</code>
-now. The struct is not self-referential anymore, it holds a pointer to a field
-in a different object. That means we can't rely on the lifetime of <code>test2.b</code> to
-be tied to the lifetime of <code>test2</code> anymore.</p>
-<p>If you're still not convinced, this should at least convince you:</p>
+<p>스왑 이후에도, <code>test2.b</code>에 대한 포인터는 여전히 지금 <code>test1</code> 내부에 있는 옛
+위치를 가리킵니다.(TODO: 의역으로 재번역) 이 구조체는 더 이상 자기-참조적이지
+않으며, 다른 객체 안에 있는 필드를 가리키는 포인터를 가지게 됩니다. 즉,
+<code>test2</code>의 라이프타임에 매여있는 <code>test2.b</code>의 라이프타임을 더이상 신뢰할 수 없다는
+뜻입니다.</p>
+<p>만약 아직도 이해가 되지 않는다면, 아래 코드가 확실히 이해시켜 줄 것입니다.</p>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let mut test1 = Test::new(&quot;test1&quot;);
     test1.init();
@@ -1285,24 +1285,25 @@ be tied to the lifetime of <code>test2</code> anymore.</p>
 </span><span class="boring">    }
 </span><span class="boring">}
 </span></code></pre></pre>
-<p>The diagram below can help visualize what's going on:</p>
-<p><strong>Fig 1: Before and after swap</strong>
+<p>아래 그림은 이 내용들을 도식화합니다.</p>
+<p><strong>Fig 1: 스왑 전 후</strong>
 <img src="04_pinning/../assets/swap_problem.jpg" alt="swap_problem" /></p>
-<p>It's easy to get this to show UB and fail in other spectacular ways as well.</p>
-<h2><a class="header" href="#pinning-in-practice" id="pinning-in-practice">Pinning in Practice</a></h2>
-<p>Let's see how pinning and the <code>Pin</code> type can help us solve this problem.</p>
-<p>The <code>Pin</code> type wraps pointer types, guaranteeing that the values behind the
-pointer won't be moved. For example, <code>Pin&lt;&amp;mut T&gt;</code>, <code>Pin&lt;&amp;T&gt;</code>,
-<code>Pin&lt;Box&lt;T&gt;&gt;</code> all guarantee that <code>T</code> won't be moved if <code>T: !Unpin</code>.</p>
-<p>Most types don't have a problem being moved. These types implement a trait
-called <code>Unpin</code>. Pointers to <code>Unpin</code> types can be freely placed into or taken
-out of <code>Pin</code>. For example, <code>u8</code> is <code>Unpin</code>, so <code>Pin&lt;&amp;mut u8&gt;</code> behaves just like
-a normal <code>&amp;mut u8</code>.</p>
-<p>However, types that can't be moved after they're pinned has a marker called
-<code>!Unpin</code>. Futures created by async/await is an example of this.</p>
-<h3><a class="header" href="#pinning-to-the-stack" id="pinning-to-the-stack">Pinning to the Stack</a></h3>
-<p>Back to our example. We can solve our problem by using <code>Pin</code>. Let's take a look at what
-our example would look like we required a pinned pointer instead:</p>
+<p>다른 특별한 방법도 있겠지만, 그림으로 정의되지 않은 동작과 실패를 표현하면
+이해하기 쉽습니다.</p>
+<h2><a class="header" href="#실전에서-고정하기" id="실전에서-고정하기">실전에서 고정하기</a></h2>
+<p>고정하기와 <code>Pin</code> 타입으로 이 문제를 해결하는지 알아봅시다.</p>
+<p><code>Pin</code> 타입은 포인터를 감싸서 포인터 뒤에 있는 값이 움직이지 않음을 보장해줍니다.
+예를 들어, <code>Pin&lt;&amp;mut T&gt;</code>, <code>Pin&lt;&amp;T&gt;</code>, <code>Pin&lt;Box&lt;T&gt;&gt;</code>들은 모두 <code>T: !Unpin</code>이라면
+<code>T</code>가 움직이지 않음을 보장합니다.</p>
+<p>대부분의 타입들에게는 이동되는 문제점이 없습니다. 이러한 타입들은 <code>Unpin</code>이라는
+트레잇을 구현합니다. <code>Unpin</code> 타입에 대한 포인터들은 자유롭게 <code>Pin</code> 안에 넣거나
+꺼낼 수 있습니다. 예를 들어, <code>u8</code>은 <code>Unpin</code>이어서 <code>Pin&lt;&amp;mut u8&gt;</code>은 그냥 평범한
+<code>&amp;mut u8</code>처럼 작동합니다.</p>
+<p>하지만, 고정된 다음에는 움직일 수 없는 타입들은 <code>!Unpin</code>이라는 마커를 가지고
+있습니다. async/await에 의해 만들어진 future들이 그 예시입니다.</p>
+<h3><a class="header" href="#스택에-고정하기" id="스택에-고정하기">스택에 고정하기</a></h3>
+<p>다시 예제로 돌아가서, <code>Pin</code>을 이용하여 문제를 해결할 수 있습니다. 고정된
+포인터를 사용하면 우리의 예제가 어떻게 바뀌는지 살펴봅시다.(TODO: 검토)</p>
 <pre><code class="language-rust ignore">use std::pin::Pin;
 use std::marker::PhantomPinned;
 
@@ -1337,14 +1338,14 @@ impl Test {
     }
 }
 </code></pre>
-<p>Pinning an object to the stack will always be <code>unsafe</code> if our type implements
-<code>!Unpin</code>. You can use a crate like <a href="https://docs.rs/pin-utils/"><code>pin_utils</code></a> to avoid writing
-our own <code>unsafe</code> code when pinning to the stack.</p>
-<p>Below, we pin the objects <code>test1</code> and <code>test2</code> to the stack:</p>
+<p>우리의 타입이 <code>!Unpin</code>을 구현한다면 객체를 스택에 고정하는 것은 항상 <code>unsafe</code>할
+것입니다. 여러분은 스택에 고정할 때 <code>unsafe</code> 코드를 직접 사용하지 않으려면
+<a href="https://docs.rs/pin-utils/"><code>pin_utils</code></a> 같은 크레잇을 사용할 수 있습니다.</p>
+<p>아래처럼, 객체 <code>test1</code>과 <code>test2</code>를 스택에 고정합시다.</p>
 <pre><pre class="playground"><code class="language-rust">pub fn main() {
-    // test1 is safe to move before we initialize it
+    // test1은 초기화되기 전에 움직여도 안전합니다.
     let mut test1 = Test::new(&quot;test1&quot;);
-    // Notice how we shadow `test1` to prevent it from being accessed again
+    // `test1`이 다시 액세스되는 것을 막기 위해 어떻게 `test1`을 쉐도우하는지 확인해 두세요
     let mut test1 = unsafe { Pin::new_unchecked(&amp;mut test1) };
     Test::init(test1.as_mut());
 
@@ -1371,7 +1372,7 @@ our own <code>unsafe</code> code when pinning to the stack.</p>
 </span><span class="boring">        Test {
 </span><span class="boring">            a: String::from(txt),
 </span><span class="boring">            b: std::ptr::null(),
-</span><span class="boring">            // This makes our type `!Unpin`
+</span><span class="boring">            // 우리의 타입을 `!Unpin`으로 만듭니다.
 </span><span class="boring">            _marker: PhantomPinned,
 </span><span class="boring">        }
 </span><span class="boring">    }
@@ -1390,7 +1391,7 @@ our own <code>unsafe</code> code when pinning to the stack.</p>
 </span><span class="boring">    }
 </span><span class="boring">}
 </span></code></pre></pre>
-<p>Now, if we try to move our data now we get a compilation error:</p>
+<p>자, 만약 지금 우리가 데이터를 움직이려고 하면, 컴파일 에러가 발생합니다.</p>
 <pre><pre class="playground"><code class="language-rust compile_fail">pub fn main() {
     let mut test1 = Test::new(&quot;test1&quot;);
     let mut test1 = unsafe { Pin::new_unchecked(&amp;mut test1) };
@@ -1420,7 +1421,7 @@ our own <code>unsafe</code> code when pinning to the stack.</p>
 </span><span class="boring">        Test {
 </span><span class="boring">            a: String::from(txt),
 </span><span class="boring">            b: std::ptr::null(),
-</span><span class="boring">            _marker: PhantomPinned, // This makes our type `!Unpin`
+</span><span class="boring">            _marker: PhantomPinned, // 우리의 타입을 `!Unpin`으로 만듭니다.
 </span><span class="boring">        }
 </span><span class="boring">    }
 </span><span class="boring">    fn init&lt;'a&gt;(self: Pin&lt;&amp;'a mut Self&gt;) {
@@ -1438,16 +1439,18 @@ our own <code>unsafe</code> code when pinning to the stack.</p>
 </span><span class="boring">    }
 </span><span class="boring">}
 </span></code></pre></pre>
-<p>The type system prevents us from moving the data.</p>
+<p>타입 시스템은 우리가 데이터를 움직이지 못하게 막아줍니다.</p>
 <blockquote>
-<p>It's important to note that stack pinning will always rely on guarantees
-you give when writing <code>unsafe</code>. While we know that the <em>pointee</em> of <code>&amp;'a mut T</code>
-is pinned for the lifetime of <code>'a</code> we can't know if the data <code>&amp;'a mut T</code>
-points to isn't moved after <code>'a</code> ends. If it does it will violate the Pin
-contract.</p>
-<p>A mistake that is easy to make is forgetting to shadow the original variable
-since you could drop the <code>Pin</code> and move the data after <code>&amp;'a mut T</code>
-like shown below (which violates the Pin contract):</p>
+<p>스택에 고정하기는 <code>unsafe</code>를 사용하므로 항상 여러분이 보장해야 한다는 점을
+명심하세요. <code>&amp;'a mut T</code>가 _가리키는 값_은 <code>'a</code> 라이프타임에 동안 고정된지만,
+<code>&amp;'a mut T</code>가 가리키는 데이터가 <code>'a</code>가 끝난 다음에도 움직이지 않았는지 알 수는
+없습니다.(TODO: 재번역) 만약 <code>&amp;'a mut T</code>가 가리키는 데이터가 <code>'a</code>가 끝난
+다음에 움직인다면 Pin 규칙을 어기게 될 것입니다.</p>
+</blockquote>
+<blockquote>
+<p>원 변수를 쉐도우하는 것을 깜빡하기 쉽습니다. 왜냐하면, (Pin 규칙을 어기는)
+아래 코드처럼, <code>Pin</code>을 드랍하고 나서, <code>&amp;'a mut T</code> 다음에 데이타를 움직일
+가능성이 있기 때문입니다.</p>
 <pre><pre class="playground"><code class="language-rust">fn main() {
    let mut test1 = Test::new(&quot;test1&quot;);
    let mut test1_pin = unsafe { Pin::new_unchecked(&amp;mut test1) };
@@ -1495,16 +1498,16 @@ like shown below (which violates the Pin contract):</p>
 </span><span class="boring">}
 </span></code></pre></pre>
 </blockquote>
-<h3><a class="header" href="#pinning-to-the-heap" id="pinning-to-the-heap">Pinning to the Heap</a></h3>
-<p>Pinning an <code>!Unpin</code> type to the heap gives our data a stable address so we know
-that the data we point to can't move after it's pinned. In contrast to stack
-pinning, we know that the data will be pinned for the lifetime of the object.</p>
+<h3><a class="header" href="#힙-역역에-고정하기" id="힙-역역에-고정하기">힙 역역에 고정하기</a></h3>
+<p><code>!Unpin</code>타입을 힙에 고정하면 우리 데이타에 안정적인 주소를 부여하게 됩니다.
+그래서 우리가 가리키는 데이터는 고정되고 나면 움직일 수 없습니다. 스택에
+고정하기와 대조적으로, 데이터가 객체의 수명주기동안 고정됩니다.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">use std::pin::Pin;
 use std::marker::PhantomPinned;
 
 #[derive(Debug)]
 struct Test {
-    a: String,
+   a: String,
     b: *const String,
     _marker: PhantomPinned,
 }
@@ -1540,20 +1543,19 @@ pub fn main() {
     println!(&quot;a: {}, b: {}&quot;,test2.as_ref().a(), test2.as_ref().b());
 }
 </code></pre></pre>
-<p>Some functions require the futures they work with to be <code>Unpin</code>. To use a
-<code>Future</code> or <code>Stream</code> that isn't <code>Unpin</code> with a function that requires
-<code>Unpin</code> types, you'll first have to pin the value using either
-<code>Box::pin</code> (to create a <code>Pin&lt;Box&lt;T&gt;&gt;</code>) or the <code>pin_utils::pin_mut!</code> macro
-(to create a <code>Pin&lt;&amp;mut T&gt;</code>). <code>Pin&lt;Box&lt;Fut&gt;&gt;</code> and <code>Pin&lt;&amp;mut Fut&gt;</code> can both be
-used as futures, and both implement <code>Unpin</code>.</p>
-<p>For example:</p>
-<pre><code class="language-rust edition2018 ignore">use pin_utils::pin_mut; // `pin_utils` is a handy crate available on crates.io
+<p>몇몇 함수들은 future가 <code>Unpin</code> 타입일 것을 요구합니다. <code>Unpin</code>이 아닌 <code>Future</code>나
+<code>Stream</code>을 <code>Unpin</code> 타입을 요구하는 함수와 함께 사용하기 위해서는, 먼저
+(<code>Pin&lt;Box&lt;T&gt;&gt;</code>을 만든다면) <code>Box::pin</code>이나 (<code>Pin&lt;&amp;mut T&gt;</code>를 만든다면)
+<code>pin_utils::pin_mut!</code> 매크로를 사용하여 값을 고정해야 합니다. <code>Pin&lt;Box&lt;Fut&gt;&gt;</code>와
+<code>Pin&lt;&amp;mut Fut&gt;</code> 둘 다 future처럼 사용될 수 있으며, 둘 다 <code>Unpin</code>을 구현합니다.</p>
+<p>예를 들어:</p>
+<pre><code class="language-rust edition2018 ignore">use pin_utils::pin_mut; // `pin_utils`는 crates.io에 있는 가벼운 crate입니다.
 
-// A function which takes a `Future` that implements `Unpin`.
+// `Unpin`을 구현하는 `Future`를 취하는 함수
 fn execute_unpin_future(x: impl Future&lt;Output = ()&gt; + Unpin) { /* ... */ }
 
 let fut = async { /* ... */ };
-execute_unpin_future(fut); // Error: `fut` does not implement `Unpin` trait
+execute_unpin_future(fut); // 오류: `fut`은 `Unpin` 트레잇을 구현하지 않음
 
 // Pinning with `Box`:
 let fut = async { /* ... */ };
@@ -1565,37 +1567,40 @@ let fut = async { /* ... */ };
 pin_mut!(fut);
 execute_unpin_future(fut); // OK
 </code></pre>
-<h2><a class="header" href="#summary" id="summary">Summary</a></h2>
+<h2><a class="header" href="#정리" id="정리">정리</a></h2>
 <ol>
 <li>
-<p>If <code>T: Unpin</code> (which is the default), then <code>Pin&lt;'a, T&gt;</code> is entirely
-equivalent to <code>&amp;'a mut T</code>. in other words: <code>Unpin</code> means it's OK for this type
-to be moved even when pinned, so <code>Pin</code> will have no effect on such a type.</p>
+<p><code>T: Unpin</code>(기본값)이라면 <code>Pin&lt;'a, T&gt;</code>는 <code>&amp;'a mut T</code>와 전적으로 동일합니다.
+다르게 표현하자면, <code>Unpin</code>은 &quot;이 타입은 고정되었을지라도 움직여도 됨&quot;을
+의미합니다. 따라서 <code>Pin</code>은 해당 타입에 대해 효과가 없습니다.</p>
 </li>
 <li>
-<p>Getting a <code>&amp;mut T</code> to a pinned T requires unsafe if <code>T: !Unpin</code>.</p>
+<p><code>T: !Unpin</code>일 때, 고정된 T에 대하여 <code>&amp;mut T</code>를 얻으려면 unsafe가 필요합니다.</p>
 </li>
 <li>
-<p>Most standard library types implement <code>Unpin</code>. The same goes for most
-&quot;normal&quot; types you encounter in Rust. A <code>Future</code> generated by async/await is an exception to this rule.</p>
+<p>대부분의 표준 라이브러리 타입들은 <code>Unpin</code>을 구현합니다. 여러분이 러스트에서
+사용할 대부분의 &quot;평범한&quot; 타입들도 마찬가지입니다. async/await에 의해 생성된
+<code>Future</code>는 이 규칙에 예외입니다.</p>
 </li>
 <li>
-<p>You can add a <code>!Unpin</code> bound on a type on nightly with a feature flag, or
-by adding <code>std::marker::PhantomPinned</code> to your type on stable.</p>
+<p>nightly에서는 feature flag를 설정하면 어떤 타입을 <code>!Unpin</code>할 수
+있습니다(TODO: add bound를 다시 번역). stable에서는 타입에
+<code>std::marker::PhantomPinned</code>를 추가하면 됩니다.</p>
 </li>
 <li>
-<p>You can either pin data to the stack or to the heap.</p>
+<p>데이타를 스택이나 힙에 고정할 수 있습니다.</p>
 </li>
 <li>
-<p>Pinning a <code>!Unpin</code> object to the stack requires <code>unsafe</code></p>
+<p><code>!Unpin</code> 객체를 스택에 고정하려면 <code>unsafe</code>가 필요합니다.</p>
 </li>
 <li>
-<p>Pinning a <code>!Unpin</code> object to the heap does not require <code>unsafe</code>. There is a shortcut for doing this using <code>Box::pin</code>.</p>
+<p><code>!Unpin</code> 객체를 힙에 고정할 때는 <code>unsafe</code>가 필요 없습니다. <code>Box::pin</code>을
+사용하면 간단하게 할 수 있습니다.</p>
 </li>
 <li>
-<p>For pinned data where <code>T: !Unpin</code> you have to maintain the invariant that its memory will not
-get invalidated or repurposed <em>from the moment it gets pinned until when drop</em> is called. This is
-an important part of the <em>pin contract</em>.</p>
+<p><code>T: !Unpin</code>인 고정된 데이터에 대해서는, 여러분이 그 데이터의 메모리가
+_고정되어 drop이 호출되기 전_까지 무효화되거나 용도변경되지 않음(불변성)을
+유지할 책임이 있습니다. 이는 _고정 규칙_에서 중요한 부분입니다.</p>
 </li>
 </ol>
 <h1><a class="header" href="#stream-트레잇" id="stream-트레잇"><code>Stream</code> 트레잇</a></h1>
