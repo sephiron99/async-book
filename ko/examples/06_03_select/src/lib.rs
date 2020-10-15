@@ -4,7 +4,7 @@
 mod example {
 // ANCHOR: example
 use futures::{
-    future::FutureExt, // for `.fuse()`
+    future::FutureExt, // `.fuse()`에 필요
     pin_mut,
     select,
 };
@@ -40,7 +40,7 @@ async fn count() {
             a = a_fut => total += a,
             b = b_fut => total += b,
             complete => break,
-            default => unreachable!(), // never runs (futures are ready, then complete)
+            default => unreachable!(), // 실행되지 않음(future들은 준비되자마자 완성됨)
         };
     }
     assert_eq!(total, 10);
@@ -105,21 +105,21 @@ async fn run_loop(
     loop {
         select! {
             () = interval_timer.select_next_some() => {
-                // The timer has elapsed. Start a new `get_new_num_fut`
-                // if one was not already running.
+                // 타이머가 경과되었음. 아직 실행되지 않고 있는 future가 있다면,
+                // 새 `get_new_num_fut`를 시작
                 if get_new_num_fut.is_terminated() {
                     get_new_num_fut.set(get_new_num().fuse());
                 }
             },
             new_num = get_new_num_fut => {
-                // A new number has arrived-- start a new `run_on_new_num_fut`,
-                // dropping the old one.
+                // 새 숫자가 도착함-- 새 `run_on_new_num_fut`를 시작하고 예전
+                // 것을 드랍함.
                 run_on_new_num_fut.set(run_on_new_num(new_num).fuse());
             },
-            // Run the `run_on_new_num_fut`
+            // `run_on_new_num_fut`를 실행
             () = run_on_new_num_fut => {},
-            // panic if everything completed, since the `interval_timer` should
-            // keep yielding values indefinitely.
+            // 모든 future가 완성되었다면 패닉. 왜냐하면 `indefinitely`는 값들을
+            // 무기한으로 내야(yield) 함
             complete => panic!("`interval_timer` completed unexpectedly"),
         }
     }
@@ -140,13 +140,10 @@ async fn get_new_num() -> u8 { /* ... */ 5 }
 
 async fn run_on_new_num(_: u8) -> u8 { /* ... */ 5 }
 
-// Runs `run_on_new_num` with the latest number
-// retrieved from `get_new_num`.
+// `get_new_num`로부터 나온 마지막 숫자를 가지고 `run_on_new_num`를 실행
 //
-// `get_new_num` is re-run every time a timer elapses,
-// immediately cancelling the currently running
-// `run_on_new_num` and replacing it with the newly
-// returned value.
+// `get_new_num`은 타이머가 경과될 때마다 즉시 현재 실행중인 `run_on_new_num`을
+// 취소하고 새 반환값으로 대체하면서 재시작됨.
 async fn run_loop(
     mut interval_timer: impl Stream<Item = ()> + FusedStream + Unpin,
     starting_num: u8,
@@ -158,22 +155,22 @@ async fn run_loop(
     loop {
         select! {
             () = interval_timer.select_next_some() => {
-                // The timer has elapsed. Start a new `get_new_num_fut`
-                // if one was not already running.
+                // 타이머 경과됨. 실행중인 `get_new_num_fut`이 없다면 새로
+                // 시작함.
                 if get_new_num_fut.is_terminated() {
                     get_new_num_fut.set(get_new_num().fuse());
                 }
             },
             new_num = get_new_num_fut => {
-                // A new number has arrived-- start a new `run_on_new_num_fut`.
+                // 새 숫자가 도착함-- 새 `run_on_new_num_fut`를 시작함.
                 run_on_new_num_futs.push(run_on_new_num(new_num));
             },
-            // Run the `run_on_new_num_futs` and check if any have completed
+            // `run_on_new_num_futs`를 실행하고 완성된 `run_on_new_num_futs`가
+            // 있는 지 확인함
             res = run_on_new_num_futs.select_next_some() => {
                 println!("run_on_new_num_fut returned {:?}", res);
             },
-            // panic if everything completed, since the `interval_timer` should
-            // keep yielding values indefinitely.
+            // 모든 것이 완성되었다면 패닉. 왜냐하면 `interval_timer`는 값을 무기한으로 내야 함
             complete => panic!("`interval_timer` completed unexpectedly"),
         }
     }
