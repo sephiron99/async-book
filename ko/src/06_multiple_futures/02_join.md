@@ -14,9 +14,9 @@
 
 그런데, 이렇게 하면 필요한 만큼 성능을 낼 수 없습니다. 왜냐하면, `get_book`이
 완성될 때까지 `get_music`을 시작하려 하지 않을 것이기 때문입니다. 몇몇 다른
-언어에서는, future가 완성될 때까지 주변적으로(ambiently) 실행되는 방식입니다. 이
-방식에서는 처음부터 각 `async fn`을 호출하여 future들을 시작하고, 둘 모두를
-기다림으로써, 두 작업이 동시에 실행될 수 있습니다.
+언어에서는, future가 완성될 때까지 주변적으로(ambiently) 실행되는 방식을
+사용하기도 합니다. 이 방식에서는 처음부터 각 `async fn`을 호출하여 future들을
+시작하고, 둘 모두를 기다림으로써, 두 작업이 동시에 실행될 수 있습니다.
 
 ```rust,edition2018,ignore
 {{#include ../../examples/06_02_join/src/lib.rs:other_langs}}
@@ -25,7 +25,7 @@
 하지만, 실제 러스트의 future는 `.await`될 때까지 아무것도 하지 않습니다. 따라서,
 위의 두 코드 스니펫들은 둘 다 `book_future`와 `music_future`를 동시가 아닌
 순차적으로 실행한다는 의미입니다. 두 future를 진짜 동시에 실행하려면
-`futures::join!`을 사용하세요: 
+`futures::join!`을 사용하세요:
 
 ```rust,edition2018,ignore
 {{#include ../../examples/06_02_join/src/lib.rs:join}}
