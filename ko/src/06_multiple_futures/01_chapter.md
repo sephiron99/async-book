@@ -1,14 +1,12 @@
-# Executing Multiple Futures at a Time
+# 여러개의 future를 동시에 실행하기
 
-Up until now, we've mostly executed futures by using `.await`, which blocks
-the current task until a particular `Future` completes. However, real
-asynchronous applications often need to execute several different
-operations concurrently.
+지금까지, 대부분의 future를 현재의 task를 `Future`가 완성될 때까지 블록하는
+`.await`로 실행시켰습니다. 그러나, 진짜 비동기 어플리케이션은 종종 몇개의 다른
+작업을 동시에 실행할 필요가 있습니다.
 
-In this chapter, we'll cover some ways to execute multiple asynchronous
-operations at the same time:
+이 장에서는 여러개의 비동기 작업들을 동시에 싱행하는 몇가지 방법들을 배울 것입니다.
 
-- `join!`: waits for futures to all complete
-- `select!`: waits for one of several futures to complete
-- Spawning: creates a top-level task which ambiently runs a future to completion
-- `FuturesUnordered`: a group of futures which yields the result of each subfuture
+- `join!` : future들이 모두 완성될 때까지 기다림
+- `select!` : 여러 future 중에 한개가 완료될 때까지 기다림
+- 스포닝 : 한 개의 future를 완성될 때까지 주변에서 실행하는 최상위 task를 만듦
+- `FuturesUnordered` : future들의 그룹. 각각의 하위future의 결과를 산출함
