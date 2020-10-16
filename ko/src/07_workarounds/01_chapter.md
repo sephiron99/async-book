@@ -1,6 +1,5 @@
-# Workarounds to Know and Love
+# 알아두면 좋을 요령들
 
-Rust's `async` support is still fairly new, and there are a handful of
-highly-requested features still under active development, as well
-as some subpar diagnostics. This chapter will discuss some common pain
-points and explain how to work around them.
+러스트의 `async` 지원은 아직 많이 새롭습니다. 그리고 매우 필요한 몇몇 기능들은
+아직 개발중에 있습니다. 진단루틴도 약간 수준이하입니다. 이 장에서는 자주 나오는
+불편한 부분들에 대해 논의하고, 이를 회피하는 요령에 대해 설명합니다.

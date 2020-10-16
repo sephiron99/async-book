@@ -1,11 +1,10 @@
-# `?` in `async` Blocks
+# `async` 블록 안에서의 `?`
 
-Just as in `async fn`, it's common to use `?` inside `async` blocks.
-However, the return type of `async` blocks isn't explicitly stated.
-This can cause the compiler to fail to infer the error type of the
-`async` block.
+`async fn` 안에서와 마찬가지로, `async` 블록들 안에서 `?`의 사용도 보편적입니다.
+하지만, `async` 블록들의 반환 타입은 명시적으로 규정되지 않았습니다. 이로인해
+컴파일러가 `async`블록의 에러 타입을 추론하는 데 실패할 수도 있습니다.
 
-For example, this code:
+예를 들어, 아래 코드는
 
 ```rust,edition2018
 # struct MyError;
@@ -18,7 +17,7 @@ let fut = async {
 };
 ```
 
-will trigger this error:
+아래 에러를 발생시킬 것입니다.
 
 ```
 error[E0282]: type annotations needed
@@ -30,10 +29,10 @@ error[E0282]: type annotations needed
   |         ^^^^^^^^^^^^ cannot infer type
 ```
 
-Unfortunately, there's currently no way to "give `fut` a type", nor a way
-to explicitly specify the return type of an `async` block.
-To work around this, use the "turbofish" operator to supply the success and
-error types for the `async` block:
+불행하게도, "`fut`에 타입을 부여하는" 방법이나, 명시적으로 `async`블록의 반환
+타입을 지정하는 방법은 현재 존재하지 않습니다. 이 문제를 해결하기 위해서,
+`async`블록에 성공과 에러의 타입을 제공하기 위해 아래와 같이 "turbofish"
+연산자를 사용하세요.
 
 ```rust,edition2018
 # struct MyError;
@@ -42,7 +41,7 @@ error types for the `async` block:
 let fut = async {
     foo().await?;
     bar().await?;
-    Ok::<(), MyError>(()) // <- note the explicit type annotation here
+    Ok::<(), MyError>(()) // <- 이 곳의 명시적 타입 주해에 유의할 것.
 };
 ```
 
