@@ -59,27 +59,28 @@ future라도 완성되면 사용자가 바로 반응할 수 있습니다.
 ```
 
 ## Concurrent tasks in a `select` loop with `Fuse` and `FuturesUnordered`
+## `Fuse`와 `FuturesUnordered`를 이용한 `select` 루프 내부의 동시성 task
 
-One somewhat hard-to-discover but handy function is `Fuse::terminated()`,
-which allows constructing an empty future which is already terminated,
-and can later be filled in with a future that needs to be run.
+`Fuse:terminated()` 함수는 눈에 잘 띄지는 않지만 유용한 함수입니다. 이 함수는
+이미 종료되어 비어있지만, 나중에 필요할 때, 실행할 future를 넣어서 실행할 수 있는
+future를 만들어 줍니다.
 
-This can be handy when there's a task that needs to be run during a `select`
-loop but which is created inside the `select` loop itself.
+이 함수는 `select` 루프가 유효한 동안에 실행될 필요가 있지만 `select` 루프 자체
+안에서 만들어지는 task가 있을 경우 유용합니다.
 
-Note the use of the `.select_next_some()` function. This can be
-used with `select` to only run the branch for `Some(_)` values
-returned from the stream, ignoring `None`s.
+`.select_next_some()` 함수의 용도에 유의하세요. 이 함수는 스트림이 반환한
+`Some(_)` 값에 대응하는 분기를 실행할 때만 `select`와 함께 사용될 수 있습니다.
+`.select_next_some()`함수는 `None`을 무시합니다.(TODO: 이 때, `None`은
+무시됩니다)
 
 ```rust,edition2018
 {{#include ../../examples/06_03_select/src/lib.rs:fuse_terminated}}
 ```
 
-When many copies of the same future need to be run simultaneously,
-use the `FuturesUnordered` type. The following example is similar
-to the one above, but will run each copy of `run_on_new_num_fut`
-to completion, rather than aborting them when a new one is created.
-It will also print out a value returned by `run_on_new_num_fut`.
+같은 future의 여러 복사본을 동시에 실행할 필요가 있을 때에는 `FuturesUnordered`
+타입을 사용하세요. 아래 예제는 위 예제랑 비슷하지만, `run_on_new_num_fut`의
+복사본이 생겨도 중단하지 않고 각 복사본을 완성될때까지 실행한다는 점이 다릅니다.
+또한, 아래 예제는 `run_on_new_num_fut`가 반환한 값을 출력할 것입니다.
 
 ```rust,edition2018
 {{#include ../../examples/06_03_select/src/lib.rs:futures_unordered}}

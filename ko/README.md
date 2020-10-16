@@ -1,8 +1,8 @@
 ## 중복되지 않게 번역하려는 파일이나 챕터를 먼저 이 README.md에 pull request해주세요.
-| 대상                   | ID         | 상태   |
-|------------------------|------------|--------|
-| 05_streams 장          | carnoxen   | 번역중 |
-| 06_multiple futures 장 | sephiron99 | 번역중 |
+| 대상                 | ID         | 상태   |
+|----------------------|------------|--------|
+| 05_streams 장        | carnoxen   | 번역중 |
+| 07_Workarounds... 장 | sephiron99 | 번역중 |
 
 # async-book 한국어 번역
 러스트 비동기 프로그래밍 
