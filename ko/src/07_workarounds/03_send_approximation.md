@@ -1,13 +1,13 @@
 # `Send` Approximation
 
-Some `async fn` state machines are safe to be sent across threads, while
-others are not. Whether or not an `async fn` `Future` is `Send` is determined
-by whether a non-`Send` type is held across an `.await` point. The compiler
-does its best to approximate when values may be held across an `.await`
-point, but this analysis is too conservative in a number of places today.
+(TODO: 재번역) 몇몇 `async fn` 상태기계는 스레드 간 이동에 안전하지만 나머지는
+그렇지 않습니다. `async fn` `Future`이 `Send`인지 여부는 `Send`가 아닌 타입이
+`.await` 포인트에 걸쳐 홀드되는지 여부에 달려 있습니다. 컴파일러 값이 `.await`
+포인트에 걸쳐 홀드될지도 모를 때, 무엇을(TODO: ) 추정하려고 최선을 다합니다.
+하지만, 이런 분석은 오늘날 많은 경우에 너무 보수적입니다.
 
-For example, consider a simple non-`Send` type, perhaps a type
-which contains an `Rc`:
+예를 들어, 간단한 비(非) `Send` 타입이 `Rc`를 가지고 있을지도 모른다고
+가정해봅시다.
 
 ```rust
 use std::rc::Rc;
