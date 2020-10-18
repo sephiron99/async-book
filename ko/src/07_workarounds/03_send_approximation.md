@@ -1,4 +1,4 @@
-# `Send` Approximation
+# `Send` 추정
 
 (TODO: 재번역) 몇몇 `async fn` 상태기계는 스레드 간 이동에 안전하지만 나머지는
 그렇지 않습니다. `async fn` `Future`이 `Send`인지 여부는 `Send`가 아닌 타입이
@@ -18,6 +18,9 @@ struct NotSend(Rc<()>);
 
 Variables of type `NotSend` can briefly appear as temporaries in `async fn`s
 even when the resulting `Future` type returned by the `async fn` must be `Send`:
+(TODO: 검토)
+`NotSend` 타입의 변수들은 `async fn`이 반환한 `Future` 타입 결과가 `Send`되어야
+할 경우에도, `async fn` 안에서 임시로 간단히 나타날 수 있습니다. 
 
 ```rust,edition2018
 # use std::rc::Rc;
