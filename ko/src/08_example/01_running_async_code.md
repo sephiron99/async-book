@@ -1,20 +1,22 @@
-# Running Asynchronous Code
-An HTTP server should be able to serve multiple clients concurrently;
-that is, it should not wait for previous requests to complete before handling the current request.
-The book
-[solves this problem](https://doc.rust-lang.org/book/ch20-02-multithreaded.html#turning-our-single-threaded-server-into-a-multithreaded-server)
-by creating a thread pool where each connection is handled on its own thread.
-Here, instead of improving throughput by adding threads, we'll achieve the same effect using asynchronous code.
+# 비동기 코드 실행하기
 
-Let's modify `handle_connection` to return a future by declaring it an `async fn`:
+HTTP 서버는 동시에 여러 클라이언트에 동시에 서비스할 수 있어야 합니다. 즉, HTTP
+서버는 현재의 리퀘스트를 처리하기 전에 기존의 리퀘스트가 끝나길 기다려서는 안된다는 말입니다.
+러스트북의 예제에서는 모든 연결에 스레드를 하나씩 할당하는 스레드 풀을 만들어서 
+[이 문제를 해결합니다.](https://doc.rust-lang.org/book/ch20-02-multithreaded.html#turning-our-single-threaded-server-into-a-multithreaded-server)
+
+여기서는, 스레드를 추가하여 처리성능을 향상시키기 보다, 비동기 코드를
+사용하여 같은 효과를 내 봅시다.
+
+`handle_connection`의 선언을 `async fn`으로 수정하여 future를 반환하게 합시다.
 ```rust,ignore
 {{#include ../../examples/08_02_async_tcp_server/src/main.rs:handle_connection_async}}
 ```
 
-Adding `async` to the function declaration changes its return type
-from the unit type `()` to a type that implements `Future<Output=()>`.
+`async`를 `handle_connection` 선언에 추가하면 반환값이 유닛 타입 `()`에서
+`Future<Output=()>`을 구현하는 타입으로 변경됩니다.
 
-If we try to compile this, the compiler warns us that it will not work:
+이 코드를 컴파일하면 작동되지 않을 것이라는 컴파일러 에러가 발생합니다.
 ```console
 $ cargo check
     Checking async-rust v0.1.0 (file:///projects/async-rust)
@@ -28,13 +30,14 @@ warning: unused implementer of `std::future::Future` that must be used
    = note: futures do nothing unless you `.await` or poll them
 ```
 
-Because we haven't `await`ed or `poll`ed the result of `handle_connection`,
-it'll never run. If you run the server and visit `127.0.0.1:7878` in a browser,
-you'll see that the connection is refused; our server is not handling requests.
+`handle_connection`은 그 반환값을 `await`하거나 `poll`하지 않았기 때문에, 전혀
+실행되지 않을 것입니다. 서버를 실행하고 브라우저에서 `127.0.0.1:7878` 열면
+연결이 거부됨을 알 수 있습니다. 서버가 요청을 처리하지 않는 것입니다.
 
-We can't `await` or `poll` futures within synchronous code by itself.
-We'll need an asynchronous runtime to handle scheduling and running futures to completion.
-Please consult the section on choosing a runtime for more information on asynchronous runtimes, executors, and reactors.
+비동기 코드 자체안에서 `await`하거나 `poll`할 수는 없습니다. future를
+완성될때까지 스케쥴링하고 실행할 비동기 런타임이 필요합니다.
+비동기 런타임, executor 그리고 reactor에 대한 자세한 정보를 원한다면 런타임
+선택에 관한 장을 살펴보세요.
 
 [//]: <> (TODO: Link to section on runtimes once complete.)
 

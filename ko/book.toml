@@ -1,6 +1,6 @@
 [book]
 title = "러스트 비동기 프로그래밍"
-authors = ["Taylor Cramer"]
+authors = ["Taylor Cramer / (번역) github.com/sephiron99, github.com/carnoxen"]
 
 [build]
 create-missing = false
@@ -8,7 +8,7 @@ create-missing = false
 [preprocess.links]
 
 [output.html]
-git-repository-url = "https://github.com/sephiron99/async-book/tree/ko_KR/ko"
+git-repository-url = "https://github.com/sephiron99/async-book/ko"
 
 [output.linkcheck]
 follow-web-links = true
