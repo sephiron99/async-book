@@ -1,8 +1,8 @@
-# Recursion
+# 재귀
 
-Internally, `async fn` creates a state machine type containing each
-sub-`Future` being `.await`ed. This makes recursive `async fn`s a little
-tricky, since the resulting state machine type has to contain itself:
+내부적으로, `async fn`은 `.await`하는 하위 `Future`를 갖는 상태기계 타입을
+만듭니다. 때문에, `async fn`을 재귀적으로 사용하기 살짝 까다롭습니다. 왜냐하면,
+결과를 도출할 상태기계 타입이 그 자신을 포함해야 하기 때문입니다.
 
 ```rust,edition2018
 # async fn step_one() { /* ... */ }
@@ -33,8 +33,7 @@ enum Recursive {
 }
 ```
 
-This won't work—we've created an infinitely-sized type!
-The compiler will complain:
+위 예제는 무한한 크기의 타입을 만들기 때문에 작동하지 않습니다. 컴파일러 오류는 다음과 같습니다.
 
 ```
 error[E0733]: recursion in an `async fn` requires boxing
@@ -46,11 +45,10 @@ error[E0733]: recursion in an `async fn` requires boxing
   = note: a recursive `async fn` must be rewritten to return a boxed future.
 ```
 
-In order to allow this, we have to introduce an indirection using `Box`.
-Unfortunately, compiler limitations mean that just wrapping the calls to
-`recursive()` in `Box::pin` isn't enough. To make this work, we have
-to make `recursive` into a non-`async` function which returns a `.boxed()`
-`async` block:
+제대로 작동하게 하기 위해서는, `Box`를 이용해 우회접근해야 합니다. 불행하게도,
+컴파일러의 제한에 따라 `Box::pin`으로 `recursive()` 호출을 감싸는 것만으로는
+충분하지 않습니다. 제대로 하려면은, 아래 예제처럼 `recursive`를 `.boxed()`된 비
+`async` 블록 안에 넣어야 합니다.
 
 ```rust,edition2018
 {{#include ../../examples/07_05_recursion/src/lib.rs:example}}

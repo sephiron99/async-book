@@ -30,8 +30,7 @@ future라도 완성되면 사용자가 바로 반응할 수 있습니다.
 {{#include ../../examples/06_03_select/src/lib.rs:default_and_complete}}
 ```
 
-## Interaction with `Unpin` and `FusedFuture`
-## `Unpin`과 `FusedFuture`로 소통하기
+## `Unpin`과 `FusedFuture`로 상호작용하기
 
 위 첫 번째 예제에서, 여러분은 두 `async fn`가 반환한 future에 대해 `pin_mut`으로
 고정하고, `.fuse()`를 호출해야 한다는 점을 인지했을 겁니다. `select`안에서
@@ -58,8 +57,7 @@ future라도 완성되면 사용자가 바로 반응할 수 있습니다.
 {{#include ../../examples/06_03_select/src/lib.rs:fused_stream}}
 ```
 
-## Concurrent tasks in a `select` loop with `Fuse` and `FuturesUnordered`
-## `Fuse`와 `FuturesUnordered`를 이용한 `select` 루프 내부의 동시성 task
+## `Fuse`와 `FuturesUnordered`를 이용한 `select` 루프 내부에서의 동시성 task
 
 `Fuse:terminated()` 함수는 눈에 잘 띄지는 않지만 유용한 함수입니다. 이 함수는
 이미 종료되어 비어있지만, 나중에 필요할 때, 실행할 future를 넣어서 실행할 수 있는
