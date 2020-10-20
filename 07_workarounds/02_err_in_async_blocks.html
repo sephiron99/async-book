@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>? in async Blocks - 러스트 비동기 프로그래밍</title>
+        <title>async 블록 안에서의 ? - 러스트 비동기 프로그래밍</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> 시작하며</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html"><strong aria-hidden="true">1.1.</strong> Async가 필요한 이유</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> 비동기적 러스트 현황</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await 기초</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> 내부 구조: Future와 task 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> Future 트레잇</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Waker로 Task 깨우기</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html"><strong aria-hidden="true">2.3.</strong> 응용: executor 구현하기</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html"><strong aria-hidden="true">2.4.</strong> Executor와 시스템 입출력</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> Pinning</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> Streams</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> Iteration and Concurrency</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> 여러개의 future를 동시에 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> Workarounds to Know and Love</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_err_in_async_blocks.html" class="active"><strong aria-hidden="true">7.1.</strong> ? in async Blocks</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_send_approximation.html"><strong aria-hidden="true">7.2.</strong> Send Approximation</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_recursion.html"><strong aria-hidden="true">7.3.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_async_in_traits.html"><strong aria-hidden="true">7.4.</strong> async in Traits</a></li></ol></li><li class="chapter-item expanded "><a href="../08_example/00_intro.html"><strong aria-hidden="true">8.</strong> Final Project: HTTP Server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../08_example/01_running_async_code.html"><strong aria-hidden="true">8.1.</strong> Running Asynchronous Code</a></li><li class="chapter-item expanded "><a href="../08_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">8.2.</strong> Handling Connections Concurrently</a></li><li class="chapter-item expanded "><a href="../08_example/03_multithreading.html"><strong aria-hidden="true">8.3.</strong> Serving Requests in Parallel</a></li><li class="chapter-item expanded "><a href="../08_example/04_tests.html"><strong aria-hidden="true">8.4.</strong> Testing the Server</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.2.</strong> TODO: Managing Shared State</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: The Ecosystem: Tokio and More</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Lots, lots more?...</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> 시작하며</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html"><strong aria-hidden="true">1.1.</strong> Async가 필요한 이유</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> 비동기적 러스트 현황</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await 기초</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> 내부 구조: Future와 task 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> Future 트레잇</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Waker로 Task 깨우기</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html"><strong aria-hidden="true">2.3.</strong> 응용: executor 구현하기</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html"><strong aria-hidden="true">2.4.</strong> Executor와 시스템 입출력</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> Pinning</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> Streams</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> Iteration and Concurrency</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> 여러개의 future를 동시에 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> 알아두면 좋을 요령들</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_err_in_async_blocks.html" class="active"><strong aria-hidden="true">7.1.</strong> async 블록 안에서의 ?</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_send_approximation.html"><strong aria-hidden="true">7.2.</strong> Send 추정</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_recursion.html"><strong aria-hidden="true">7.3.</strong> 재귀</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_async_in_traits.html"><strong aria-hidden="true">7.4.</strong> 트레잇 내부의 async</a></li></ol></li><li class="chapter-item expanded "><a href="../08_example/00_intro.html"><strong aria-hidden="true">8.</strong> 마지막 프로젝트: HTTP 서버</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../08_example/01_running_async_code.html"><strong aria-hidden="true">8.1.</strong> 비동기 코드 실행하기</a></li><li class="chapter-item expanded "><a href="../08_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">8.2.</strong> 커넥션을 동시에 다루기</a></li><li class="chapter-item expanded "><a href="../08_example/03_multithreading.html"><strong aria-hidden="true">8.3.</strong> 리퀘스트를 병렬적으로 처리하기</a></li><li class="chapter-item expanded "><a href="../08_example/04_tests.html"><strong aria-hidden="true">8.4.</strong> 서버 테스트하기</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.2.</strong> TODO: Managing Shared State</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: The Ecosystem: Tokio and More</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Lots, lots more?...</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -132,7 +132,7 @@
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         
-                        <a href="https://github.com/sephiron99/async-book/tree/ko_KR/ko" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/sephiron99/async-book/ko" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
                         
@@ -163,12 +163,11 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#-in-async-blocks" id="-in-async-blocks"><code>?</code> in <code>async</code> Blocks</a></h1>
-<p>Just as in <code>async fn</code>, it's common to use <code>?</code> inside <code>async</code> blocks.
-However, the return type of <code>async</code> blocks isn't explicitly stated.
-This can cause the compiler to fail to infer the error type of the
-<code>async</code> block.</p>
-<p>For example, this code:</p>
+                        <h1><a class="header" href="#async-블록-안에서의-" id="async-블록-안에서의-"><code>async</code> 블록 안에서의 <code>?</code></a></h1>
+<p><code>async fn</code> 안에서와 마찬가지로, <code>async</code> 블록들 안에서 <code>?</code>의 사용도 보편적입니다.
+하지만, <code>async</code> 블록의 반환 타입은 명시적으로 규정되지 않았기 때문에, 컴파일러가
+<code>async</code>블록의 에러 타입을 추론하는 데 실패할 것입니다.</p>
+<p>예를 들어, 아래 코드는</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -182,7 +181,7 @@ This can cause the compiler to fail to infer the error type of the
 };
 <span class="boring">}
 </span></code></pre></pre>
-<p>will trigger this error:</p>
+<p>아래 에러를 발생시킬 것입니다.</p>
 <pre><code>error[E0282]: type annotations needed
  --&gt; src/main.rs:5:9
   |
@@ -191,10 +190,10 @@ This can cause the compiler to fail to infer the error type of the
 5 |         foo().await?;
   |         ^^^^^^^^^^^^ cannot infer type
 </code></pre>
-<p>Unfortunately, there's currently no way to &quot;give <code>fut</code> a type&quot;, nor a way
-to explicitly specify the return type of an <code>async</code> block.
-To work around this, use the &quot;turbofish&quot; operator to supply the success and
-error types for the <code>async</code> block:</p>
+<p>불행하게도, &quot;<code>fut</code>에 타입을 부여하는&quot; 방법이나, 명시적으로 <code>async</code>블록의 반환
+타입을 지정하는 방법은 현재 존재하지 않습니다. 이 문제를 해결하기 위해서,
+<code>async</code>블록에 성공과 에러의 타입을 제공하기 위해 아래와 같이 &quot;turbofish&quot;
+연산자를 사용하세요.</p>
 <pre><pre class="playground"><code class="language-rust edition2018">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -204,7 +203,7 @@ error types for the <code>async</code> block:</p>
 </span>let fut = async {
     foo().await?;
     bar().await?;
-    Ok::&lt;(), MyError&gt;(()) // &lt;- note the explicit type annotation here
+    Ok::&lt;(), MyError&gt;(()) // &lt;- 이 곳의 명시적 타입 주해에 유의할 것.
 };
 <span class="boring">}
 </span></code></pre></pre>

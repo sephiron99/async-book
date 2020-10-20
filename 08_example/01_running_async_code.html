@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Running Asynchronous Code - 러스트 비동기 프로그래밍</title>
+        <title>비동기 코드 실행하기 - 러스트 비동기 프로그래밍</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> 시작하며</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html"><strong aria-hidden="true">1.1.</strong> Async가 필요한 이유</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> 비동기적 러스트 현황</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await 기초</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> 내부 구조: Future와 task 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> Future 트레잇</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Waker로 Task 깨우기</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html"><strong aria-hidden="true">2.3.</strong> 응용: executor 구현하기</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html"><strong aria-hidden="true">2.4.</strong> Executor와 시스템 입출력</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> Pinning</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> Streams</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> Iteration and Concurrency</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> 여러개의 future를 동시에 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> Workarounds to Know and Love</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_err_in_async_blocks.html"><strong aria-hidden="true">7.1.</strong> ? in async Blocks</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_send_approximation.html"><strong aria-hidden="true">7.2.</strong> Send Approximation</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_recursion.html"><strong aria-hidden="true">7.3.</strong> Recursion</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_async_in_traits.html"><strong aria-hidden="true">7.4.</strong> async in Traits</a></li></ol></li><li class="chapter-item expanded "><a href="../08_example/00_intro.html"><strong aria-hidden="true">8.</strong> Final Project: HTTP Server</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../08_example/01_running_async_code.html" class="active"><strong aria-hidden="true">8.1.</strong> Running Asynchronous Code</a></li><li class="chapter-item expanded "><a href="../08_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">8.2.</strong> Handling Connections Concurrently</a></li><li class="chapter-item expanded "><a href="../08_example/03_multithreading.html"><strong aria-hidden="true">8.3.</strong> Serving Requests in Parallel</a></li><li class="chapter-item expanded "><a href="../08_example/04_tests.html"><strong aria-hidden="true">8.4.</strong> Testing the Server</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.2.</strong> TODO: Managing Shared State</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: The Ecosystem: Tokio and More</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Lots, lots more?...</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> 시작하며</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html"><strong aria-hidden="true">1.1.</strong> Async가 필요한 이유</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> 비동기적 러스트 현황</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await 기초</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> 내부 구조: Future와 task 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> Future 트레잇</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Waker로 Task 깨우기</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html"><strong aria-hidden="true">2.3.</strong> 응용: executor 구현하기</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html"><strong aria-hidden="true">2.4.</strong> Executor와 시스템 입출력</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> Pinning</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> Streams</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> Iteration and Concurrency</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> 여러개의 future를 동시에 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> 알아두면 좋을 요령들</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_err_in_async_blocks.html"><strong aria-hidden="true">7.1.</strong> async 블록 안에서의 ?</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_send_approximation.html"><strong aria-hidden="true">7.2.</strong> Send 추정</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_recursion.html"><strong aria-hidden="true">7.3.</strong> 재귀</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_async_in_traits.html"><strong aria-hidden="true">7.4.</strong> 트레잇 내부의 async</a></li></ol></li><li class="chapter-item expanded "><a href="../08_example/00_intro.html"><strong aria-hidden="true">8.</strong> 마지막 프로젝트: HTTP 서버</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../08_example/01_running_async_code.html" class="active"><strong aria-hidden="true">8.1.</strong> 비동기 코드 실행하기</a></li><li class="chapter-item expanded "><a href="../08_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">8.2.</strong> 커넥션을 동시에 다루기</a></li><li class="chapter-item expanded "><a href="../08_example/03_multithreading.html"><strong aria-hidden="true">8.3.</strong> 리퀘스트를 병렬적으로 처리하기</a></li><li class="chapter-item expanded "><a href="../08_example/04_tests.html"><strong aria-hidden="true">8.4.</strong> 서버 테스트하기</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">9.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.2.</strong> TODO: Managing Shared State</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: The Ecosystem: Tokio and More</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Lots, lots more?...</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -132,7 +132,7 @@
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         
-                        <a href="https://github.com/sephiron99/async-book/tree/ko_KR/ko" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/sephiron99/async-book/ko" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
                         
@@ -163,21 +163,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#running-asynchronous-code" id="running-asynchronous-code">Running Asynchronous Code</a></h1>
-<p>An HTTP server should be able to serve multiple clients concurrently;
-that is, it should not wait for previous requests to complete before handling the current request.
-The book
-<a href="https://doc.rust-lang.org/book/ch20-02-multithreaded.html#turning-our-single-threaded-server-into-a-multithreaded-server">solves this problem</a>
-by creating a thread pool where each connection is handled on its own thread.
-Here, instead of improving throughput by adding threads, we'll achieve the same effect using asynchronous code.</p>
-<p>Let's modify <code>handle_connection</code> to return a future by declaring it an <code>async fn</code>:</p>
+                        <h1><a class="header" href="#비동기-코드-실행하기" id="비동기-코드-실행하기">비동기 코드 실행하기</a></h1>
+<p>HTTP 서버는 동시에 여러 클라이언트에 동시에 서비스할 수 있어야 합니다. 즉, HTTP
+서버는 현재의 리퀘스트를 처리하기 전에 기존의 리퀘스트가 끝나길 기다려서는 안된다는 말입니다.
+러스트북의 예제에서는 모든 연결에 스레드를 하나씩 할당하는 스레드 풀을 만들어서 
+<a href="https://rinthel.github.io/rust-lang-book-ko/ch20-02-multithreaded.html#%EC%84%9C%EB%B2%84%EB%A5%BC-%EC%8B%B1%EA%B8%80-%EC%8A%A4%EB%A0%88%EB%93%9C%EC%97%90%EC%84%9C-%EB%A9%80%ED%8B%B0-%EC%8A%A4%EB%A0%88%EB%93%9C%EB%A1%9C-%EB%B0%94%EA%BE%B8%EA%B8%B0">이 문제를 해결합니다.</a></p>
+<p>여기서는, 스레드를 추가하여 처리성능을 향상시키기 보다, 비동기 코드를
+사용하여 같은 효과를 내 봅시다.</p>
+<p><code>handle_connection</code>의 선언을 <code>async fn</code>으로 수정하여 future를 반환하게 합시다.</p>
 <pre><code class="language-rust ignore">async fn handle_connection(mut stream: TcpStream) {
     //&lt;-- snip --&gt;
 }
 </code></pre>
-<p>Adding <code>async</code> to the function declaration changes its return type
-from the unit type <code>()</code> to a type that implements <code>Future&lt;Output=()&gt;</code>.</p>
-<p>If we try to compile this, the compiler warns us that it will not work:</p>
+<p><code>async</code>를 <code>handle_connection</code> 선언에 추가하면 반환값이 유닛 타입 <code>()</code>에서
+<code>Future&lt;Output=()&gt;</code>을 구현하는 타입으로 변경됩니다.</p>
+<p>이 코드를 컴파일하면 작동되지 않을 것이라는 컴파일러 에러가 발생합니다.</p>
 <pre><code class="language-console">$ cargo check
     Checking async-rust v0.1.0 (file:///projects/async-rust)
 warning: unused implementer of `std::future::Future` that must be used
@@ -189,41 +189,42 @@ warning: unused implementer of `std::future::Future` that must be used
    = note: `#[warn(unused_must_use)]` on by default
    = note: futures do nothing unless you `.await` or poll them
 </code></pre>
-<p>Because we haven't <code>await</code>ed or <code>poll</code>ed the result of <code>handle_connection</code>,
-it'll never run. If you run the server and visit <code>127.0.0.1:7878</code> in a browser,
-you'll see that the connection is refused; our server is not handling requests.</p>
-<p>We can't <code>await</code> or <code>poll</code> futures within synchronous code by itself.
-We'll need an asynchronous runtime to handle scheduling and running futures to completion.
-Please consult the section on choosing a runtime for more information on asynchronous runtimes, executors, and reactors.</p>
-<h2><a class="header" href="#adding-an-async-runtime" id="adding-an-async-runtime">Adding an Async Runtime</a></h2>
-<p>Here, we'll use an executor from the <code>async-std</code> crate.
-The <code>#[async_std::main]</code> attribute from <code>async-std</code> allows us to write an asynchronous main function.
-To use it, enable the <code>attributes</code> feature of <code>async-std</code> in <code>Cargo.toml</code>:</p>
+<p><code>handle_connection</code>은 그 반환값을 <code>await</code>하거나 <code>poll</code>하지 않았기 때문에, 전혀
+실행되지 않을 것입니다. 서버를 실행하고 브라우저에서 <code>127.0.0.1:7878</code> 열면
+연결이 거부됨을 알 수 있습니다. 서버가 요청을 처리하지 않는 것입니다.</p>
+<p>비동기 코드 그 자체 안에서 <code>await</code>하거나 <code>poll</code>할 수는 없습니다. future를
+완성될때까지 스케쥴링하고 실행할 비동기 런타임이 필요합니다.
+비동기 런타임, executor 그리고 reactor에 대한 자세한 정보를 원한다면 런타임
+선택에 관한 장을 살펴보세요.</p>
+<h2><a class="header" href="#async-런타임-추가" id="async-런타임-추가">Async 런타임 추가</a></h2>
+<p>여기서는 <code>async-std</code> 크레잇의 executor를 사용할 것입니다.
+<code>async-std</code>의 <code>#[async_std::main]</code> 속성을 붙이면 비동기 main 함수를 작성할 수 있습니다.
+<code>#[async_std::main]</code>을 사용하기 위해서 <code>async-std</code>의 <code>attributes</code> 기능을 <code>Cargo.toml</code>에서
+활성화 하세요.</p>
 <pre><code class="language-toml">[dependencies.async-std]
 version = &quot;1.6&quot;
 features = [&quot;attributes&quot;]
 </code></pre>
-<p>As a first step, we'll switch to an asynchronous main function,
-and <code>await</code> the future returned by the async version of <code>handle_connection</code>.
-Then, we'll test how the server responds.
-Here's what that would look like:</p>
-<pre><pre class="playground"><code class="language-rust">#[async_std::main]
-async fn main() {
+<p>첫 번째 단계로, main 함수를 비동기로 전환하고, 비동기 <code>handle_connection</code>이
+반환한 future를 <code>await</code>할 것입니다. 그리고 나서, 서버가 어떻게 작동하는 지
+테스트할 것입니다. 이렇게 작성한 코드는 아래와 같습니다.</p>
+<pre><pre class="playground"><code class="language-rust#[async_std::main]">async fn main() {
     let listener = TcpListener::bind(&quot;127.0.0.1:7878&quot;).unwrap();
     for stream in listener.incoming() {
         let stream = stream.unwrap();
-        // Warning: This is not concurrent!
+        // 경고: 동시성이 없습니다.
         handle_connection(stream).await;
     }
-}
-</code></pre></pre>
-<p>Now, let's test to see if our server can handle connections concurrently.
-Simply making <code>handle_connection</code> asynchronous doesn't mean that the server
-can handle multiple connections at the same time, and we'll soon see why.</p>
-<p>To illustrate this, let's simulate a slow request.
-When a client makes a request to <code>127.0.0.1:7878/sleep</code>,
-our server will sleep for 5 seconds:</p>
-<pre><code class="language-rust ignore">use async_std::task;
+}``` 
+이제 서버가 연결을 동시에 처리할 수 있는 지 테스트해 봅시다. 단순히 `handle_connection`을
+비동기로 만들었다고 해서 바로 서버가 여러개의 연결을 동시에 처리할 수 있게
+되지는 않습니다. 곧 그 이유를 곧 알게 될 것입니다.
+
+이를 설명하기 위해, 느린 요청 하나로 모의실험해 봅시다.
+클라이언트가 `127.0.0.1:7878/sleep`으로 요청을 보냈을 때, 우리 서버는 5초간 잠들 것입니다.
+
+```rust,ignore
+use async_std::task;
 
 async fn handle_connection(mut stream: TcpStream) {
     let mut buffer = [0; 1024];
@@ -246,18 +247,20 @@ async fn handle_connection(mut stream: TcpStream) {
     stream.write(response.as_bytes()).unwrap();
     stream.flush().unwrap();
 }
-</code></pre>
-<p>This is very similar to the 
-<a href="https://doc.rust-lang.org/book/ch20-02-multithreaded.html#simulating-a-slow-request-in-the-current-server-implementation">simulation of a slow request</a>
-from the Book, but with one important difference:
-we're using the non-blocking function <code>async_std::task::sleep</code> instead of the blocking function <code>std::thread::sleep</code>.
-It's important to remember that even if a piece of code is run within an <code>async fn</code> and <code>await</code>ed, it may still block.
-To test whether our server handles connections concurrently, we'll need to ensure that <code>handle_connection</code> is non-blocking.</p>
-<p>If you run the server, you'll see that a request to <code>127.0.0.1:7878/sleep</code>
-will block any other incoming requests for 5 seconds!
-This is because there are no other concurrent tasks that can make progress
-while we are <code>await</code>ing the result of <code>handle_connection</code>.
-In the next section, we'll see how to use async code to handle connections concurrently.</p>
+</code></pre></pre>
+<p>이는 러스트북의 <a href="https://rinthel.github.io/rust-lang-book-ko/ch20-02-multithreaded.html#%ED%98%84%EC%9E%AC-%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%EB%8A%90%EB%A6%B0-%EC%9A%94%EC%B2%AD%EC%9D%84-%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%ED%8C%85%ED%95%98%EA%B8%B0">현재 서버에서 느린 요청을
+시뮬레이팅하기</a>와
+매우 유사합니다.</p>
+<p>우리는 블로킹 함수인 <code>std::thread::sleep</code>대신에 논블로킹 함수인
+<code>async_std::task::sleep</code>를 사용하고 있습니다. 코드 한 줄이라도 <code>async fn</code> 안에서
+실행되고, <code>await</code>된다면 그 코드는 여전히 스레드를 블록할 수도 있음을 명심하세요.
+우리 서버가 연결을 동시에 처리할 수 있는 지 테스트하려면, <code>handle_connection</code>이
+논블로킹임을 확인해야 합니다.</p>
+<p>서버를 실행하면, <code>127.0.0.1:7878/sleep</code>에 대한 한 개의 요청이 수신되는 다른
+요청들을 5초간 블록하는 것을 확인할 수 있습니다! 그 이유는 우리가
+<code>handle_connection</code>을 <code>await</code>하는 동안에 진행될만한 다른 동시성 task가 없기
+때문입니다. 다음 장에서는 연결을 동시에 처리할 수 있는 비동기 코드를 작성하는
+방법에 대해 알아 봅시다.</p>
 
                     </main>
 
