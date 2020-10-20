@@ -163,12 +163,12 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#final-project-building-a-concurrent-web-server-with-async-rust" id="final-project-building-a-concurrent-web-server-with-async-rust">Final Project: Building a Concurrent Web Server with Async Rust</a></h1>
-<p>In this chapter, we'll use asynchronous Rust to modify the Rust book's 
-<a href="https://doc.rust-lang.org/book/ch20-01-single-threaded.html">single-threaded web server</a> 
-to serve requests concurrently.</p>
-<h2><a class="header" href="#recap" id="recap">Recap</a></h2>
-<p>Here's what the code looked like at the end of the lesson.</p>
+                        <h1><a class="header" href="#마지막-프로젝트-비동기-러스트로-동시성-웹-서버-만들기" id="마지막-프로젝트-비동기-러스트로-동시성-웹-서버-만들기">마지막 프로젝트: 비동기 러스트로 동시성 웹 서버 만들기</a></h1>
+<p>이 장에선, 비동기 러스트로 러스트북의 <a href="https://rinthel.github.io/rust-lang-book-ko/ch20-01-single-threaded.html">싱글스레드 기반 웹 서버
+만들기</a>
+를 수정하여 여러개의 요청을 동시에 수행할 수 있게 할 것입니다.</p>
+<h2><a class="header" href="#개요" id="개요">개요</a></h2>
+<p>이 강좌가 끝나면 아래 코드가 만들어 질 것입니다.</p>
 <p><code>src/main.rs</code>:</p>
 <pre><pre class="playground"><code class="language-rust">use std::fs;
 use std::io::prelude::*;
@@ -176,10 +176,10 @@ use std::net::TcpListener;
 use std::net::TcpStream;
 
 fn main() {
-    // Listen for incoming TCP connections on localhost port 7878
+    // localhost 7878 포트에서 수신되는 TCP 연결을 listen하기
     let listener = TcpListener::bind(&quot;127.0.0.1:7878&quot;).unwrap();
 
-    // Block forever, handling each request that arrives at this IP address
+    // 영원히 블록하면서, 이 IP 주소로 들어오는 요청을 처리
     for stream in listener.incoming() {
         let stream = stream.unwrap();
 
@@ -188,14 +188,13 @@ fn main() {
 }
 
 fn handle_connection(mut stream: TcpStream) {
-    // Read the first 1024 bytes of data from the stream
+    // 처음 1024 바이트의 데이터를 스트림으로부터 읽어들임
     let mut buffer = [0; 1024];
     stream.read(&amp;mut buffer).unwrap();
 
     let get = b&quot;GET / HTTP/1.1\r\n&quot;;
 
-    // Respond with greetings or a 404,
-    // depending on the data in the request
+    // 요청 안의 데이터에 따라 환영인사로 응답하거나 404 에러
     let (status_line, filename) = if buffer.starts_with(get) {
         (&quot;HTTP/1.1 200 OK\r\n\r\n&quot;, &quot;hello.html&quot;)
     } else {
@@ -203,8 +202,8 @@ fn handle_connection(mut stream: TcpStream) {
     };
     let contents = fs::read_to_string(filename).unwrap();
 
-    // Write response back to the stream,
-    // and flush the stream to ensure the response is sent back to the client
+    // 다시 스트림에 응답을 씀
+    // 클라이언트에게 응답이 전송될 수 있게 스트림을 플러시함
     let response = format!(&quot;{}{}&quot;, status_line, contents);
     stream.write(response.as_bytes()).unwrap();
     stream.flush().unwrap();
@@ -236,8 +235,8 @@ fn handle_connection(mut stream: TcpStream) {
   &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-<p>If you run the server with <code>cargo run</code> and visit <code>127.0.0.1:7878</code> in your browser,
-you'll be greeted with a friendly message from Ferris!</p>
+<p><code>cargo run</code>으로 서버를 실행시켜서 브라우저에서 <code>127.0.0.1:7878</code>에 접속했다면,
+페리스의 친근한 인사말을 볼 수 있을 겁니다!</p>
 
                     </main>
 
