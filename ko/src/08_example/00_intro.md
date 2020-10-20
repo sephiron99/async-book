@@ -1,9 +1,10 @@
-# Final Project: Building a Concurrent Web Server with Async Rust
-In this chapter, we'll use asynchronous Rust to modify the Rust book's 
-[single-threaded web server](https://doc.rust-lang.org/book/ch20-01-single-threaded.html) 
-to serve requests concurrently.
-## Recap
-Here's what the code looked like at the end of the lesson.
+# 마지막 프로젝트: 비동기 러스트로 동시성 웹 서버 만들기
+이 장에선, 비동기 러스트로 러스트북의 [싱글스레드 기반 웹 서버
+만들기](https://rinthel.github.io/rust-lang-book-ko/ch20-01-single-threaded.html)
+를 수정하여 여러개의 요청을 동시에 수행할 수 있게 할 것입니다.
+
+## 개요
+이 강좌가 끝나면 아래 코드가 만들어 질 것입니다.
 
 `src/main.rs`:
 ```rust
@@ -20,5 +21,5 @@ Here's what the code looked like at the end of the lesson.
 {{#include ../../examples/08_01_sync_tcp_server/404.html}}
 ```
 
-If you run the server with `cargo run` and visit `127.0.0.1:7878` in your browser,
-you'll be greeted with a friendly message from Ferris!
+`cargo run`으로 서버를 실행시켜서 브라우저에서 `127.0.0.1:7878`에 접속했다면,
+페리스의 친근한 인사말을 볼 수 있을 겁니다!
