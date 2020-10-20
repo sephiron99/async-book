@@ -1,9 +1,10 @@
 # 비동기 코드 실행하기
 
 HTTP 서버는 동시에 여러 클라이언트에 동시에 서비스할 수 있어야 합니다. 즉, HTTP
-서버는 현재의 리퀘스트를 처리하기 전에 기존의 리퀘스트가 끝나길 기다려서는 안된다는 말입니다.
-러스트북의 예제에서는 모든 연결에 스레드를 하나씩 할당하는 스레드 풀을 만들어서 
-[이 문제를 해결합니다.](https://rinthel.github.io/rust-lang-book-ko/ch20-02-multithreaded.html#%EC%84%9C%EB%B2%84%EB%A5%BC-%EC%8B%B1%EA%B8%80-%EC%8A%A4%EB%A0%88%EB%93%9C%EC%97%90%EC%84%9C-%EB%A9%80%ED%8B%B0-%EC%8A%A4%EB%A0%88%EB%93%9C%EB%A1%9C-%EB%B0%94%EA%BE%B8%EA%B8%B0)
+서버는 현재의 요청을 처리하기 전에 기존의 요청이 끝나길 기다려서는 안된다는
+말입니다. 러스트북의 예제에서는 모든 연결에 스레드를 하나씩 할당하는 스레드 풀을
+만들어서 [이 문제를
+해결합니다.](https://rinthel.github.io/rust-lang-book-ko/ch20-02-multithreaded.html#%EC%84%9C%EB%B2%84%EB%A5%BC-%EC%8B%B1%EA%B8%80-%EC%8A%A4%EB%A0%88%EB%93%9C%EC%97%90%EC%84%9C-%EB%A9%80%ED%8B%B0-%EC%8A%A4%EB%A0%88%EB%93%9C%EB%A1%9C-%EB%B0%94%EA%BE%B8%EA%B8%B0)
 
 여기서는, 스레드를 추가하여 처리성능을 향상시키기 보다, 비동기 코드를
 사용하여 같은 효과를 내 봅시다.
