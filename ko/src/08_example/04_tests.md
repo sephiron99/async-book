@@ -1,16 +1,21 @@
-# Testing the TCP Server
-Let's move on to testing our `handle_connection` function.
+# TCP 서버 테스트하기
+`handle_connection` 함수를 테스트해 봅시다.
 
-First, we need a `TcpStream` to work with.
-In an end-to-end or integration test, we might want to make a real TCP connection
-to test our code.
-One strategy for doing this is to start a listener on `localhost` port 0.
-Port 0 isn't a valid UNIX port, but it'll work for testing.
-The operating system will pick an open TCP port for us.
+먼저, 테스트에 사용될 `TcpStream`이 필요합니다. 단대단이나 통합 테스트에서는
+코드 테스트를 위해 실제 TCP 연결이 필요할 수도 있습니다. 실제 TCP 연결을
+사용하여 테스트하는 방법 중 하나는 `localhost`의 0번 포트에서 리스닝하는
+것입니다. 0번 포트는 유효한 유닉스 포트가 아니지만 테스트 목적으로는 작동합니다.
+운영체제가 열린 TCP 포트를 하나 골라 줄 것입니다.
 
-Instead, in this example we'll write a unit test for the connection handler,
-to check that the correct responses are returned for the respective inputs.
-To keep our unit test isolated and deterministic, we'll replace the `TcpStream` with a mock.
+하지만, 아래 예제에서는 연결 핸들러에 대한 유닛 테스트를 작성하여, 각각의 입력에
+맞는 올바른 응답이 반환되었는지 확인할 것입니다. 유닛 테스트를 격리되고
+결정론적이게 만들기 위해,  `TcpStream`을 의사코드로 대체할 것입니다.
+
+먼저, 테스트하기 쉽게 `handle_connection`의 시그니처(TODO: 사인?)를 바꿀
+것입니다. `handle_connection`는 실제로는 `async_std::net::TcpStream`이 아니라
+`async_std::io::Read`, `async_std::io::Write`, 그리고 `marker::Unpin`를 구현하는
+모든 구조체가 필요합니다. 이 내용을 반영하여 타입 시그니처를 바꾸면 모조품을
+테스트 넘겨 줄 수 있게 되니다.
 
 First, we'll change the signature of `handle_connection` to make it easier to test.
 `handle_connection` doesn't actually require an `async_std::net::TcpStream`;
