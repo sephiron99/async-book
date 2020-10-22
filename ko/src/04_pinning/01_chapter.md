@@ -60,10 +60,9 @@ impl Future for AsyncFuture {
 ```
 
 `poll`이 처음 호출되면 `poll`은 `fut_one`을 poll할 것입니다. 만약 `fut_one`이
-완성될 수 없다면, `AsyncFuture::poll`은 `Poll::Pending`을 반환하며 종료될
-것입니다. future에 대한 `poll` 호출들은 이전에 중단된 지점(역주: `self.state`를
-`match`하여)부터 다시 시작할 것입니다(TODO: 재번역 필요). 이 과정은 future가
-성공적으로 완성될 때까지 반복될 것입니다.
+완성될 수 없다면, `AsyncFuture::poll`은 `Poll::Pending`을 반환할 것입니다.
+future의 `poll`을 호출하여 이전 future가 중단된 지점부터 다시 시작할 것입니다.
+이 과정은 future가 성공적으로 완성될 때까지 반복될 것입니다.
 
 하지만, `async` 블록이 참조를 사용한다면 어떻게 될까요?
 
