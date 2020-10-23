@@ -27,7 +27,7 @@ async fn do_something() { /* ... */ }
 
 `async fn` 안에서는 `Future` 트레잇을 구현한 다른 타입이 완성될 때(예를 들어
 다른 `async fn`의 출력같은 것)까지 기다리기 위해 `.await`을 사용합니다. `block
-on`과 달리, `.await`는 현재의 스레드를 블럭하지 않고, 대신에 다른 task들이
+on`과 달리, `.await`는 현재의 스레드를 블럭하지 않고, 대신에 다른 태스크들이
 수행될수 있게 허용하면서도 그 future가 완성될 때까지 비동기적으로 기다립니다.
 
 예를 들어, `async fn`으로 확장된 `learn_song`, `sing_song`, `dance` 가 있다고
@@ -60,6 +60,6 @@ async fn dance() { /* ... */ }
 `learn_song().await`말고, `block_on(learn_song())`을 사용했다면, 해당
 스레드는 `learn_song`이 동작하는 동안에는 아무것도 할 수 없었을 것이고. 그렇다면
 춤추기를 노래와 동시에 수행할 수 없었을 것입니다. 하지만 우리는 `learn_song`
-future를 `.await`함으로써, `learn_song`이 블럭되었을지라도 다른 task들이 현재의
+future를 `.await`함으로써, `learn_song`이 블럭되었을지라도 다른 태스크들이 현재의
 스래드에서 실행되게 할 수 있습니다. 이 방법으로, 여러개의 future를 한 개의
 스레드에서 동시에 실행하여 완성할 수 있습니다.

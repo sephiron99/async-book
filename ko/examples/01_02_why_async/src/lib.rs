@@ -15,7 +15,7 @@ fn download(_url: &str) {
 #[test]
 // ANCHOR: get_two_sites
 fn get_two_sites() {
-    // task에 사용될 두 개의 스레드 생성
+    // 태스크에 사용될 두 개의 스레드 생성
     let thread_one = thread::spawn(|| download("https://www.foo.com"));
     let thread_two = thread::spawn(|| download("https://www.bar.com"));
 

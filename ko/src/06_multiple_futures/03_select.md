@@ -8,7 +8,7 @@ future라도 완성되면 사용자가 바로 반응할 수 있습니다.
 ```
 
 위의 함수는 `t1`과 `t2` 둘 다 동시에 실행할 것입니다. 둘 중에 하나가 끝나면,
-대응하는 핸들러가 `println!`을 호출하고, 위 함수는 나머지 task를 완성하지 않고
+대응하는 핸들러가 `println!`을 호출하고, 위 함수는 나머지 태스크를 완성하지 않고
 바로 종료됩니다.
 
 `select`의 기본 문법은 `<pattern> = <expression> => <code>,`이고, `select`에
@@ -57,14 +57,14 @@ future라도 완성되면 사용자가 바로 반응할 수 있습니다.
 {{#include ../../examples/06_03_select/src/lib.rs:fused_stream}}
 ```
 
-## `Fuse`와 `FuturesUnordered`를 이용한 `select` 루프 내부에서의 동시성 task
+## `Fuse`와 `FuturesUnordered`를 이용한 `select` 루프 내부에서의 동시성 태스크
 
 `Fuse:terminated()` 함수는 눈에 잘 띄지는 않지만 유용한 함수입니다. 이 함수는
 이미 종료되어 비어있지만, 나중에 필요할 때, 실행할 future를 넣어서 실행할 수 있는
 future를 만들어 줍니다.
 
 이 함수는 `select` 루프가 유효한 동안에 실행될 필요가 있지만 `select` 루프 자체
-안에서 만들어지는 task가 있을 경우 유용합니다.
+안에서 만들어지는 태스크가 있을 경우 유용합니다.
 
 `.select_next_some()` 함수의 용도에 유의하세요. 이 함수는 스트림이 반환한
 `Some(_)` 값에 대응하는 분기를 실행할 때만 `select`와 함께 사용될 수 있습니다.

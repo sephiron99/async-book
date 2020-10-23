@@ -19,12 +19,12 @@ use {
 // ANCHOR_END: imports
 
 // ANCHOR: executor_decl
-/// 채널에서 task를 받아서 실행하는 task executor
+/// 채널에서 태스크를 받아서 실행하는 태스크 executor
 struct Executor {
     ready_queue: Receiver<Arc<Task>>,
 }
 
-/// 새 future를 task 채널에 생성해 넣는 `Spawner`
+/// 새 future를 태스크 채널에 생성해 넣는 `Spawner`
 #[derive(Clone)]
 struct Spawner {
     task_sender: SyncSender<Arc<Task>>,
@@ -41,12 +41,12 @@ struct Task {
     /// 현업에서는 `Mutex` 대신 `UnsafeCell`을 사용할 수도 있다.
     future: Mutex<Option<BoxFuture<'static, ()>>>,
 
-    /// task가 자기자신을 task 큐의 마지막에 넣는데 사용되는 핸들
+    /// 태스크가 자기자신을 태스크 큐의 마지막에 넣는데 사용되는 핸들
     task_sender: SyncSender<Arc<Task>>,
 }
 
 fn new_executor_and_spawner() -> (Executor, Spawner) {
-    // 채널(큐)이 일시점에 가질 수 있는 task의 최대 갯수.
+    // 채널(큐)이 일시점에 가질 수 있는 태스크의 최대 갯수.
     // 그냥 `sync_channel`을 만드는데 필요한 것이고, 실제 executor에 적용될 일은
     // 없을 것이다.
     const MAX_QUEUED_TASKS: usize = 10_000;
@@ -63,7 +63,7 @@ impl Spawner {
             future: Mutex::new(Some(future)),
             task_sender: self.task_sender.clone(),
         });
-        self.task_sender.send(task).expect("too many tasks queued");
+        self.task_sender.send(task).expect("큐에 태스크가 너무 많습니다.");
     }
 }
 // ANCHOR_END: spawn_fn
@@ -71,13 +71,13 @@ impl Spawner {
 // ANCHOR: arcwake_for_task
 impl ArcWake for Task {
     fn wake_by_ref(arc_self: &Arc<Self>) {
-        // `wake`를 이 task를 다시 task 채널에 보내는 방식으로 구현한다. 그래서
-        // executor가 이 task를 다시 poll할 것이다.
+        // `wake`를 이 태스크를 다시 태스크 채널에 보내는 방식으로 구현한다. 그래서
+        // executor가 이 태스크를 다시 poll할 것이다.
         let cloned = arc_self.clone();
         arc_self
             .task_sender
             .send(cloned)
-            .expect("too many tasks queued");
+            .expect("큐에 태스크가 너무 많습니다.");
     }
 }
 // ANCHOR_END: arcwake_for_task

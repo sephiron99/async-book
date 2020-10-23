@@ -1,7 +1,7 @@
 # 고정하기(Pinning)
 
 future를 poll하기 위해서는, future가 `Pin<T>`라는 특별한 타입으로 고정되어
-있어야 합니다. 이전 ["`Future`와 task 실행하기"] 장의 [`Future` 트레잇]을
+있어야 합니다. [이전] ["`Future`와 태스크 실행하기"] 장의 [`Future` 트레잇]을
 읽었다면, `Future::poll` 메소드의 정의에서 `self Pin<&mut Self>`에 쓰였던
 `Pin`을 보았을 것입니다. 그렇다면 `Pin`은 무슨 의미이고, 왜 필요할까요?
 
@@ -640,6 +640,6 @@ execute_unpin_future(fut); // OK
 _고정되어 drop이 호출되기 전_까지 무효화되거나 용도변경되지 않음(불변성)을
 유지할 책임이 있습니다. 이는 _고정 규칙_에서 중요한 부분입니다.
 
-["`Future`와 task 실행하기"]: ../02_execution/01_chapter.md
+["`Future`와 태스크 실행하기"]: ../02_execution/01_chapter.md
 [`Future` 트레잇]: ../02_execution/02_future.md
 [pin_utils]: https://docs.rs/pin-utils/
