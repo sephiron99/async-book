@@ -1,10 +1,10 @@
 # 응용: executor 구현하기
 
-러스트 `Future`는 지연계산됩니다. 실제로 완성시키기 위해 운전(TODO: 실행?)하기
-전까지 future는 아무것도 하지 않을 것입니다. future를 완성시키기 위해 운전하는
-한 가지 방법은 `async` 함수 안에서 future를 `.await`하는 것입니다. 다만, 그렇게
-하면 문제가 하나 생깁니다: 누가 최상위 `async` 함수로부터 반환된 future를 실행할
-것인가라는 문제입니다. 그리고 그 해답은 `Future` executor입니다.
+러스트 `Future`는 지연계산됩니다. 완성시키기 위해 실제로 구동하기 전까지
+future는 아무것도 하지 않을 것입니다. future를 완성까지 구동하는 한 가지 방법은
+`async` 함수 안에서 future를 `.await`하는 것입니다. 다만, 그렇게 하면 문제가
+하나 생깁니다: 누가 최상위 `async` 함수로부터 반환된 future를 실행할 것인가라는
+문제입니다. 그리고 그 해답은 `Future` executor입니다.
 
 `Future` executor는 최상위 `Future`의 집합을 받아 `Future`가 진행할 수 있을
 때마다 `poll`을 호출해서 완성될 때까지 실행합니다. 일반적으로, executor는

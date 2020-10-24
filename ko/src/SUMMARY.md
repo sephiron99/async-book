@@ -27,7 +27,7 @@
 - [마지막 프로젝트: HTTP 서버](08_example/00_intro.md)
   - [비동기 코드 실행하기](08_example/01_running_async_code.md)
   - [연결을 동시에 처리하기](08_example/02_handling_connections_concurrently.md)
-  - [병렬적으로 요청에 대응하기](08_example/03_multithreading.md)
+  - [요청에 병렬적으로 대응하기](08_example/03_multithreading.md)
   - [서버 테스트하기](08_example/04_tests.md)
 - [TODO: I/O](404.md)
   - [TODO: `AsyncRead` and `AsyncWrite`](404.md)

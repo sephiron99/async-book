@@ -8,12 +8,12 @@
 {{#include ../../examples/02_02_future_trait/src/lib.rs:simple_future}}
 ```
 
-Future는 'poll' 함수를 호출하면 진행됩니다. `poll` 함수는 future가 완성될 때까지
-그때그때 가능한 만큼만 진행시킬 것입니다. 만약 Future가 완성된다면, Future는
+Future는 `poll` 함수를 호출하면 진행됩니다. future가 완성될 때까지, `poll` 함수는 
+그때그때 가능한 만큼 future를 구동시킬 것입니다. 만약 Future가 완성된다면, Future는
 `Poll::Ready(result)`를 반환합니다. Future가 아직 완성될 수 없다면, Future는
 `Poll::Pending`을 반환하고, `Future`가 좀 더 진행될 때를 대비하여 `wake()`함수가
 호출될 수 있게 준비합니다. `wake()` 함수가 호출되었을 때, 해당 `Future`를
-운전(drive)하는 executor는 `poll`을 다시 호출하여 `Future`가 더 진행될 수 있게
+구동(drive)하는 executor는 `poll`을 다시 호출하여 `Future`가 더 진행될 수 있게
 합니다.
 
 `wake()`가 없다면, executor는 어떤 future가 진행할 준비가 되었는지를 알 방법이

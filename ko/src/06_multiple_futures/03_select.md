@@ -57,7 +57,7 @@ future라도 완성되면 사용자가 바로 반응할 수 있습니다.
 {{#include ../../examples/06_03_select/src/lib.rs:fused_stream}}
 ```
 
-## `Fuse`와 `FuturesUnordered`를 이용한 `select` 루프 내부에서의 동시성 태스크
+## `Fuse`와 `FuturesUnordered`를 이용한 `select` 루프 내부에서의 동시적 태스크
 
 `Fuse:terminated()` 함수는 눈에 잘 띄지는 않지만 유용한 함수입니다. 이 함수는
 이미 종료되어 비어있지만, 나중에 필요할 때, 실행할 future를 넣어서 실행할 수 있는
@@ -67,9 +67,8 @@ future를 만들어 줍니다.
 안에서 만들어지는 태스크가 있을 경우 유용합니다.
 
 `.select_next_some()` 함수의 용도에 유의하세요. 이 함수는 스트림이 반환한
-`Some(_)` 값에 대응하는 분기를 실행할 때만 `select`와 함께 사용될 수 있습니다.
-`.select_next_some()`함수는 `None`을 무시합니다.(TODO: 이 때, `None`은
-무시됩니다)
+`Some(_)` 값에 대응하는 분기를 실행할 때만 `select`와 함께 사용될 수 있고.
+`None`은 무시할 겁니다.
 
 ```rust,edition2018
 {{#include ../../examples/06_03_select/src/lib.rs:fuse_terminated}}

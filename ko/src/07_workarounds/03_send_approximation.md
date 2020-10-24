@@ -17,9 +17,9 @@ use std::rc::Rc;
 struct NotSend(Rc<()>);
 ```
 
-`async fn`이 반환한 마지막(TODO: Resulting, 결과적인)`Future` 타입이
-`Send`이어야만 하는 경우에도, `NotSend` 타입의 변수들이 임시값이라면 `async fn`
-안에서도 간편하게 사용할 수 있습니다.
+`async fn`이 최종적으로 반환한 `Future` 타입(역주: 아래 예제에서 foo()가 반환한
+future)이 `Send`이어야만 하는 경우에도, `NotSend` 타입의 변수들이 임시값이라면
+`async fn` 안에서도 간편하게 사용할 수 있습니다.
 
 ```rust,edition2018
 # use std::rc::Rc;
