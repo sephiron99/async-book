@@ -1,7 +1,7 @@
 # 고정하기(Pinning)
 
 future를 poll하기 위해서는, future가 `Pin<T>`라는 특별한 타입으로 고정되어
-있어야 합니다. [이전] ["`Future`와 태스크 실행하기"] 장의 [`Future` 트레잇]을
+있어야 합니다. 이전 ["`Future`와 태스크 실행하기"] 장의 [`Future` 트레잇]을
 읽었다면, `Future::poll` 메소드의 정의에서 `self Pin<&mut Self>`에 쓰였던
 `Pin`을 보았을 것입니다. 그렇다면 `Pin`은 무슨 의미이고, 왜 필요할까요?
 
@@ -61,7 +61,7 @@ impl Future for AsyncFuture {
 
 `poll`이 처음 호출되면 `poll`은 `fut_one`을 poll할 것입니다. 만약 `fut_one`이
 완성될 수 없다면, `AsyncFuture::poll`은 `Poll::Pending`을 반환할 것입니다.
-future의 `poll`을 호출하여 이전 future가 중단된 지점부터 다시 시작할 것입니다.
+다시 future의 `poll`을 호출하면 이전 future가 중단된 지점부터 다시 시작할 것입니다.
 이 과정은 future가 성공적으로 완성될 때까지 반복될 것입니다.
 
 하지만, `async` 블록이 참조를 사용한다면 어떻게 될까요?

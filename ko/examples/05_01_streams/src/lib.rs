@@ -22,7 +22,7 @@ trait Stream {
 }
 // ANCHOR_END: stream_trait
 
-// `Stream`은 `RealStream`과 같아야 합니다.
+// `Stream`은 `RealStream`과 같아야 한다.
 impl<I> Stream for dyn RealStream<Item = I> {
     type Item = I;
     fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>)
@@ -51,7 +51,7 @@ async fn send_recv() {
     drop(tx);
 
     // `StreamExt::next` 는 `Iterator::next`와 같지만, 
-    // `Future<Output = Option<T>>`을 구현한 타입을 반환합니다.
+    // `Future<Output = Option<T>>`을 구현한 타입을 반환한다.
     assert_eq!(Some(1), rx.next().await);
     assert_eq!(Some(2), rx.next().await);
     assert_eq!(None, rx.next().await);

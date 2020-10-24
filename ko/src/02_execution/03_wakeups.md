@@ -1,15 +1,16 @@
 # `Waker`로 태스크 깨우기
 
 future들이 첫 번째 `poll`에서는 완성되지 못하는 것이 일반적입니다. 완성되지
-못했을 경우, 더 진행이 가능할 준비가 되었을 때, future가 poll될 수 있게 확실히
+못했을 경우, 더 진행이 가능할 준비가 되면 future가 poll될 수 있게 확실히
 조치해둘 필요가 있습니다. `Waker` 타입으로 이 조치를 취할 수 있습니다.
 
-future가 poll될 때마다 한 "태스크"의 일부분으로서 poll됩니다. 태스크들이란 한 executor에게
-제공된 최상위 future들입니다.
+future가 poll될 때마다 한 "태스크"의 일부분으로서 poll됩니다. 태스크란 한
+executor에게 제공된 최상위 future들입니다.
 
-`Waker`는 executor에게 연관된 태스크가 깨워져야 한다고 알리는데 사용되는 `wake()`
-메소드를 제공합니다. `wake()`가 호출되었을 때, executor는 `Waker`와 연관된
-태스크가 진행될 준비가 되었으며, 태스크의 future가 다시 poll되어야 한다는 것을 알 수 있습니다.
+`Waker`는 `wake()` 메소드를 제공하는데, 이 메소드는 연관된 태스크가 깨워져야
+한다고 executor에게 알리는데 사용됩니다. `wake()`가 호출되었을 때, executor는
+`Waker`와 연관된 태스크가 진행될 준비가 되었으며, 태스크의 future가 다시
+poll되어야 한다는 것을 알 수 있습니다.
 
 `Waker`는 `clone()`도 구현하기 때문에, 필요한 곳에 복사되고 저장될 수 있습니다.
 
@@ -27,10 +28,10 @@ future가 poll될 때마다 한 "태스크"의 일부분으로서 poll됩니다.
 {{#include ../../examples/02_03_timer/src/lib.rs:imports}}
 ```
 
-시작은 future 타입 자체를 정의하는 것입니다. 우리의 future는 타이머가
-경과되었는지, 그래서 future가 완성되어야 하는지 여부를 스레드가 알 수 있는
-방법이 필요합니다. 그래서 공유된 `Arc<Mutex<..>>` 값을 사용해서 스레드와 future
-사이에 통신할 것입니다.
+먼저 future 타입 자체를 정의합시다. 우리의 future에게는 타이머가 경과되었는지,
+그래서 future가 완성되어야 하는지 여부를 스레드와 통신할 방법이 필요합니다.
+그래서 공유된 `Arc<Mutex<..>>` 값을 사용해서 스레드와 future 사이에 통신할
+것입니다.
 
 ```rust,ignore
 {{#include ../../examples/02_03_timer/src/lib.rs:timer_decl}}

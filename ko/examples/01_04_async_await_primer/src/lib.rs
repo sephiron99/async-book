@@ -4,9 +4,9 @@ use futures::executor::block_on;
 
 mod first {
 // ANCHOR: hello_world
-// `block_on`은 제공받은 future가 실행되어 완성될 때까지 현재의 스레드를
-// 블록한다. 다른 종류의 executor들은 여러 개의 future를 같은 스레드 안에서
-// 스케줄링을 한다던가 하는 식으로 보다 복잡하게 동작한다.
+// `block_on` executor는 제공받은 future가 실행되어 완성될 때까지 현재의
+// 스레드를 블록한다. 다른 종류의 executor들은 여러 개의 future를 같은 스레드
+// 안에서 스케줄링을 한다던가 하는 식으로 보다 복잡하게 동작한다.
 use futures::executor::block_on;
 
 async fn hello_world() {
@@ -59,7 +59,7 @@ async fn async_main() {
 
     // `join!`은 `.await`와 비슷하지만 여러 개의 future를 동시에 기다릴 수 있다.
     // `learn_and_sing` future에서 일시적으로 블록되었더라도, `dance` future는
-    // 현재의 스레드를 취할 것이다. `dance`가 블록되면, `learn_and_sing`은 다시
+    // 현재의 스레드를 가져올 것이다. `dance`가 블록되면, `learn_and_sing`은 다시
     // 스레드를 가져올 수 있다. 둘 다 블록되면, `async_main`이 블록되고,
     // executor에게 스레드를 양보할 것이다.
     futures::join!(f1, f2);
