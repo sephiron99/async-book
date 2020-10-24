@@ -8,7 +8,7 @@ create-missing = false
 [preprocess.links]
 
 [output.html]
-git-repository-url = "https://github.com/sephiron99/async-book/ko"
+git-repository-url = "https://github.com/sephiron99/async-book-ko/tree/ko_KR/ko"
 
 [output.linkcheck]
 follow-web-links = true
