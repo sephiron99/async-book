@@ -43,14 +43,14 @@ poll되어야 한다는 것을 알 수 있습니다.
 {{#include ../../examples/02_03_timer/src/lib.rs:future_for_timer}}
 ```
 
-꽤 간단하죠? 스레드가 `shared_state.completed = true`로 설정하였다면 다 된
-것입니다. 아니라면, 우리는 스레드가 태스크를 다시 깨울 수 있도록, `Waker`를 현재의
-태스크용으로 클론하여 `shared_state.waker`에 전달합니다.
+꽤 간단하죠? 스레드가 `shared_state.completed = true`로 설정하였다면 `future`가
+완성된 것입니다. 아니라면, 우리는 스레드가 태스크를 다시 깨울 수 있도록,
+`Waker`를 현재의 태스크용으로 클론하여 `shared_state.waker`에 전달합니다.
 
-중요한 점은, `Waker`를 future가 poll될 때마다 갱신해야 한다는 점입니다.
-왜냐하면, 그 future가 다른 `Waker`와 같이 다른 태스크로 이동했을 수 있기
-때문입니다. 이런 상황은 future가 poll되고 나서 태스크 사이에서 여기저기 전달될 때
-발생합니다. 
+중요한 점은, future가 poll될 때마다 `Waker`를 갱신해야 한다는 점입니다.
+왜냐하면, 그 future가 다른 `Waker`와 함께 다른 태스크로 이동했을 수 있기
+때문입니다.(TODO: 의역필요) 이런 상황은 future가 poll되고 나서 태스크 사이에서
+여기저기 전달될 때 발생합니다.
 
 마지막으로, 실제로 타이머를 만들고 스레드를 시작할 API가 필요합니다.
 
