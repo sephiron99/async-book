@@ -190,8 +190,8 @@ fn bar() -&gt; impl Future&lt;Output = u8&gt; {
 현재 스레드의 제어를 넘겨줍니다. 더 많은 흐름이 나올 시, <code>Future</code>는 <code>.await</code>을 풀고 실행자에게 
 선택돼 실행을 재개할 것입니다.</p>
 <h2><a class="header" href="#async한-수명" id="async한-수명"><code>async</code>한 수명</a></h2>
-<p>참조나 기타 <code>'static</code>하지 않은 인자를 다루는 <code>async fn</code>은 전형적인 함수와 달리 인자의 수명으로 
-정해지는 <code>Future</code>를 반환합니다.</p>
+<p>참조나 기타 <code>'static</code>하지 않은 인자를 취하는 <code>async fn</code>은 다른 전형적인 함수들과
+달리 인자의 라이프타임에 바운드 된 <code>Future</code>를 반환합니다.</p>
 <pre><code class="language-rust edition2018 ignore">// 이 함수는
 async fn foo(x: &amp;u8) -&gt; u8 { *x }
 

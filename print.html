@@ -603,13 +603,13 @@ struct SharedState {
     }
 }
 </code></pre>
-<p>꽤 간단하죠? 스레드가 <code>shared_state.completed = true</code>로 설정하였다면 다 된
-것입니다. 아니라면, 우리는 스레드가 태스크를 다시 깨울 수 있도록, <code>Waker</code>를 현재의
-태스크용으로 클론하여 <code>shared_state.waker</code>에 전달합니다.</p>
-<p>중요한 점은, <code>Waker</code>를 future가 poll될 때마다 갱신해야 한다는 점입니다.
-왜냐하면, 그 future가 다른 <code>Waker</code>와 같이 다른 태스크로 이동했을 수 있기
-때문입니다. 이런 상황은 future가 poll되고 나서 태스크 사이에서 여기저기 전달될 때
-발생합니다. </p>
+<p>꽤 간단하죠? 스레드가 <code>shared_state.completed = true</code>로 설정하였다면 <code>future</code>가
+완성된 것입니다. 아니라면, 우리는 스레드가 태스크를 다시 깨울 수 있도록,
+<code>Waker</code>를 현재의 태스크용으로 클론하여 <code>shared_state.waker</code>에 전달합니다.</p>
+<p>중요한 점은, future가 poll될 때마다 <code>Waker</code>를 갱신해야 한다는 점입니다.
+왜냐하면, 그 future가 다른 <code>Waker</code>와 함께 다른 태스크로 이동했을 수 있기
+때문입니다.(TODO: 의역필요) 이런 상황은 future가 poll되고 나서 태스크 사이에서
+여기저기 전달될 때 발생합니다.</p>
 <p>마지막으로, 실제로 타이머를 만들고 스레드를 시작할 API가 필요합니다.</p>
 <pre><code class="language-rust ignore">impl TimerFuture {
     /// 주어진 시간이 경과하면 완성되는 새로운 `TimerFuture`를 만든다.
@@ -952,8 +952,8 @@ fn bar() -&gt; impl Future&lt;Output = u8&gt; {
 현재 스레드의 제어를 넘겨줍니다. 더 많은 흐름이 나올 시, <code>Future</code>는 <code>.await</code>을 풀고 실행자에게 
 선택돼 실행을 재개할 것입니다.</p>
 <h2><a class="header" href="#async한-수명" id="async한-수명"><code>async</code>한 수명</a></h2>
-<p>참조나 기타 <code>'static</code>하지 않은 인자를 다루는 <code>async fn</code>은 전형적인 함수와 달리 인자의 수명으로 
-정해지는 <code>Future</code>를 반환합니다.</p>
+<p>참조나 기타 <code>'static</code>하지 않은 인자를 취하는 <code>async fn</code>은 다른 전형적인 함수들과
+달리 인자의 라이프타임에 바운드 된 <code>Future</code>를 반환합니다.</p>
 <pre><code class="language-rust edition2018 ignore">// 이 함수는
 async fn foo(x: &amp;u8) -&gt; u8 { *x }
 
@@ -1588,7 +1588,7 @@ execute_unpin_future(fut); // OK
 <code>Future</code>는 이 규칙에 예외입니다.</p>
 </li>
 <li>
-<p>nightly에서는 feature flag를 설정하면 어떤 타입에 <code>!Unpin</code>을 묶을 수
+<p>nightly에서는 feature flag를 설정하면 어떤 타입에 <code>!Unpin</code> 바운드를 추가할 수
 있습니다. stable에서는 타입에 <code>std::marker::PhantomPinned</code>를 추가하면 됩니다.</p>
 </li>
 <li>

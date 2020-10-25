@@ -722,7 +722,7 @@ execute_unpin_future(fut); // OK
 <code>Future</code>는 이 규칙에 예외입니다.</p>
 </li>
 <li>
-<p>nightly에서는 feature flag를 설정하면 어떤 타입에 <code>!Unpin</code>을 묶을 수
+<p>nightly에서는 feature flag를 설정하면 어떤 타입에 <code>!Unpin</code> 바운드를 추가할 수
 있습니다. stable에서는 타입에 <code>std::marker::PhantomPinned</code>를 추가하면 됩니다.</p>
 </li>
 <li>
