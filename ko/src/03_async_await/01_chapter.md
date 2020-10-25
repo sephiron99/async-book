@@ -21,8 +21,8 @@
 
 ## `async`한 수명
 
-참조나 기타 `'static`하지 않은 인자를 다루는 `async fn`은 전형적인 함수와 달리 인자의 수명으로 
-정해지는 `Future`를 반환합니다.
+참조나 기타 `'static`하지 않은 인자를 취하는 `async fn`은 다른 전형적인 함수들과
+달리 인자의 라이프타임에 바운드 된 `Future`를 반환합니다.
 
 ```rust,edition2018,ignore
 {{#include ../../examples/03_01_async_await/src/lib.rs:lifetimes_expanded}}

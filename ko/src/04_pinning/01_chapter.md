@@ -625,7 +625,7 @@ execute_unpin_future(fut); // OK
    사용할 대부분의 "평범한" 타입들도 마찬가지입니다. async/await에 의해 생성된
    `Future`는 이 규칙에 예외입니다.
 
-4. nightly에서는 feature flag를 설정하면 어떤 타입에 `!Unpin`을 묶을 수
+4. nightly에서는 feature flag를 설정하면 어떤 타입에 `!Unpin` 바운드를 추가할 수
    있습니다. stable에서는 타입에 `std::marker::PhantomPinned`를 추가하면 됩니다.
 
 5. 데이타를 스택이나 힙에 고정할 수 있습니다.
