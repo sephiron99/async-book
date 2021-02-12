@@ -13,6 +13,7 @@ combinator
 combinators
 compat
 const
+coroutines
 dyn
 enqueued
 enum
@@ -29,8 +30,10 @@ html
 http
 Hyper's
 impl
+implementors
 init
 interoperate
+interprocess
 IoBlocker
 IOCP
 IoObject
@@ -76,6 +79,7 @@ spawner
 StepOne
 StepTwo
 struct
+structs
 subfuture
 subfutures
 subpar
@@ -89,6 +93,7 @@ toml
 TryFutureExt
 tuple
 turbofish
+UnixStream
 usize
 utils
 Waker
