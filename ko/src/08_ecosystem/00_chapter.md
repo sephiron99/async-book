@@ -1,83 +1,96 @@
-# The Async Ecosystem
-Rust currently provides only the bare essentials for writing async code.
-Importantly, executors, tasks, reactors, combinators, and low-level I/O futures and traits
-are not yet provided in the standard library. In the meantime,
-community-provided async ecosystems fill in these gaps.
+# 비동기 생태계
+러스트는 현재 비동기 코드를 작성하는 데 극히 필수적인 기능만 제공하고 있습니다.
+중요한 것은, 실행자, 태스크, 반응자, 조합자, 그리고 저수준 입출력 future와
+트레잇은 아직 표준 라이브러리에서 제공되지 않고 있습니다. 하지만, 커뮤니티에서
+제공하는 비동기 생태계가 이러한 갭을 메꾸고 있습니다. 
 
-## Async Runtimes
-Async runtimes are libraries used for executing async applications.
-Runtimes usually bundle together a *reactor* with one or more *executors*.
-Reactors provide subscription mechanisms for external events, like async I/O, interprocess communication, and timers.
-In an async runtime, subscribers are typically futures representing low-level I/O operations.
-Executors handle the scheduling and execution of tasks.
-They keep track of running and suspended tasks, poll futures to completion, and wake tasks when they can make progress.
-The word "executor" is frequently used interchangeably with "runtime".
-Here, we use the word "ecosystem" to describe a runtime bundled with compatible traits and features.
+## 비동기 런타임
+비동기 런타임은 비동기 어플리케이션을 실행하는 데 사용되는 라이브러리들입니다.
+런타임들은 보통 한 개의 *반응자*와 한 개 이상의 *실행자*를 포함합니다.  반응자는
+비동기 입출력, 프로세스 간 통신 그리고 타이머 같은 외부 이벤트에 대한 구독
+메카니즘을 제공합니다.  통상적으로 비동기 런타임에서 구독자는 저수준 입출력
+연산을 나타내는 future를 말합니다.  실행자는 태스크들의 스케쥴링과 실행을
+처리합니다. 실행자는 태스크의 실행과 일시정지를 계속 추적하고, future를
+완성될때까지 poll하고, 또, task가 진행할 수 있을 때 깨우는 역할을 합니다.
+"실행자(excutor)"라는 용어는 "runtime"과 자주 혼용됩니다.  여기서는 호환되는
+트레잇과 기능들이 묶음포장된 런타임을 가리키는 용어로 "생태계(ecosystem)"를
+사용할 것입니다.
 
-## Community-Provided Async Crates
+## 커뮤니티에서 제공하는 비동기 크레잇들
 
-### The Futures Crate
-The [`futures` crate](https://docs.rs/futures/) contains traits and functions useful for writing async code.
-This includes the `Stream`, `Sink`, `AsyncRead`, and `AsyncWrite` traits, and utilities such as combinators.
-These utilities and traits may eventually become part of the standard library.
+### future 크레잇
+[`futures` crate](https://docs.rs/futures/) 은 비동기 코드를 작성하는 데 유용한
+트레잇과 함수를 포함하고 있습니다. `future` 크레잇은 `Stream`, `Sing`,
+`AsyncRead`, `AsyncWrite` 트레잇 및 조합자 같은 유틸리티들을 포함합니다.  이
+유틸리티들과 트레잇들은 아마 결국에는 표준 라이브러리에 포함될 것입니다.
 
-`futures` has its own executor, but not its own reactor, so it does not support execution of async I/O or timer futures.
-For this reason, it's not considered a full runtime.
-A common choice is to use utilities from `futures` with an executor from another crate.
+`futures` 크레잇은 고유의 실행자를 가지고 있지만, 고유의 반응자는 없습니다.
+그래서 `futures` 크레잇은 비동기 입출력이나 타이머 future의 실행은 지원하지
+않습니다.
 
-### Popular Async Runtimes
-There is no asynchronous runtime in the standard library, and none are officially recommended.
-The following crates provide popular runtimes.
-- [Tokio](https://docs.rs/tokio/): A popular async ecosystem with HTTP, gRPC, and tracing frameworks.
-- [async-std](https://docs.rs/async-std/): A crate that provides asynchronous counterparts to standard library components.
-- [smol](https://docs.rs/smol/): A small, simplified async runtime.
-Provides the `Async` trait that can be used to wrap structs like `UnixStream` or `TcpListener`.
+이 같은 이유로, `futures` 크레잇은 온전한 런타임으로 여겨지지 않습니다.
+`futures` 크레잇의 유틸리티를 다른 크레잇의 실행자와 함께 사용하는 것이 일반적인
+선택지입니다.
+
+### 인기있는 비동기 런타임
+표준 라이브러리에는 비동기 런타임이 전혀 없고, 어느것도 공식적으로 추천되지
+않습니다.  다음 크레잇들은 인기있는 런타임들을 제공합니다.
+- [Tokio](https://docs.rs/tokio/): HTTP, gRPC, 추적 프레임웍을 제공하는 인기있는
+  비동기 생태계
+- [async-std](https://docs.rs/async-std/): 표준 라이브러리 비동기 컴포넌트에
+  대응하는 크레잇
+- [smol](https://docs.rs/smol/): 작고 간단한 비동기 런타임으로, `UnixStream`이나
+`TcpListener` 같은 구조체를 래핑하는 데 사용되는 `Async` 트레잇을 제공함
 - [fuchsia-async](https://fuchsia.googlesource.com/fuchsia/+/master/src/lib/fuchsia-async/):
-An executor for use in the Fuchsia OS.
+Fuchsia 운영체제에서 사용되는 실행자
 
-## Determining Ecosystem Compatibility
-Not all async applications, frameworks, and libraries are compatible with each other, or with every OS or platform.
-Most async code can be used with any ecosystem, but some frameworks and libraries require the use of a specific ecosystem.
-Ecosystem constraints are not always documented, but there are several rules of thumb to determine
-whether a library, trait, or function depends on a specific ecosystem.
+## 생태계 호환성 결정하기
+모든 비동기 어플리케이션, 프레임웍, 라이브러리들이 서로 호환되는 것은 아니며,
+어떤 운영체제나 플랫폼에도 호환되지 않을 수도 있습니다. 대부분의 비동기 코드는
+어떤 생태계와도 호환되지만, 몇몇 프레임웍과 라이브러리는 특정 생태계를
+요구하기도 합니다. 생태계 요구조건이 항상 문서화되는 것은 아니지만, 라이브러리,
+트레잇, 함수가 어떤 생태계에 의존하는지 판단할 수 있는 몇가지 경험칙들이
+있습니다.
 
-Any async code that interacts with async I/O, timers, interprocess communication, or tasks
-generally depends on a specific async executor or reactor.
-All other async code, such as async expressions, combinators, synchronization types, and streams
-are usually ecosystem independent, provided that any nested futures are also ecosystem independent.
-Before beginning a project, it's recommended to research relevant async frameworks and libraries to ensure
-compatibility with your chosen runtime and with each other.
+비동기 입출력, 타이머, 프로세스 또는 태스크 간 통신과 상호작용하는 모든 비동기
+코드는 보통 특정 비동기 실행자 또는 반응자에 의존합니다. 그 외 모든 코드, 즉
+비동기 표현식, 조합자, 동기화 타입, 스트림 등은 보통 생태계로부터 독립적이고,
+중첩된 futures들도 역시 생태계 독립적입니다. 프로젝트를 시작하기 전에, 연관된
+비동기 프레임웍과 라이브러리가 서로 호환되는 지, 여러분이 선택한 런타임과는
+호환되는 지를 확실히 확인하기를 추천합니다.
 
-Notably, `Tokio` uses the `mio` reactor and defines its own versions of async I/O traits,
-including `AsyncRead` and `AsyncWrite`.
-On its own, it's not compatible with `async-std` and `smol`,
-which rely on the [`async-executor` crate](https://docs.rs/async-executor), and the `AsyncRead` and `AsyncWrite`
-traits defined in `futures`.
+특히, `Tokio`는 `mio` 반응자를 사용하고, `AsyncRead`, `AsyncWrite`을 포함한
+비동기 입출력 트레잇의 고유 버전을 정의합니다. `Tokio` 고유의 구현 때문에,
+[`async-executor` crate](https://docs.rs/async-executor)에 의존하는
+`async-std`와 `smol`과 호환되지 않고, `futures`에 정의된 `AsyncRead`와
+`AsyncWrite` 트레잇과도 호환되지 않습니다.
 
-Conflicting runtime requirements can sometimes be resolved by compatibility layers
-that allow you to call code written for one runtime within another.
-For example, the [`async_compat` crate](https://docs.rs/async_compat) provides a compatibility layer between
-`Tokio` and other runtimes.
+런타임 요구사항 충돌 문제는 때때로 런타임 안에서 다른 런타임을 호출할 수 있게
+해주는 호환성 레이어를 통해 해결될 수 있습니다. 예를 들어, [`async_compat`
+crate](https://docs.rs/async_compat)은 `Tokio`와 다른 런타임 사이에서 호환성
+레이어를 제공합니다.
 
-Libraries exposing async APIs should not depend on a specific executor or reactor,
-unless they need to spawn tasks or define their own async I/O or timer futures.
-Ideally, only binaries should be responsible for scheduling and running tasks.
+비동기 API들을 노출하는 라이브러리는 태스크를 생성하거나 라이브러리 고유의
+비동기 입출력이나 타이머 future를 정의하지 않는 한, 특정한 실행자나 반응자에
+의존해서는 안됩니다.  이상적으로는, 오직 바이너리들만 태스크의 스케줄링과 실행을
+책임져야 합니다.
 
-## Single Threaded vs Multi-Threaded Executors
-Async executors can be single-threaded or multi-threaded.
-For example, the `async-executor` crate has both a single-threaded `LocalExecutor` and a multi-threaded `Executor`.
+## 싱글 스레딩 vs 멀티 스레딩 실행자
+비동기 실행자는 싱글 또는 멀티 스레딩이 될 수 있습니다. 예를 들어,
+`async-executor` 크레잇은 싱글 스레딩 `LocalExecutor`와 멀티 스레딩 `Executor`를
+모두 제공합니다.
 
-A multi-threaded executor makes progress on several tasks simultaneously.
-It can speed up the execution greatly for workloads with many tasks,
-but synchronizing data between tasks is usually more expensive.
-It is recommended to measure performance for your application
-when you are choosing between a single- and a multi-threaded runtime.
+멀티 스레딩 실행자는 여러 태스크들을 동시에 진행시킵니다. 멀티 스레딩 실행자는
+많은 태스크가 존재하는 워크로드에서 실행속도를 크게 높일 수 있습니다만, 보통
+태스크 간 데이터 동기화의 오버헤드가 큰 편입니다.  싱글스레드와 멀티스레드
+런타임 중 하나를 선택할 때, 성능을 측정해 비교해 볼 것을 권합니다.
 
-Tasks can either be run on the thread that created them or on a separate thread.
-Async runtimes often provide functionality for spawning tasks onto separate threads.
-Even if tasks are executed on separate threads, they should still be non-blocking.
-In order to schedule tasks on a multi-threaded executor, they must also be `Send`.
-Some runtimes provide functions for spawning non-`Send` tasks,
-which ensures every task is executed on the thread that spawned it.
-They may also provide functions for spawning blocking tasks onto dedicated threads,
-which is useful for running blocking synchronous code from other libraries.
+태스크는 태스크가 만들어진 스레드와 별도의 스레드 모두에서 실행될 수 있습니다.
+비동기 런타임은 보통 별도의 스레드에 태스크를 생성하는 기능을 제공합니다. 만약
+태스크가 별도의 스레드에서 실행된다면, 그 태스크들도 여전히 논블로킹이어야
+합니다.  태스크들을 멀티 스레딩 실행자에서 스케줄링하기 위해, 그 태스크들은 역시
+`Send`이어야 합니다. 몇몇 런타임들은 생성된 스레드 안에서 실행됨이 보장되는 비
+`Send` 태스크들을 생성하는 기능을 제공합니다. 그런 런타임들은 또한 전용
+스레드에서 실행되는 블로킹 태스크들을 생성하는 기능을 제공할 것입니다. 전용
+스레드에서 실행되는 블로킹 태스크는 다른 라이브러리의 블로킹 동기적 코드를
+실행하는 데 유용하게 사용될 수 있습니다.
