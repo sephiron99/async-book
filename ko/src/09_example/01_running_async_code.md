@@ -6,12 +6,12 @@ HTTP 서버는 동시에 여러 클라이언트에 동시에 서비스할 수 �
 만들어서 [이 문제를
 해결합니다.](https://rinthel.github.io/rust-lang-book-ko/ch20-02-multithreaded.html#%EC%84%9C%EB%B2%84%EB%A5%BC-%EC%8B%B1%EA%B8%80-%EC%8A%A4%EB%A0%88%EB%93%9C%EC%97%90%EC%84%9C-%EB%A9%80%ED%8B%B0-%EC%8A%A4%EB%A0%88%EB%93%9C%EB%A1%9C-%EB%B0%94%EA%BE%B8%EA%B8%B0)
 
-여기서는, 스레드를 추가하여 처리성능을 향상시키기 보다, 비동기 코드를
-사용하여 같은 효과를 내 봅시다.
+여기서는, 스레드를 추가하여 처리성능을 향상시키기 보다, 비동기 코드를 사용하여
+같은 효과를 내 봅시다.
 
 `handle_connection`의 선언을 `async fn`으로 수정하여 future를 반환하게 합시다.
 ```rust,ignore
-{{#include ../../examples/08_02_async_tcp_server/src/main.rs:handle_connection_async}}
+{{#include ../../examples/09_02_async_tcp_server/src/main.rs:handle_connection_async}}
 ```
 
 `async`를 `handle_connection` 선언에 추가하면 반환값이 유닛 타입 `()`에서
@@ -36,11 +36,9 @@ warning: unused implementer of `std::future::Future` that must be used
 연결이 거부됨을 알 수 있습니다. 서버가 요청을 처리하지 않는 것입니다.
 
 비동기 코드 그 자체 안에서 `await`하거나 `poll`할 수는 없습니다. future를
-완성될때까지 스케쥴링하고 실행할 비동기 런타임이 필요합니다.
-비동기 런타임, executor 그리고 reactor에 대한 자세한 정보를 원한다면 런타임
-선택에 관한 장을 살펴보세요.
-
-[//]: <> (TODO: Link to section on runtimes once complete.)
+완성될때까지 스케쥴링하고 실행할 비동기 런타임이 필요합니다. 비동기 런타임,
+executor 그리고 reactor에 대한 자세한 정보를 원한다면 [런타임
+선택하기](../08_ecosystem/00_chapter.md) 장을 살펴보세요.
 
 ## Async 런타임 추가
 여기서는 `async-std` 크레잇의 executor를 사용할 것입니다.
@@ -56,7 +54,7 @@ features = ["attributes"]
 첫 번째 단계로, main 함수를 비동기로 전환하고, 비동기 `handle_connection`이
 반환한 future를 `await`할 것입니다. 그리고 나서, 서버가 어떻게 작동하는 지
 테스트할 것입니다. 이렇게 작성한 코드는 아래와 같습니다.
-```rust {{#include ../../examples/08_02_async_tcp_server/src/main.rs:main_func}}``` 
+```rust {{#include ../../examples/09_02_async_tcp_server/src/main.rs:main_func}}``` 
 이제 서버가 연결을 동시에 처리할 수 있는 지 테스트해 봅시다. 단순히 `handle_connection`을
 비동기로 만들었다고 해서 바로 서버가 여러개의 연결을 동시에 처리할 수 있게
 되지는 않습니다. 곧 그 이유를 곧 알게 될 것입니다.
@@ -65,7 +63,7 @@ features = ["attributes"]
 클라이언트가 `127.0.0.1:7878/sleep`으로 요청을 보냈을 때, 우리 서버는 5초간 잠들 것입니다.
 
 ```rust,ignore
-{{#include ../../examples/08_03_slow_request/src/main.rs:handle_connection}}
+{{#include ../../examples/09_03_slow_request/src/main.rs:handle_connection}}
 ```
 이는 러스트북의 [현재 서버에서 느린 요청을
 시뮬레이팅하기](https://rinthel.github.io/rust-lang-book-ko/ch20-02-multithreaded.html#%ED%98%84%EC%9E%AC-%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%EB%8A%90%EB%A6%B0-%EC%9A%94%EC%B2%AD%EC%9D%84-%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%ED%8C%85%ED%95%98%EA%B8%B0)와

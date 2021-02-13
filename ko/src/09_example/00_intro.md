@@ -8,17 +8,17 @@
 
 `src/main.rs`:
 ```rust
-{{#include ../../examples/08_01_sync_tcp_server/src/main.rs}}
+{{#include ../../examples/09_01_sync_tcp_server/src/main.rs}}
 ```
 
 `hello.html`:
 ```html
-{{#include ../../examples/08_01_sync_tcp_server/hello.html}}
+{{#include ../../examples/09_01_sync_tcp_server/hello.html}}
 ```
 
 `404.html`:
 ```html
-{{#include ../../examples/08_01_sync_tcp_server/404.html}}
+{{#include ../../examples/09_01_sync_tcp_server/404.html}}
 ```
 
 `cargo run`으로 서버를 실행시켜서 브라우저에서 `127.0.0.1:7878`에 접속했다면,

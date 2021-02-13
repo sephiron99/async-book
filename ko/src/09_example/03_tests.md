@@ -30,7 +30,7 @@ async fn handle_connection(mut stream: impl Read + Write + Unpin) {
 복사가 끝나면 `poll_read`는 읽기가 끝났음을 알리는 `Poll::Ready`를 반환할 것입니다.
 
 ```rust,ignore
-{{#include ../../examples/08_05_final_tcp_server/src/main.rs:mock_read}}
+{{#include ../../examples/09_05_final_tcp_server/src/main.rs:mock_read}}
 ```
 
 `poll_write`, `poll_flush`, 그리고 `poll_close`라는 세 개의 메소드를 작성해야
@@ -41,14 +41,14 @@ async fn handle_connection(mut stream: impl Read + Write + Unpin) {
 반환하면 됩니다.
 
 ```rust,ignore
-{{#include ../../examples/08_05_final_tcp_server/src/main.rs:mock_write}}
+{{#include ../../examples/09_05_final_tcp_server/src/main.rs:mock_write}}
 ```
 
 마지막으로, `TcpStream` 모조품은 메모리 상 위치가 안전하게 움직일 수 있다고
 알리는 `Unpin`을 구현해야 합니다.
 `Unpin`에 대한 자세한 정보는 [고정하기](../04_pinning/01_chapter.md)를 참고하세요.
 ```rust,ignore
-{{#include ../../examples/08_05_final_tcp_server/src/main.rs:unpin}}
+{{#include ../../examples/09_05_final_tcp_server/src/main.rs:unpin}}
 ```
 
 이제 `handle_connection` 함수를 테스트할 준비가 되었습니다.
@@ -59,5 +59,5 @@ async fn handle_connection(mut stream: impl Read + Write + Unpin) {
 `handle_connection`이 잘 작동함을 확인하기 위해 데이터의 처음 부분을 비교하여 데이터가
 `MockTcpStream`에 제대로 쓰여졌는 지 확인할 것입니다.
 ```rust,ignore
-{{#include ../../examples/08_05_final_tcp_server/src/main.rs:test}}
+{{#include ../../examples/09_05_final_tcp_server/src/main.rs:test}}
 ```
