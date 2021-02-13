@@ -131,6 +131,7 @@ impl Test {
     }
 
     fn b(&self) -> &String {
+        assert!(!self.b.is_null(), "Test::b called without Test::init being called first");
         unsafe {&*(self.b)}
     }
 }
@@ -182,6 +183,7 @@ fn main() {
 #     }
 #
 #     fn b(&self) -> &String {
+#         assert!(!self.b.is_null(), "Test::b called without Test::init being called first");
 #         unsafe {&*(self.b)}
 #     }
 # }
@@ -298,6 +300,7 @@ fn main() {
 #     }
 #
 #     fn b(&self) -> &String {
+#         assert!(!self.b.is_null(), "Test::b called without Test::init being called first");
 #         unsafe {&*(self.b)}
 #     }
 # }
@@ -308,7 +311,7 @@ fn main() {
 **Fig 1: 스왑 전 후**
 ![swap_problem](../assets/swap_problem.jpg)
 
-다른 특별한 방법도 있겠지만, 그림으로 정의되지 않은 동작과 실패를 표현하면
+다른 특별한 방법도 있겠지만, 위와 같이 그림으로 정의되지 않은 동작과 실패를 표현하면
 이해하기 쉽습니다.
 
 ## 실전에서 고정하기
@@ -363,6 +366,7 @@ impl Test {
     }
 
     fn b<'a>(self: Pin<&'a Self>) -> &'a String {
+        assert!(!self.b.is_null(), "Test::b called without Test::init being called first");
         unsafe { &*(self.b) }
     }
 }
@@ -420,6 +424,7 @@ pub fn main() {
 #     }
 #
 #     fn b<'a>(self: Pin<&'a Self>) -> &'a String {
+#         assert!(!self.b.is_null(), "Test::b called without Test::init being called first");
 #         unsafe { &*(self.b) }
 #     }
 # }
@@ -471,6 +476,7 @@ pub fn main() {
 #     }
 #
 #     fn b<'a>(self: Pin<&'a Self>) -> &'a String {
+#         assert!(!self.b.is_null(), "Test::b called without Test::init being called first");
 #         unsafe { &*(self.b) }
 #     }
 # }
@@ -531,6 +537,7 @@ pub fn main() {
 > #     }
 > #
 > #     fn b<'a>(self: Pin<&'a Self>) -> &'a String {
+> #         assert!(!self.b.is_null(), "Test::b called without Test::init being called first");
 > #         unsafe { &*(self.b) }
 > #     }
 > # }
