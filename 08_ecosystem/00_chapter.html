@@ -1,0 +1,318 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>비동기 생태계 - 러스트 비동기 프로그래밍</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../01_getting_started/01_chapter.html"><strong aria-hidden="true">1.</strong> 시작하며</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../01_getting_started/02_why_async.html"><strong aria-hidden="true">1.1.</strong> Async가 필요한 이유</a></li><li class="chapter-item expanded "><a href="../01_getting_started/03_state_of_async_rust.html"><strong aria-hidden="true">1.2.</strong> 비동기적 러스트 현황</a></li><li class="chapter-item expanded "><a href="../01_getting_started/04_async_await_primer.html"><strong aria-hidden="true">1.3.</strong> async/.await 기초</a></li></ol></li><li class="chapter-item expanded "><a href="../02_execution/01_chapter.html"><strong aria-hidden="true">2.</strong> 내부 구조: Future와 태스크 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02_execution/02_future.html"><strong aria-hidden="true">2.1.</strong> Future 트레잇</a></li><li class="chapter-item expanded "><a href="../02_execution/03_wakeups.html"><strong aria-hidden="true">2.2.</strong> Waker로 태스크 깨우기</a></li><li class="chapter-item expanded "><a href="../02_execution/04_executor.html"><strong aria-hidden="true">2.3.</strong> 응용: executor 구현하기</a></li><li class="chapter-item expanded "><a href="../02_execution/05_io.html"><strong aria-hidden="true">2.4.</strong> Executor와 시스템 입출력</a></li></ol></li><li class="chapter-item expanded "><a href="../03_async_await/01_chapter.html"><strong aria-hidden="true">3.</strong> async/await</a></li><li class="chapter-item expanded "><a href="../04_pinning/01_chapter.html"><strong aria-hidden="true">4.</strong> 고정하기</a></li><li class="chapter-item expanded "><a href="../05_streams/01_chapter.html"><strong aria-hidden="true">5.</strong> 스트림</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../05_streams/02_iteration_and_concurrency.html"><strong aria-hidden="true">5.1.</strong> 반복과 동시성</a></li></ol></li><li class="chapter-item expanded "><a href="../06_multiple_futures/01_chapter.html"><strong aria-hidden="true">6.</strong> 여러개의 future를 동시에 실행하기</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../06_multiple_futures/02_join.html"><strong aria-hidden="true">6.1.</strong> join!</a></li><li class="chapter-item expanded "><a href="../06_multiple_futures/03_select.html"><strong aria-hidden="true">6.2.</strong> select!</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.3.</strong> TODO: Spawning</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.4.</strong> TODO: Cancellation and Timeouts</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">6.5.</strong> TODO: FuturesUnordered</a></li></ol></li><li class="chapter-item expanded "><a href="../07_workarounds/01_chapter.html"><strong aria-hidden="true">7.</strong> 알아두면 좋을 요령들</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../07_workarounds/02_err_in_async_blocks.html"><strong aria-hidden="true">7.1.</strong> async 블록 안에서의 ?</a></li><li class="chapter-item expanded "><a href="../07_workarounds/03_send_approximation.html"><strong aria-hidden="true">7.2.</strong> Send 추정</a></li><li class="chapter-item expanded "><a href="../07_workarounds/04_recursion.html"><strong aria-hidden="true">7.3.</strong> 재귀</a></li><li class="chapter-item expanded "><a href="../07_workarounds/05_async_in_traits.html"><strong aria-hidden="true">7.4.</strong> 트레잇 내부의 async</a></li></ol></li><li class="chapter-item expanded "><a href="../08_ecosystem/00_chapter.html" class="active"><strong aria-hidden="true">8.</strong> 비동기 생태계</a></li><li class="chapter-item expanded "><a href="../09_example/00_intro.html"><strong aria-hidden="true">9.</strong> 마지막 프로젝트: HTTP 서버</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../09_example/01_running_async_code.html"><strong aria-hidden="true">9.1.</strong> 비동기 코드 실행하기</a></li><li class="chapter-item expanded "><a href="../09_example/02_handling_connections_concurrently.html"><strong aria-hidden="true">9.2.</strong> 연결을 동시적으로 처리하기</a></li><li class="chapter-item expanded "><a href="../09_example/03_tests.html"><strong aria-hidden="true">9.3.</strong> 서버 테스트하기</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.</strong> TODO: I/O</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">10.1.</strong> TODO: AsyncRead and AsyncWrite</a></li></ol></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.</strong> TODO: Asynchronous Design Patterns: Solutions and Suggestions</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.1.</strong> TODO: Modeling Servers and the Request/Response Pattern</a></li><li class="chapter-item expanded "><a href="../404.html"><strong aria-hidden="true">11.2.</strong> TODO: Managing Shared State</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">러스트 비동기 프로그래밍</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        <a href="https://github.com/sephiron99/async-book-ko/tree/ko_KR/ko" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#비동기-생태계" id="비동기-생태계">비동기 생태계</a></h1>
+<p>러스트는 현재 비동기 코드를 작성하는 데 극히 필수적인 기능만 제공하고 있습니다.
+중요한 것은, 실행자, 태스크, 반응자, 조합자, 그리고 저수준 입출력 future와
+트레잇은 아직 표준 라이브러리에서 제공되지 않고 있습니다. 하지만, 커뮤니티에서
+제공하는 비동기 생태계가 이러한 갭을 메꾸고 있습니다. </p>
+<h2><a class="header" href="#비동기-런타임" id="비동기-런타임">비동기 런타임</a></h2>
+<p>비동기 런타임은 비동기 어플리케이션을 실행하는 데 사용되는 라이브러리들입니다.
+런타임들은 보통 한 개의 <em>반응자</em>와 한 개 이상의 <em>실행자</em>를 포함합니다.  반응자는
+비동기 입출력, 프로세스 간 통신 그리고 타이머 같은 외부 이벤트에 대한 구독
+메카니즘을 제공합니다.  통상적으로 비동기 런타임에서 구독자는 저수준 입출력
+연산을 나타내는 future를 말합니다.  실행자는 태스크들의 스케쥴링과 실행을
+처리합니다. 실행자는 태스크의 실행과 일시정지를 계속 추적하고, future를
+완성될때까지 poll하고, 또, task가 진행할 수 있을 때 깨우는 역할을 합니다.
+&quot;실행자(excutor)&quot;라는 용어는 &quot;runtime&quot;과 자주 혼용됩니다.  여기서는 호환되는
+트레잇과 기능들이 묶음포장된 런타임을 가리키는 용어로 &quot;생태계(ecosystem)&quot;를
+사용할 것입니다.</p>
+<h2><a class="header" href="#커뮤니티에서-제공하는-비동기-크레잇들" id="커뮤니티에서-제공하는-비동기-크레잇들">커뮤니티에서 제공하는 비동기 크레잇들</a></h2>
+<h3><a class="header" href="#future-크레잇" id="future-크레잇">future 크레잇</a></h3>
+<p><a href="https://docs.rs/futures/"><code>futures</code> crate</a> 은 비동기 코드를 작성하는 데 유용한
+트레잇과 함수를 포함하고 있습니다. <code>future</code> 크레잇은 <code>Stream</code>, <code>Sing</code>,
+<code>AsyncRead</code>, <code>AsyncWrite</code> 트레잇 및 조합자 같은 유틸리티들을 포함합니다.  이
+유틸리티들과 트레잇들은 아마 결국에는 표준 라이브러리에 포함될 것입니다.</p>
+<p><code>futures</code> 크레잇은 고유의 실행자를 가지고 있지만, 고유의 반응자는 없습니다.
+그래서 <code>futures</code> 크레잇은 비동기 입출력이나 타이머 future의 실행은 지원하지
+않습니다.</p>
+<p>이 같은 이유로, <code>futures</code> 크레잇은 온전한 런타임으로 여겨지지 않습니다.
+<code>futures</code> 크레잇의 유틸리티를 다른 크레잇의 실행자와 함께 사용하는 것이 일반적인
+선택지입니다.</p>
+<h3><a class="header" href="#인기있는-비동기-런타임" id="인기있는-비동기-런타임">인기있는 비동기 런타임</a></h3>
+<p>표준 라이브러리에는 비동기 런타임이 전혀 없고, 어느것도 공식적으로 추천되지
+않습니다.  다음 크레잇들은 인기있는 런타임들을 제공합니다.</p>
+<ul>
+<li><a href="https://docs.rs/tokio/">Tokio</a>: HTTP, gRPC, 추적 프레임웍을 제공하는 인기있는
+비동기 생태계</li>
+<li><a href="https://docs.rs/async-std/">async-std</a>: 표준 라이브러리 비동기 컴포넌트에
+대응하는 크레잇</li>
+<li><a href="https://docs.rs/smol/">smol</a>: 작고 간단한 비동기 런타임으로, <code>UnixStream</code>이나
+<code>TcpListener</code> 같은 구조체를 래핑하는 데 사용되는 <code>Async</code> 트레잇을 제공함</li>
+<li><a href="https://fuchsia.googlesource.com/fuchsia/+/master/src/lib/fuchsia-async/">fuchsia-async</a>:
+Fuchsia 운영체제에서 사용되는 실행자</li>
+</ul>
+<h2><a class="header" href="#생태계-호환성-결정하기" id="생태계-호환성-결정하기">생태계 호환성 결정하기</a></h2>
+<p>모든 비동기 어플리케이션, 프레임웍, 라이브러리들이 서로 호환되는 것은 아니며,
+어떤 운영체제나 플랫폼에도 호환되지 않을 수도 있습니다. 대부분의 비동기 코드는
+어떤 생태계와도 호환되지만, 몇몇 프레임웍과 라이브러리는 특정 생태계를
+요구하기도 합니다. 생태계 요구조건이 항상 문서화되는 것은 아니지만, 라이브러리,
+트레잇, 함수가 어떤 생태계에 의존하는지 판단할 수 있는 몇가지 경험칙들이
+있습니다.</p>
+<p>비동기 입출력, 타이머, 프로세스 또는 태스크 간 통신과 상호작용하는 모든 비동기
+코드는 보통 특정 비동기 실행자 또는 반응자에 의존합니다. 그 외 모든 코드, 즉
+비동기 표현식, 조합자, 동기화 타입, 스트림 등은 보통 생태계로부터 독립적이고,
+중첩된 futures들도 역시 생태계 독립적입니다. 프로젝트를 시작하기 전에, 연관된
+비동기 프레임웍과 라이브러리가 서로 호환되는 지, 여러분이 선택한 런타임과는
+호환되는 지를 확실히 확인하기를 추천합니다.</p>
+<p>특히, <code>Tokio</code>는 <code>mio</code> 반응자를 사용하고, <code>AsyncRead</code>, <code>AsyncWrite</code>을 포함한
+비동기 입출력 트레잇의 고유 버전을 정의합니다. <code>Tokio</code> 고유의 구현 때문에,
+<a href="https://docs.rs/async-executor"><code>async-executor</code> crate</a>에 의존하는
+<code>async-std</code>와 <code>smol</code>과 호환되지 않고, <code>futures</code>에 정의된 <code>AsyncRead</code>와
+<code>AsyncWrite</code> 트레잇과도 호환되지 않습니다.</p>
+<p>런타임 요구사항 충돌 문제는 때때로 런타임 안에서 다른 런타임을 호출할 수 있게
+해주는 호환성 레이어를 통해 해결될 수 있습니다. 예를 들어, <a href="https://docs.rs/async_compat"><code>async_compat</code>
+crate</a>은 <code>Tokio</code>와 다른 런타임 사이에서 호환성
+레이어를 제공합니다.</p>
+<p>비동기 API들을 노출하는 라이브러리는 태스크를 생성하거나 라이브러리 고유의
+비동기 입출력이나 타이머 future를 정의하지 않는 한, 특정한 실행자나 반응자에
+의존해서는 안됩니다.  이상적으로는, 오직 바이너리들만 태스크의 스케줄링과 실행을
+책임져야 합니다.</p>
+<h2><a class="header" href="#싱글-스레딩-vs-멀티-스레딩-실행자" id="싱글-스레딩-vs-멀티-스레딩-실행자">싱글 스레딩 vs 멀티 스레딩 실행자</a></h2>
+<p>비동기 실행자는 싱글 또는 멀티 스레딩이 될 수 있습니다. 예를 들어,
+<code>async-executor</code> 크레잇은 싱글 스레딩 <code>LocalExecutor</code>와 멀티 스레딩 <code>Executor</code>를
+모두 제공합니다.</p>
+<p>멀티 스레딩 실행자는 여러 태스크들을 동시에 진행시킵니다. 멀티 스레딩 실행자는
+많은 태스크가 존재하는 워크로드에서 실행속도를 크게 높일 수 있습니다만, 보통
+태스크 간 데이터 동기화의 오버헤드가 큰 편입니다.  싱글스레드와 멀티스레드
+런타임 중 하나를 선택할 때, 성능을 측정해 비교해 볼 것을 권합니다.</p>
+<p>태스크는 태스크가 만들어진 스레드와 별도의 스레드 모두에서 실행될 수 있습니다.
+비동기 런타임은 보통 별도의 스레드에 태스크를 생성하는 기능을 제공합니다. 만약
+태스크가 별도의 스레드에서 실행된다면, 그 태스크들도 여전히 논블로킹이어야
+합니다.  태스크들을 멀티 스레딩 실행자에서 스케줄링하기 위해, 그 태스크들은 역시
+<code>Send</code>이어야 합니다. 몇몇 런타임들은 생성된 스레드 안에서 실행됨이 보장되는 비
+<code>Send</code> 태스크들을 생성하는 기능을 제공합니다. 그런 런타임들은 또한 전용
+스레드에서 실행되는 블로킹 태스크들을 생성하는 기능을 제공할 것입니다. 전용
+스레드에서 실행되는 블로킹 태스크는 다른 라이브러리의 블로킹 동기적 코드를
+실행하는 데 유용하게 사용될 수 있습니다.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../07_workarounds/05_async_in_traits.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../09_example/00_intro.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../07_workarounds/05_async_in_traits.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../09_example/00_intro.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
